@@ -1,13 +1,20 @@
 <?php
 
-namespace App\Tests;
+use App\Tests\Mock\GitApiMock;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-use PHPUnit\Framework\TestCase;
 
-class GitApiTest extends TestCase
+class GitApiTest extends WebTestCase
 {
-    public function testSomething(): void
+    protected function setUp(): void
     {
-        $this->assertTrue(true);
+        $this->gitApi = new GitApiMock();
+        if (!isset($this->GitApi))
+            throw   new Exception("GitApi object not found");
+    }
+
+    public function testGitAuthentification(string $client_id, string $client_secret): void
+    {
+   
     }
 }
