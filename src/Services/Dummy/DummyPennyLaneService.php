@@ -2,7 +2,7 @@
 
 namespace App\Services\Dummy;
 
-use App\Interface\PennyLaneServiceInterface;
+use App\Interfaces\PennyLaneServiceInterface;
 
 
 class DummyPennyLaneService implements PennyLaneServiceInterface
@@ -10,7 +10,7 @@ class DummyPennyLaneService implements PennyLaneServiceInterface
 
     public function connect(): bool
     {
-        return  true;
+        return true;
     }
 
     public function disconnect(): bool
@@ -46,8 +46,6 @@ class DummyPennyLaneService implements PennyLaneServiceInterface
     {
         return  true;
     }
-
-
 
 }
 

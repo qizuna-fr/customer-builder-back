@@ -23,14 +23,14 @@ class PennyLaneServiceController extends AbstractController
             if (!$this->pennyLane->exist()) {
                 
              if ($this->pennyLane->create())
-                $response = new Response("PennyLane creation Service : ok ");
+                $response = new Response("PennyLane create Service : ok ", http_response_code(240) );
             } else
-                $response = new Response("PennyLane creation Service, creation error ");
+                $response = new Response("PennyLane create Service, creation error ");
 
             $this->pennyLane->disconnect();
         }
         else
-        $response = new Response("PennyLane creation service, connection error");
+        $response = new Response("PennyLane create service, connection error");
 
         return $response;
     }
@@ -44,7 +44,7 @@ class PennyLaneServiceController extends AbstractController
             if (!$this->pennyLane->exist()) {
                 
              if ($this->pennyLane->delete())
-                $response = new Response("PennyLane delete Service : ok ");
+                $response = new Response("PennyLane delete service : ok ");
             } else
                 $response = new Response("PennyLane delete service, delete error ");
 
