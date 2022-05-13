@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Service\GitHubService;
+use App\Services\GitHubService;
+use GitHubServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,9 +16,14 @@ class ApiController extends AbstractController
     {
         
     }
+
     #[Route('/')]
     public function index(): Response
     {
-        return new Response("Hello Controller");
+        $this->github->connectToGithub();
+        $this->github->createBranchGithub();
+        $this->github->disconnectFromGithub();
+
+        return new Response("Hello Controller ");
     }
 }
