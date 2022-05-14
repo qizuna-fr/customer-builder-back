@@ -11,7 +11,11 @@ class GitHubService implements GitHubServiceInterface {
     public function disconnectFromGithub() {
     }
 
-    public function createBranchGithub() {
+    public function createBranchGithub(string $branchName) {
+    }
+
+    public function fetchDataFromDataBase() : array {
+        return [];
     }
 }
 

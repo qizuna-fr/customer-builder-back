@@ -20,8 +20,9 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    App\Services\GitHubServiceInterface:
-        alias: App\Services\GitHubService
+    App\Interfaces\GitHubServiceInterface:
+        # alias: App\Services\GitHubService
+        alias: App\Services\Dummy\DummyGitHubService
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
