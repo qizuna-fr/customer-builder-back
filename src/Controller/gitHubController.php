@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Interfaces\FormattingTextInterface;
 use App\Interfaces\GitHubServiceInterface;
-use App\Services\GitHubService;
+use App\Interfaces\TextCSSManagementInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class gitHubController extends AbstractController
 {
-    public function __construct(private GitHubServiceInterface $github, private FormattingTextInterface $formattingText)
+    public function __construct(private GitHubServiceInterface $github, private FormattingTextInterface $formattingText, TextCSSManagementInterface $textCSSManagement)
     {
     }
     
@@ -33,8 +33,10 @@ class gitHubController extends AbstractController
     {
         $this->github->connectToGithub();
         $datas = $this->github->fetchDataFromDataBase();
-
-
+        $titleFont = $datas['titleFont'];
+        $new_title = $this->textCSSManagement->editTitleFont($titleFont);
+        $this->github->createBranchGithub("title-font");
+        $this->github->disconnectFromGithub();
         return new Response(null, 200);
     }
 
@@ -43,7 +45,6 @@ class gitHubController extends AbstractController
     {
         $this->github->connectToGithub();
         $datas = $this->github->fetchDataFromDataBase();
-
 
         return new Response(null, 200);
     }

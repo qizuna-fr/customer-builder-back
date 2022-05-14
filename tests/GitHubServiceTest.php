@@ -4,6 +4,7 @@ namespace App\Tests;
 
 use App\Services\Dummy\DummyGitHubService;
 use App\Services\DummyFormattingText;
+use App\Services\DummyTextCSSManagement;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class GitHubServiceTest extends WebTestCase
@@ -46,6 +47,14 @@ class GitHubServiceTest extends WebTestCase
         $formattingText = new DummyFormattingText();
         $text = "Hello Word";
         $formattedText = $formattingText->deleteSpace($formattingText->lowerCase($text));
-        $this->assertSame($formattedText, "hello_word");
+        $this->assertSame($formattedText, "hello-word");
+    }
+
+    public function testTitleFontAndStypeManagement(): void
+    {
+        $titleManagement = new DummyTextCSSManagement();
+        $titleFont = "Open Sans";
+        $this->assertSame($titleManagement->setTitleFont($titleFont), $titleFont);
+
     }
 }

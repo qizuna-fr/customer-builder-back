@@ -8,7 +8,7 @@ use Symfony\Bundle\MakerBundle\Str;
 class DummyFormattingText implements FormattingTextInterface {
     
     public function deleteSpace(string $text) :string {
-        $formattedText = str_replace(' ', '_', $text);
+        $formattedText = str_replace(' ', '-', $text);
         return $formattedText;
     }
 
