@@ -50,11 +50,11 @@ class GitHubServiceTest extends WebTestCase
         $this->assertSame($formattedText, "hello-word");
     }
 
-    public function testTitleFontAndStypeManagement(): void
+    public function testTextCSSManagement(): void
     {
         $titleManagement = new DummyTextCSSManagement();
         $titleFont = "Open Sans";
-        $this->assertSame($titleManagement->setTitleFont($titleFont), $titleFont);
+        $this->assertSame($titleManagement->setTitleFont($titleFont), true);
 
     }
 }

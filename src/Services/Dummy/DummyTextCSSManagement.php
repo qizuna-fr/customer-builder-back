@@ -5,9 +5,12 @@ namespace App\Services;
 use App\Interfaces\TextCSSManagementInterface;
 
 class DummyTextCSSManagement implements TextCSSManagementInterface {
+
+    public bool $spy;
     
     public function setTitleFont(string $titleFont) :string {
-        return $titleFont;
+        $this->spy =  ($titleFont == "" ) ? false : true;
+        return $this->spy;
     }
 }
 
