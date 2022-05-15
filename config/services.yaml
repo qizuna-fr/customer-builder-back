@@ -24,5 +24,18 @@ services:
         # alias: App\Services\GitHubService
         alias: App\Services\Dummy\DummyGitHubService
 
+    App\Interfaces\TextCSSManagementInterface:
+        # alias: App\Services\TextCSSManagement
+        alias: App\Services\Dummy\DummyTextCSSManagement
+
+    App\Interfaces\FormattingTextInterface:
+        # alias: App\Services\FormattingText
+        alias: App\Services\Dummy\DummyFormattingText
+
+    App\Interfaces\DataBaseManagementInterface:
+        # alias: App\Services\DataBaseManagement
+        alias: App\Services\Dummy\DummyDataBaseManagement
+
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

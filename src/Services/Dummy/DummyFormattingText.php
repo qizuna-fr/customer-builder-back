@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Dummy;
 
 use App\Interfaces\FormattingTextInterface;
-use Symfony\Bundle\MakerBundle\Str;
 
 class DummyFormattingText implements FormattingTextInterface {
     

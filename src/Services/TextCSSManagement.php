@@ -6,8 +6,16 @@ use App\Interfaces\TextCSSManagementInterface;
 
 class TextCSSManagement implements TextCSSManagementInterface {
     
-    public function setTitleFont(string $titleFont) :string {
-        return $titleFont;
+    public function editTextFont(string $textFont) {
+        return $textFont;
+    }
+
+    public function editTextStyle(string $textStyle) {
+        return $textStyle;
+    }
+
+    public function editTextColor(string $textColor) {
+        return $textColor;
     }
 }
 
