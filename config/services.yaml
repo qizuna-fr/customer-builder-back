@@ -40,5 +40,9 @@ services:
         # alias: App\Services\Client
         alias: App\Services\Dummy\DummyClient
 
+    App\Interfaces\ImaginaryServiceInterface:
+        # alias: App\Services\ImaginaryService
+        alias: App\Services\Dummy\DummyImaginaryService
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

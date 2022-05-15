@@ -93,7 +93,8 @@ class GitHubServiceTest extends WebTestCase
     public function testFetchDataFromDataBase(): void
     {
         $dataBase = new DummyDataBaseManagement();
-        $datas = $dataBase->fetchDataFromDataBase();
+        $clientName = "clientName";
+        $datas = $dataBase->fetchDataFromDataBase($clientName);
         $this->assertNotEmpty($datas);
     }
 

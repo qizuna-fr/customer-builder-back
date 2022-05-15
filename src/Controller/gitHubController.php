@@ -40,7 +40,7 @@ class gitHubController extends AbstractController
     public function defineTitleStyle($text): Response
     {
         $this->github->connectToGithub();
-        $datas = $this->dataBase->fetchDataFromDataBase();
+        $datas = $this->dataBase->fetchDataFromDataBase($this->githubClient);
 
         $textFont = $text.'Font';
         $font = $datas[$textFont];
@@ -72,7 +72,5 @@ class gitHubController extends AbstractController
         $this->github->disconnectFromGithub();
         return new Response('Editing '.$text.' style controller', 200);
     }
-
-
 
 }

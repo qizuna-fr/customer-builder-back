@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 interface DataBaseManagementInterface {
 
-    public function fetchDataFromDataBase() : array;
+    public function fetchDataFromDataBase($clientName) : array;
 
 }
 

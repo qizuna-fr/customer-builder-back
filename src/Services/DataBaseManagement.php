@@ -5,7 +5,7 @@ use App\Interfaces\DataBaseManagementInterface;
 
 class DataBaseManagement implements DataBaseManagementInterface {
 
-    public function fetchDataFromDataBase() : array {
+    public function fetchDataFromDataBase($clientName) : array {
         return [];
     }
 }

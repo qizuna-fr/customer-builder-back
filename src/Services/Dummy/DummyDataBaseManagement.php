@@ -5,7 +5,7 @@ use App\Interfaces\DataBaseManagementInterface;
 
 class DummyDataBaseManagement implements DataBaseManagementInterface {
 
-    public function fetchDataFromDataBase() :array {
+    public function fetchDataFromDataBase($clientName) :array {
         $data = [
             'cityName' => 'cityName' , 
             'titleFont' => 'titleFont', 
