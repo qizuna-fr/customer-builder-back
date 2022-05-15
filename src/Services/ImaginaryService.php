@@ -12,12 +12,16 @@ class ImaginaryService implements ImaginaryServiceInterface {
         
     }
 
-    public function resizeImage($file){
-        
+    public function uploadFile() :string{
+        return "";
     }
 
-    public function convertFile($file){
-        
+    public function resizeImage($file, int $width, int $hight): string{
+        return "";
+    }
+
+    public function convertFile($file): string{
+        return "";
     }
 
 }
