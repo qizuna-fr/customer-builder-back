@@ -27,14 +27,14 @@ class DummyGitHubService implements GitHubServiceInterface {
         return $this->spy;
     }
 
-    public function createRepositoryGithub($clientCityName){
-        $repositoryName = $this->fetchRepository($clientCityName);
+    public function createRepositoryGithub($githubClient){
+        $repositoryName = $this->fetchRepository($githubClient);
         $this->spy =  ($repositoryName == "") ? false : true;
         return $this->spy;
     }
 
-    public function fetchRepository(string $clientCityName) : string {
-        $repositoryName = ($clientCityName != "") ? $clientCityName."-repository" : "";
+    public function fetchRepository($githubClient) : string {
+        $repositoryName = ($githubClient != "") ? $githubClient."-repository" : "";
         return $repositoryName;
     }
 
@@ -42,8 +42,8 @@ class DummyGitHubService implements GitHubServiceInterface {
         return ($branchName != "") ? $branchName : "";
     }
 
-    public function addCommitMessage(string $clientCityName, string $branchName, string $content, string $message) {
-        $repositoryName = $this->fetchRepository($clientCityName);
+    public function addCommitMessage($githubClient, string $branchName, string $content, string $message) {
+        $repositoryName = $this->fetchRepository($githubClient);
         $branch = $this->fetchBranch($branchName);
         $this->spy = ($branch != "" & $repositoryName != "") ? true : false;
         return $this->spy;
@@ -56,12 +56,11 @@ class DummyGitHubService implements GitHubServiceInterface {
         return $this->spy;
     }
 
-    public function updateRepository ($clientCityName, $repositoryName, $branchName, $content, $message) {
-        $branch = $this->fetchBranch($branchName);
-        if ($repositoryName == "") $repositoryName = $clientCityName."-repository";
-        if ($branch == "") $branchName = $this->createBranchGithub($branchName);
-        $this->addCommitMessage($repositoryName, $branchName, $content, $message);
-        $this->pushBranchGithub($repositoryName, $branchName);
+    public function updateRepository ($clientCityName, $branchName, $content, $message) {
+        $repository = $this->fetchRepository($clientCityName);
+        if ($repository == "") $repository = $clientCityName."-repository";
+        $this->addCommitMessage($repository, $branchName, $content, $message);
+        $this->pushBranchGithub($repository, $branchName);
     }
 }
 

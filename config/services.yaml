@@ -36,6 +36,9 @@ services:
         # alias: App\Services\DataBaseManagement
         alias: App\Services\Dummy\DummyDataBaseManagement
 
+    App\Interfaces\ClientInterface:
+        # alias: App\Services\Client
+        alias: App\Services\Dummy\DummyClient
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

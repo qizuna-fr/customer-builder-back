@@ -21,7 +21,7 @@ class GitHubServiceTest extends WebTestCase
     {
         $client = static::createClient();
         $client->request('GET', '/edit/title/style-and-font');
-        $this->assertSame($client->getResponse()->getStatusCode(), 200);
+        $this->assertSame($client->getResponse()->getContent(), "Editing title style controller");
     }
 
     public function testConnectionToGithub(): void

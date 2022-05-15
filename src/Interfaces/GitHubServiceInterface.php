@@ -12,17 +12,17 @@ interface GitHubServiceInterface {
 
     public function createBranchGithub(string $branchName);
 
-    public function createRepositoryGithub($clientCityName);
+    public function createRepositoryGithub($githubClient);
 
-    public function fetchRepository(string $clientCityName) : string;
+    public function fetchRepository($githubClient) : string;
 
     public function fetchBranch(string $branchName) : string;
 
-    public function addCommitMessage(string $clientCityName, string $branchName, string $content, string $message);
+    public function addCommitMessage($githubClient, string $branchName, string $content, string $message);
 
-    public function pushBranchGithub(string $clientCityName, string $branchName);
+    public function pushBranchGithub(string $githubClient, string $branchName);
 
-    public function updateRepository ($clientCityName, $repositoryName, $branchName, $content, $message);
+    public function updateRepository ($githubClient, $branchName, $content, $message);
 
 }
 

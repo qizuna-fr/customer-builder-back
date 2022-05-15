@@ -22,7 +22,7 @@ class GitHubService implements GitHubServiceInterface {
 
     }
     
-    public function fetchRepository(string $clientCityName) : string {
+    public function fetchRepository($githubClient) : string {
         return "";
     }
 
@@ -30,15 +30,15 @@ class GitHubService implements GitHubServiceInterface {
         return "";
     }
 
-    public function addCommitMessage(string $clientCityName, string $branchName, string $content, string $message) {
+    public function addCommitMessage($githubClient, string $branchName, string $content, string $message) {
 
     }
 
-    public function pushBranchGithub(string $clientCityName, string $branchName) {
+    public function pushBranchGithub($githubClient, string $branchName) {
 
     }
 
-    public function updateRepository ($clientCityName, $repositoryName, $branchName, $content, $message) {
+    public function updateRepository ($clientCityName, $branchName, $content, $message) {
         
     }
 }
