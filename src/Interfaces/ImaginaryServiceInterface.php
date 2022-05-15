@@ -8,11 +8,9 @@ interface ImaginaryServiceInterface {
 
     public function disconnectFromImaginary();
 
-    public function uploadFile() : string;
-
     public function resizeImage($file, int $width, int $hight): string;
 
-    public function convertFile($file): string;
+    public function convertFile($file, $newType): string;
 
 }
 

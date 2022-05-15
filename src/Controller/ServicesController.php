@@ -12,13 +12,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class GitHubController extends AbstractController
+class ServicesController extends AbstractController
 {
     private $githubClient = [];
+    private $imaginaryClient = [];
     public function __construct(private ClientInterface $client, private GitHubServiceInterface $github, private FormattingTextInterface $formattingText, 
     private TextCSSManagementInterface $textCSSManagement, private DataBaseManagementInterface $dataBase, private ImaginaryServiceInterface $imaginary)
     {
         $this->githubClient = $client->getGithubClient();
+        $this->imaginaryClient = $client->getImaginaryClient();
     }
     
     #[Route('/format-city-name')]
@@ -35,6 +37,7 @@ class GitHubController extends AbstractController
         $this->github->updateRepository($this->githubClient["cityName"], $repository, $branchName, $content, $message);
         
         $this->github->disconnectFromGithub();
+
         return new Response("Formatting city name controller", 200);
     }
 
@@ -72,14 +75,15 @@ class GitHubController extends AbstractController
         $this->github->updateRepository($this->githubClient["cityName"], $branchName, $content, $message);
 
         $this->github->disconnectFromGithub();
+
         return new Response('Editing '.$text.' style controller', 200);
     }
 
-    #[Route('/resize-image/{width}/{hight}')]
-    public function resizeImage($width, $hight): Response
+    #[Route('/resize/{clientFile}/{width}/{hight}')]
+    public function resizeImage($width, $hight, $clientFile): Response
     {
         $this->imaginary->connectToImaginary();
-        $file = $this->imaginary->uploadFile();
+        $file = $this->imaginaryClient['clientFiles'][$clientFile];
         $editedFile = $this->imaginary->resizeImage($file, $width, $hight);
         
         $content = $this->github->addContent($editedFile);
@@ -90,15 +94,17 @@ class GitHubController extends AbstractController
         $this->github->updateRepository($this->githubClient["cityName"], $branchName, $content, $message);
         $this->github->disconnectFromGithub();
 
-        return new Response('resizing image controller', 200);
+        $this->imaginary->disconnectFromImaginary();
+
+        return new Response('resizing image '.$clientFile.' controller', 200);
     }
 
-    #[Route('/convert-file')]
-    public function convertFile(): Response
+    #[Route('/convert/{clientFile}/{newType}')]
+    public function convertFile($newType, $clientFile): Response
     {
         $this->imaginary->connectToImaginary();
-        $file = $this->imaginary->uploadFile();
-        $editedFile = $this->imaginary->convertFile($file);
+        $file = $this->imaginaryClient['clientFiles'][$clientFile];
+        $editedFile = $this->imaginary->convertFile($file, $newType);
         
         $content = $this->github->addContent($editedFile);
         $branchName = "convert-file";
@@ -108,6 +114,8 @@ class GitHubController extends AbstractController
         $this->github->updateRepository($this->githubClient["cityName"], $branchName, $content, $message);
         $this->github->disconnectFromGithub();
 
-        return new Response('converting file controller', 200);
+        $this->imaginary->disconnectFromImaginary();
+
+        return new Response('converting file '.$clientFile.' to '.$newType, 200);
     }
 }

@@ -18,18 +18,14 @@ class DummyImaginaryService implements ImaginaryServiceInterface {
         return('Disconnected');
     }
 
-    public function uploadFile(): string{
-        $file = "fileName";
-        return $file;
-    }
-
     public function resizeImage($file, int $width, int $hight): string{
-        $resizedFile = "newFile";
+        if ($hight < 100 || $width < 100) throw new Exception("image dimensions should be > 150 px");
+        $resizedFile = $file.' '.$width.' '.$hight;
         return $resizedFile;
     }
 
-    public function convertFile($file): string{
-        $convertedFile = "newFile";
+    public function convertFile($file, $newType): string{
+        $convertedFile = $file.'.'.$newType;
         return $convertedFile;
     }
 

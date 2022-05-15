@@ -21,7 +21,8 @@ class DummyClient implements ClientInterface {
             'name' => 'clientName' , 
             'email' => 'clientEmail', 
             'cityName' => 'clientCityName', 
-            'password' => 'clientPassword'
+            'password' => 'clientPassword',
+            'clientFiles' => ['clientLogo' => 'file1', 'clientBackgroud' => 'file2']
         ];
         return $client;
     }

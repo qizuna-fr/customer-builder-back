@@ -5,10 +5,11 @@ namespace App\Tests;
 use App\Services\Dummy\DummyDataBaseManagement;
 use App\Services\Dummy\DummyGitHubService;
 use App\Services\Dummy\DummyFormattingText;
+use App\Services\Dummy\DummyImaginaryService;
 use App\Services\Dummy\DummyTextCSSManagement;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class GitHubServiceTest extends WebTestCase
+class ServicesTest extends WebTestCase
 {
     public function testFormatCityName(): void
     {
@@ -34,6 +35,18 @@ class GitHubServiceTest extends WebTestCase
     {
         $service = new DummyGitHubService();
         $this->assertSame($service->disconnectFromGithub(), 'Disconnected');
+    }
+
+    public function testConnectionToImaginary(): void
+    {
+        $service = new DummyImaginaryService();
+        $this->assertSame($service->connectToImaginary(), 200);
+    }
+
+    public function testDisconnectionFromImaginary(): void
+    {
+        $service = new DummyImaginaryService();
+        $this->assertSame($service->disconnectFromImaginary(), 'Disconnected');
     }
 
     public function testCreateBranchGithub(): void
@@ -117,5 +130,20 @@ class GitHubServiceTest extends WebTestCase
         $this->assertSame($textManagement->editTextColor($textColor), true);
     }
 
+    public function testResizeImage(): void
+    {
+        $service = new DummyImaginaryService();
+        $file = "fileName";
+        $higth = 120;
+        $width = 100;
+        $this->assertSame($service->resizeImage($file, $width, $higth), 'fileName 100 120');
+    }
     
+    public function testConvertImage(): void
+    {
+        $service = new DummyImaginaryService();
+        $file = "fileName";
+        $newTyme = "jpg";
+        $this->assertSame($service->convertFile($file, $newTyme), 'fileName.jpg');
+    }
 }
