@@ -25,6 +25,20 @@ class ServicesTest extends WebTestCase
         $this->assertSame($client->getResponse()->getContent(), "Editing title style controller");
     }
 
+    public function testIndexResizeImage(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/resize/clientLogo/120/200');
+        $this->assertSame($client->getResponse()->getContent(), "resizing image clientLogo");
+    }
+    
+    public function testIndexConvertFile(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/convert/clientLogo/jpg');
+        $this->assertSame($client->getResponse()->getContent(), "converting file clientLogo to jpg");
+    }
+
     public function testConnectionToGithub(): void
     {
         $service = new DummyGitHubService();
@@ -139,11 +153,12 @@ class ServicesTest extends WebTestCase
         $this->assertSame($service->resizeImage($file, $width, $higth), 'fileName 100 120');
     }
     
-    public function testConvertImage(): void
+    public function testConvertFile(): void
     {
         $service = new DummyImaginaryService();
         $file = "fileName";
         $newTyme = "jpg";
         $this->assertSame($service->convertFile($file, $newTyme), 'fileName.jpg');
     }
+
 }

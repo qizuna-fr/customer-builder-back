@@ -80,7 +80,7 @@ class ServicesController extends AbstractController
     }
 
     #[Route('/resize/{clientFile}/{width}/{hight}')]
-    public function resizeImage($width, $hight, $clientFile): Response
+    public function indexResizeImage($width, $hight, $clientFile): Response
     {
         $this->imaginary->connectToImaginary();
         $file = $this->imaginaryClient['clientFiles'][$clientFile];
@@ -96,11 +96,11 @@ class ServicesController extends AbstractController
 
         $this->imaginary->disconnectFromImaginary();
 
-        return new Response('resizing image '.$clientFile.' controller', 200);
+        return new Response('resizing image '.$clientFile, 200);
     }
 
     #[Route('/convert/{clientFile}/{newType}')]
-    public function convertFile($newType, $clientFile): Response
+    public function indexConvertFile($newType, $clientFile): Response
     {
         $this->imaginary->connectToImaginary();
         $file = $this->imaginaryClient['clientFiles'][$clientFile];
