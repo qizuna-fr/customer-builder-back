@@ -12,6 +12,10 @@ class PennyLaneServiceControllerTest extends WebTestCase
        
         $crawler = $client->request('GET','/pennylane/create');
 
+        $response = $client->getResponse();
+
+        echo $response;
+
         $this->assertResponseIsSuccessful();
 
     }
