@@ -20,14 +20,6 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-<<<<<<< HEAD
-    App\Services\GitHubServiceInterface:
-        alias: App\Services\GitHubService
-    App\Services\PennyLaneServiceInterface:
-        alias: App\Services\PennyLaneService
-
-    # # add more service definitions when explicit configuration is needed
-=======
     App\Interfaces\GitHubServiceInterface:
         # alias: App\Services\GitHubService
         alias: App\Services\Dummy\DummyGitHubService
@@ -53,5 +45,4 @@ services:
         alias: App\Services\Dummy\DummyImaginaryService
 
     # add more service definitions when explicit configuration is needed
->>>>>>> 330836ab5426d98a1ebf48786b59d2fe01484ec5
     # please note that last definitions always *replace* previous ones

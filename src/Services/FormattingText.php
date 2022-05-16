@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\FormattingTextInterface;
+use Symfony\Bundle\MakerBundle\Str;
 
 class FormattingText implements FormattingTextInterface {
     
