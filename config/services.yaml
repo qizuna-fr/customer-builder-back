@@ -33,7 +33,12 @@ services:
         alias: App\Services\ImaginaryService
 
     App\Interfaces\DataBaseManagementInterface:
-        alias: App\Services\DataBaseManagement
+        # alias: App\Services\DataBaseManagement
+        alias: App\Services\Dummy\DummyDataBaseManagement
+
+    App\Interfaces\HubspotServiceInterface:
+        # alias: App\Services\HubspotService
+        alias: App\Services\Dummy\DummyHubspotService
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

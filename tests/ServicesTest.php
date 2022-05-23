@@ -2,8 +2,11 @@
 
 namespace App\Tests;
 
+use App\Services\Dummy\DummyDataBaseManagement;
+use App\Services\Dummy\DummyHubspotService;
 use App\Services\FormattingText;
 use App\Services\GitHubService;
+use App\Services\HubspotService;
 use App\Services\ImaginaryService;
 use App\Services\TextCSSManagement;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -78,6 +81,38 @@ class ServicesTest extends WebTestCase
     {
         $service = new GitHubService();
         $this->assertSame($service->disconnectFromGithub(), 'Disconnected');
+    }
+
+    public function testIndexCreateClientHubspot(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/create-client-hubspot/colmar/colmar@colmar.fr');
+        $this->assertSame($client->getResponse()->getContent(), 'Creating hubspot client for colmar colmar@colmar.fr');
+    }
+
+    public function testConnectionToHubspot(): void
+    {
+        $service = new DummyHubspotService();
+        $service->connectToHubspot();
+        $this->assertSame($service->spyconnect, true);
+    }
+
+    public function testDisconnectionFromHubspot(): void
+    {
+        $service = new DummyHubspotService();
+        $this->assertSame($service->disconnectFromHubspot(), 'Disconnected');
+    }
+
+    public function testCreateClientHubspot(): void
+    {
+        $dummyDataBase = new DummyDataBaseManagement();
+        $clientName = 'Colmar';
+        $clientMail = 'colmar@mail.fr';
+        $service = new DummyHubspotService();
+        if (!$service->exist($clientName, $service->getHubspotClientList())) {
+            $service->createClient($dummyDataBase->clientToAdd($clientName, $clientMail));
+        }
+        $this->assertSame($service->spycreate, true);
     }
 
 }

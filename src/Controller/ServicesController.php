@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Interfaces\ClientInterface;
 use App\Interfaces\DataBaseManagementInterface;
 use App\Interfaces\FormattingTextInterface;
 use App\Interfaces\GitHubServiceInterface;
+use App\Interfaces\HubspotServiceInterface;
 use App\Interfaces\ImaginaryServiceInterface;
 use App\Interfaces\TextCSSManagementInterface;
+use App\Services\Dummy\DummyHubspotService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,9 +21,10 @@ class ServicesController extends AbstractController
 
     private $data = [];
     public function __construct(private GitHubServiceInterface $github, private FormattingTextInterface $formattingText, 
-    private TextCSSManagementInterface $textCSSManagement, private ImaginaryServiceInterface $imaginary, private DataBaseManagementInterface $dataBase)
+    private TextCSSManagementInterface $textCSSManagement, private ImaginaryServiceInterface $imaginary, 
+    private DataBaseManagementInterface $dataBase, private ClientInterface $client, private HubspotServiceInterface $hubspot)
     {
-        $this->data = $this->dataBase->fetchDataFromDataBase("clientName");
+        $this->data = $this->dataBase->fetchDataFromDataBase($this->client->getClientName());
 
     }
 
@@ -102,4 +106,12 @@ class ServicesController extends AbstractController
         return new Response('resizing image '.$clientFile, 200);
     }
 
+    #[Route('/create-client-hubspot/{clientName}/{clientMail}')]
+    public function createHubspotClient($clientName, $clientMail): Response
+    {
+        $client = $this->dataBase->clientToAdd($clientName, $clientMail);
+        $this->hubspot->createClient($client);
+
+        return new Response('Creating hubspot client for '.$clientName.' '.$clientMail, 200);
+    }
 }
