@@ -9,11 +9,12 @@ class ImaginaryService implements ImaginaryServiceInterface {
     public bool $spy = false;
 
     private function ping(){
-        $spy = true;
+        $this->spy = true;
     }
 
     public function connectToImaginary() {
-        if ($spy) return ('Connected');
+        $this->ping();
+        if ($this->spy) return ('Connected');
         else throw new Exception("error");
     }
 
@@ -23,11 +24,11 @@ class ImaginaryService implements ImaginaryServiceInterface {
 
     public function resizeImage($file, int $width, int $hight){
         if ($hight < 100 || $width < 100) throw new Exception("image dimensions should be > 150 px");
-        $resizedFile = $file.' '.$width.' '.$hight;
+        //code
     }
 
     public function convertFile($file, $newType){
-        $convertedFile = $file.'.'.$newType;
+        //code
     }
 
 }

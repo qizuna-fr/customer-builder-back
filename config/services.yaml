@@ -21,20 +21,19 @@ services:
             - '../src/Kernel.php'
 
     App\Interfaces\GitHubServiceInterface:
-        # alias: App\Services\GitHubService
-        alias: App\Services\Dummy\DummyGitHubService
+        alias: App\Services\GitHubService
 
     App\Interfaces\TextCSSManagementInterface:
-        # alias: App\Services\TextCSSManagement
-        alias: App\Services\Dummy\DummyTextCSSManagement
+        alias: App\Services\TextCSSManagement
 
     App\Interfaces\FormattingTextInterface:
-        # alias: App\Services\FormattingText
-        alias: App\Services\Dummy\DummyFormattingText
+        alias: App\Services\FormattingText
 
     App\Interfaces\ImaginaryServiceInterface:
-        # alias: App\Services\ImaginaryService
-        alias: App\Services\Dummy\DummyImaginaryService
+        alias: App\Services\ImaginaryService
+
+    App\Interfaces\DataBaseManagementInterface:
+        alias: App\Services\DataBaseManagement
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

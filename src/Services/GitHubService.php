@@ -2,11 +2,20 @@
 namespace App\Services;
 
 use App\Interfaces\GitHubServiceInterface;
+use Exception;
 
 class GitHubService implements GitHubServiceInterface {
 
+    public bool $spy = false;
+
+    private function ping(){
+        $this->spy = true;
+    }
+
     public function connectToGithub() {
-        return ('Connected');
+        $this->ping();
+        if ($this->spy) return ('Connected');
+        else throw new Exception("error");
     }
 
     public function disconnectFromGithub() {

@@ -12,17 +12,17 @@ class TextCSSManagement implements TextCSSManagementInterface {
     
     public function editTextFont(string $text, string $font)  {
         //code for edit
-        $spyFont = true;
+        $this->spyFont = true;
     }
 
     public function editTextStyle(string $text, string $style)  {
         //code for edit
-        $spyStyle = true;
+        $this->spyStyle = true;
     }
 
     public function editTextColor(string $text, string $color)  {
         //code for edit
-        $spyColor = true;
+        $this->spyColor = true;
     }
 }
 

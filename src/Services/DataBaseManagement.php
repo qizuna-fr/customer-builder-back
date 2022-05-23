@@ -13,7 +13,9 @@ class DataBaseManagement implements DataBaseManagementInterface {
             'titleStyle' => 'titleStyle',
             'paragraphFont' => 'paragraphFont', 
             'paragraphColor' => 'paragraphColor',
-            'paragraphStyle' => 'paragraphStyle'
+            'paragraphStyle' => 'paragraphStyle',
+            'clientFiles' => ['clientLogo' => 'file1', 'clientBackgroud' => 'file2']
+
         );
         return $data;
     }
