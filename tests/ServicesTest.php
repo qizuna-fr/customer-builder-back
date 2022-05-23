@@ -4,9 +4,9 @@ namespace App\Tests;
 
 use App\Services\Dummy\DummyDataBaseManagement;
 use App\Services\Dummy\DummyGitHubService;
-use App\Services\Dummy\DummyFormattingText;
 use App\Services\Dummy\DummyImaginaryService;
-use App\Services\Dummy\DummyTextCSSManagement;
+use App\Services\FormattingText;
+use App\Services\TextCSSManagement;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ServicesTest extends WebTestCase
@@ -18,11 +18,34 @@ class ServicesTest extends WebTestCase
         $this->assertSame($client->getResponse()->getStatusCode(), 200);
     }
 
-    public function testDefineTitleStyle(): void
+    public function testFormattingText(): void
+    {
+        $formattingText = new FormattingText();
+        $text = "Hello Word";
+        $formattedText = $formattingText->deleteSpace($text);
+        $this->assertSame($formattedText, "hello-word");
+    }
+
+    public function testDefineFont(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/edit/title/style-and-font');
-        $this->assertSame($client->getResponse()->getContent(), "Editing title style controller");
+        $client->request('GET', '/edit-font/title/Open Sans');
+        $this->assertSame($client->getResponse()->getContent(), "Editing title font to Open Sans");
+    }
+
+    public function testTextCSSManagement(): void
+    {
+        $textManagement = new TextCSSManagement();
+        $text = "Mulhouse";
+        $textFont = "Open Sans";
+        $textManagement->editTextFont($text, $textFont);
+        $this->assertSame($textManagement->spyFont, true);
+        $textStyle = "capitalize";
+        $textManagement->editTextStyle($text, $textStyle);
+        $this->assertSame($textManagement->spyStyle, true);
+        $textColor = "bold";
+        $textManagement->editTextColor($text, $textColor);
+        $this->assertSame($textManagement->spyColor, true);
     }
 
     public function testIndexResizeImage(): void
@@ -32,6 +55,20 @@ class ServicesTest extends WebTestCase
         $this->assertSame($client->getResponse()->getContent(), "resizing image clientLogo");
     }
     
+    public function testConnectionToImaginary(): void
+    {
+        $service = new DummyImaginaryService();
+        $this->assertSame($service->connectToImaginary(), 200);
+    }
+
+    public function testDisconnectionFromImaginary(): void
+    {
+        $service = new DummyImaginaryService();
+        $this->assertSame($service->disconnectFromImaginary(), 'Disconnected');
+    }
+
+
+
     public function testIndexConvertFile(): void
     {
         $client = static::createClient();
@@ -51,17 +88,7 @@ class ServicesTest extends WebTestCase
         $this->assertSame($service->disconnectFromGithub(), 'Disconnected');
     }
 
-    public function testConnectionToImaginary(): void
-    {
-        $service = new DummyImaginaryService();
-        $this->assertSame($service->connectToImaginary(), 200);
-    }
 
-    public function testDisconnectionFromImaginary(): void
-    {
-        $service = new DummyImaginaryService();
-        $this->assertSame($service->disconnectFromImaginary(), 'Disconnected');
-    }
 
     public function testCreateBranchGithub(): void
     {
@@ -125,24 +152,7 @@ class ServicesTest extends WebTestCase
         $this->assertNotEmpty($datas);
     }
 
-    public function testFormattingText(): void
-    {
-        $formattingText = new DummyFormattingText();
-        $text = "Hello Word";
-        $formattedText = $formattingText->deleteSpace($formattingText->lowerCase($text));
-        $this->assertSame($formattedText, "hello-word");
-    }
 
-    public function testTextCSSManagement(): void
-    {
-        $textManagement = new DummyTextCSSManagement();
-        $textFont = "Open Sans";
-        $this->assertSame($textManagement->editTextFont($textFont), true);
-        $textStyle = "capitalize";
-        $this->assertSame($textManagement->editTextStyle($textStyle), true);
-        $textColor = "bold";
-        $this->assertSame($textManagement->editTextColor($textColor), true);
-    }
 
     public function testResizeImage(): void
     {

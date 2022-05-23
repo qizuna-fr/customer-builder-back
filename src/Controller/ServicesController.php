@@ -2,120 +2,104 @@
 
 namespace App\Controller;
 
-use App\Interfaces\ClientInterface;
 use App\Interfaces\DataBaseManagementInterface;
 use App\Interfaces\FormattingTextInterface;
 use App\Interfaces\GitHubServiceInterface;
 use App\Interfaces\ImaginaryServiceInterface;
 use App\Interfaces\TextCSSManagementInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ServicesController extends AbstractController
 {
-    private $githubClient = [];
-    private $imaginaryClient = [];
-    public function __construct(private ClientInterface $client, private GitHubServiceInterface $github, private FormattingTextInterface $formattingText, 
-    private TextCSSManagementInterface $textCSSManagement, private DataBaseManagementInterface $dataBase, private ImaginaryServiceInterface $imaginary)
+
+    private $data = [];
+    public function __construct(private GitHubServiceInterface $github, private FormattingTextInterface $formattingText, 
+    private TextCSSManagementInterface $textCSSManagement, private ImaginaryServiceInterface $imaginary, private DataBaseManagementInterface $dataBase)
     {
-        $this->githubClient = $client->getGithubClient();
-        $this->imaginaryClient = $client->getImaginaryClient();
+        $this->data = $this->dataBase->fetchDataFromDataBase("clientName");
+
+    }
+
+    private function createFile($data){
+        return new JsonResponse($data);
     }
     
     #[Route('/format-city-name')]
     public function formatCityName(): Response
     {
-        $this->github->connectToGithub();
-        $formattedCityName = $this->formattingText->deleteSpace($this->githubClient["cityName"]);
-        $content = $this->github->addContent($formattedCityName);
-        $repository = $this->github->fetchRepository($this->githubClient["cityName"]);
-        if ($repository == "") $repository = $this->githubClient["cityName"]."-repository";
+        $formattedCityName = $this->formattingText->deleteSpace($this->data["cityName"]);
+
         $branchName = "formatted-cityName";
         $message = "formatting city name for ".$this->githubClient["cityName"];
+        $file = $this->createFile(array('cityName' => $formattedCityName));
+        $this->github->pushFileToGithub($file, $branchName, $message);
         
-        $this->github->updateRepository($this->githubClient["cityName"], $repository, $branchName, $content, $message);
-        
-        $this->github->disconnectFromGithub();
-
-        return new Response("Formatting city name controller", 200);
+        return new Response("Formatting city name", 200);
     }
 
-    #[Route('/edit/{text}/style-and-font')]
-    public function defineTitleStyle($text): Response
+    #[Route('/edit-font/{text}/{font}')]
+    public function defineFont($text, $font): Response
     {
-        $this->github->connectToGithub();
-        $datas = $this->dataBase->fetchDataFromDataBase($this->githubClient);
+        if (! in_array($text.'Font', $this->data)) throw new Exception($text."Font n'existe pas !");
+        $text = $this->data[$text.'Font'];
+        $this->textCSSManagement->editTextFont($text, $font);
+        $file = $this->createFile(array($text => $font));
 
-        $textFont = $text.'Font';
-        $font = $datas[$textFont];
-        $newFont = $this->textCSSManagement->editTextFont($font);
-        $content = $this->github->addContent($newFont);
         $branchName = "edit-font-".$text;
-        $message = "editing ".$text." font for ".$this->githubClient["cityName"];
+        $message = "editing ".$text." font for ".$this->data["cityName"];
+        $this->github->pushFileToGithub($file, $branchName, $message);
 
-        $this->github->updateRepository($this->githubClient["cityName"], $branchName, $content, $message);
+        return new Response('Editing '.$text.' font to '.$font, 200);
+    }
 
-        $textStyle = $text.'Style';
-        $style = $datas[$textStyle];
-        $newStyle = $this->textCSSManagement->editTextStyle($style);
-        $content = $this->github->addContent($newStyle);
-        $branchName = "edit-font-".$text;
-        $message = "editing ".$text." font for ".$this->githubClient["cityName"];
+    #[Route('/edit-style/{text}/{style}')]
+    public function defineStyle($text, $style): Response
+    { 
+        if (! in_array($text.'Style', $this->data)) throw new Exception($text."Style n'existe pas !");
+        $text = $this->data[$text.'Style'];
+        $this->textCSSManagement->editTextStyle($text, $style);
+        $file = $this->createFile(array($text => $style));
 
-        $this->github->updateRepository($this->githubClient["cityName"], $branchName, $content, $message);
-
-        $textColor = $text.'Color';
-        $color = $datas[$textColor];
-        $newColor = $this->textCSSManagement->editTextColor($color);
-        $content = $this->github->addContent($newColor);
-        $branchName = "edit-font-".$text;
-        $message = "editing ".$text." font for ".$this->githubClient["cityName"];
-
-        $this->github->updateRepository($this->githubClient["cityName"], $branchName, $content, $message);
-
-        $this->github->disconnectFromGithub();
+        $branchName = "edit-style-".$text;
+        $message = "editing ".$text." style for ".$this->data["cityName"];
+        $this->github->pushFileToGithub($file, $branchName, $message);
 
         return new Response('Editing '.$text.' style controller', 200);
     }
+    
+    #[Route('/edit-color/{text}/{style}')]
+    public function defineColor($text, $color): Response
+    {
+
+        if (! in_array($text.'Color', $this->data)) throw new Exception($text."Color n'existe pas !");
+        $text = $this->data[$text.'Color'];
+        $this->textCSSManagement->editTextColor($text, $color);
+        $file = $this->createFile(array($text => $color));
+
+        $branchName = "edit-color-".$text;
+        $message = "editing ".$text." color for ".$this->data["cityName"];
+        $this->github->pushFileToGithub($file, $branchName, $message);
+
+        return new Response('Editing '.$text.' color controller', 200);
+    }
 
     #[Route('/resize/{clientFile}/{width}/{hight}')]
-    public function indexResizeImage($width, $hight, $clientFile): Response
+    public function resizeImage($width, $hight, $clientFile): Response
     {
-        $this->imaginary->connectToImaginary();
         $file = $this->imaginaryClient['clientFiles'][$clientFile];
-        $editedFile = $this->imaginary->resizeImage($file, $width, $hight);
-        
-        $content = $this->github->addContent($editedFile);
+        $this->imaginary->resizeImage($file, $width, $hight);
+
         $branchName = "resize-image";
-        $message = "resizing image for ".$this->githubClient["cityName"];
+        $message = "resizing image for ".$this->data["cityName"];
+        $fileToPush = $this->createFile(array($clientFile => array('width' => $width, 'hight' => $hight)));
 
-        $this->github->connectToGithub();
-        $this->github->updateRepository($this->githubClient["cityName"], $branchName, $content, $message);
-        $this->github->disconnectFromGithub();
-
-        $this->imaginary->disconnectFromImaginary();
-
-        return new Response('resizing image '.$clientFile, 200);
-    }
-
-    #[Route('/convert/{clientFile}/{newType}')]
-    public function indexConvertFile($newType, $clientFile): Response
-    {
-        $this->imaginary->connectToImaginary();
-        $file = $this->imaginaryClient['clientFiles'][$clientFile];
-        $editedFile = $this->imaginary->convertFile($file, $newType);
+        $this->github->pushFileToGithub($fileToPush, $branchName, $message);
         
-        $content = $this->github->addContent($editedFile);
-        $branchName = "convert-file";
-        $message = "converting file for ".$this->githubClient["cityName"];
-
-        $this->github->connectToGithub();
-        $this->github->updateRepository($this->githubClient["cityName"], $branchName, $content, $message);
-        $this->github->disconnectFromGithub();
-
-        $this->imaginary->disconnectFromImaginary();
-
-        return new Response('converting file '.$clientFile.' to '.$newType, 200);
+        return new Response('resizing image '.$clientFile.' controller', 200);
     }
+
 }

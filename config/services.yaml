@@ -32,14 +32,6 @@ services:
         # alias: App\Services\FormattingText
         alias: App\Services\Dummy\DummyFormattingText
 
-    App\Interfaces\DataBaseManagementInterface:
-        # alias: App\Services\DataBaseManagement
-        alias: App\Services\Dummy\DummyDataBaseManagement
-
-    App\Interfaces\ClientInterface:
-        # alias: App\Services\Client
-        alias: App\Services\Dummy\DummyClient
-
     App\Interfaces\ImaginaryServiceInterface:
         # alias: App\Services\ImaginaryService
         alias: App\Services\Dummy\DummyImaginaryService

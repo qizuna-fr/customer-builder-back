@@ -2,22 +2,32 @@
 namespace App\Services;
 
 use App\Interfaces\ImaginaryServiceInterface;
+use Exception;
 
 class ImaginaryService implements ImaginaryServiceInterface {
 
+    public bool $spy = false;
+
+    private function ping(){
+        $spy = true;
+    }
+
     public function connectToImaginary() {
+        if ($spy) return ('Connected');
+        else throw new Exception("error");
     }
 
     public function disconnectFromImaginary() {
-        
+        return('Disconnected');
     }
 
-    public function resizeImage($file, int $width, int $hight): string{
-        return "";
+    public function resizeImage($file, int $width, int $hight){
+        if ($hight < 100 || $width < 100) throw new Exception("image dimensions should be > 150 px");
+        $resizedFile = $file.' '.$width.' '.$hight;
     }
 
-    public function convertFile($file, $newType): string{
-        return "";
+    public function convertFile($file, $newType){
+        $convertedFile = $file.'.'.$newType;
     }
 
 }
