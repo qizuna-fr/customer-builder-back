@@ -1,0 +1,16 @@
+@startuml "ComposantManaging"
+
+(Gestion des clients) as (clientmanaging)
+
+skinparam actorStyle Hollow 
+user -- (clientmanaging)
+
+(Ajout client) as (clientadd)
+(Modification client) as (clientupdate)
+(Suppression client) as (clientdelete)
+
+(clientmanaging) -- (clientadd)
+(clientmanaging) -- (clientupdate)
+(clientmanaging) -- (clientdelete)
+
+@enduml

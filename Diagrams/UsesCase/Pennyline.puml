@@ -1,0 +1,25 @@
+@startuml "usecaseglobaltotal"
+
+skinparam actorStyle Hollow 
+
+:User: as user
+
+(gestion des services) as (servicemanaging)
+
+(PennyLane) as (pennyLane)
+
+(Authentification) as (authentification)
+
+user -- (servicemanaging)
+
+(pennyLane) -- (authentification)
+
+(servicemanaging) -- (pennyLane)
+
+(authentification) <.. (plcreate)
+(authentification) <.. (pldelete)
+(authentification) <.. (plsubscribe)
+(authentification) <.. (plunsuscribe)
+(authentification) <.. (plbilling)
+
+@enduml

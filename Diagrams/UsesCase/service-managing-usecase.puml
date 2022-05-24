@@ -1,0 +1,23 @@
+@startuml "Servicemanaging"
+
+skinparam actorStyle Hollow 
+
+:User: as user
+
+(gestion des services) as (servicemanaging)
+
+(Hubspot) as (hubspot)
+(GitHub) as (github)
+(Imaginary) as (imaginary)
+(TextFormatting) as (textformat)
+(PennyLane) as (PennyLane)
+
+user -- (servicemanaging)
+
+(servicemanaging) -- (hubspot)
+(servicemanaging) -- (github)
+(servicemanaging) -- (imaginary)
+(servicemanaging) -- (textformat)
+(servicemanaging) -- (PennyLane)
+
+@enduml

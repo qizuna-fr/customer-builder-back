@@ -1,0 +1,14 @@
+@startuml "usecasegloballight"
+
+skinparam actorStyle Hollow 
+:User: as user
+
+(Gestion des clients) as (clientmanaging)
+(Gestion des composants) as (composantmanaging)
+(Gestion des services) as (servicemanaging)
+
+user -- (clientmanaging)
+user -- (composantmanaging)
+user -- (servicemanaging)
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml "PennyLaneService"
+
+class User {
+    +identifiant
+    +motdepasse
+}
+
+class Services {
+    +type
+}
+
+class ImaginaryService {
+    +connectToImaginary()
+    +disconnectFromImaginary()
+    +resizeImage(file, width, height) : newImage
+    +convertFile(file, newtype) : newFile
+}
+
+User "1" -- "*" Services 
+Services o-- ImaginaryService
+
+@enduml
