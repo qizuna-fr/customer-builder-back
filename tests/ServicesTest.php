@@ -6,7 +6,6 @@ use App\Services\Dummy\DummyDataBaseManagement;
 use App\Services\Dummy\DummyHubspotService;
 use App\Services\FormattingText;
 use App\Services\GitHubService;
-use App\Services\HubspotService;
 use App\Services\ImaginaryService;
 use App\Services\TextCSSManagement;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -39,12 +38,15 @@ class ServicesTest extends WebTestCase
     {
         $textManagement = new TextCSSManagement();
         $text = "Mulhouse";
+
         $textFont = "Open Sans";
         $textManagement->editTextFont($text, $textFont);
         $this->assertSame($textManagement->spyFont, true);
+
         $textStyle = "capitalize";
         $textManagement->editTextStyle($text, $textStyle);
         $this->assertSame($textManagement->spyStyle, true);
+        
         $textColor = "bold";
         $textManagement->editTextColor($text, $textColor);
         $this->assertSame($textManagement->spyColor, true);
