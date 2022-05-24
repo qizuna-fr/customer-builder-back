@@ -14,6 +14,17 @@ class DummyClient implements ClientInterface {
     {
         return "mail@mail.fr";
     }
+
+    public function getAirTableClient() :array {
+        $client = [
+            'name' => 'clientName' , 
+            'email' => 'clientEmail', 
+            'cityName' => 'clientCityName', 
+            'password' => 'clientPassword'
+        ];
+            
+        return $client;
+    }
     
 }
 
