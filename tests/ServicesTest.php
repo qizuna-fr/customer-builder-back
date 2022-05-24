@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ServicesTest extends WebTestCase
 {
+
     public function testFormatCityName(): void
     {
         $client = static::createClient();

@@ -40,5 +40,13 @@ services:
         # alias: App\Services\HubspotService
         alias: App\Services\Dummy\DummyHubspotService
 
+    App\Interfaces\PennyLaneServiceInterface:
+        # alias: App\Services\PennyLaneService
+        alias: App\Services\Dummy\DummyPennyLaneService
+
+    App\Interfaces\PennyLaneImplementationInterface:
+        # alias: App\Services\PennyLaneImplementation
+        alias: App\Services\Dummy\DummyPennyLaneImplementation
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

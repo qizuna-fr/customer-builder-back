@@ -1,3 +1,5 @@
+@startuml "PennyLaneService"
+
 class User {
     +identifiant
     +motdepasse
