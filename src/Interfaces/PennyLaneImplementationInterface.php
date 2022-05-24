@@ -9,7 +9,6 @@ interface PennyLaneImplementationInterface{
     public function authentificateImplementation(): bool;
  
     public function createImplementation($client): ?int;
- 
 
 }
 
