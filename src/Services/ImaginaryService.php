@@ -23,7 +23,7 @@ class ImaginaryService implements ImaginaryServiceInterface {
     }
 
     public function resizeImage($file, int $width, int $hight){
-        if ($hight < 100 || $width < 100) throw new Exception("image dimensions should be > 150 px");
+        if ($hight < 100 || $width < 100) throw new Exception("image dimensions should be > 100 px");
         //code
     }
 

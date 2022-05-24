@@ -15,7 +15,6 @@ class BadPennyLaneImplementation implements PennyLaneImplementationInterface
     public function subscribeImplementation($client_id): bool
     {
         return false;
-        return false;
     }
 
 
