@@ -7,14 +7,14 @@ class DummyDataBaseManagement implements DataBaseManagementInterface {
 
     public function fetchDataFromDataBase($ClientName) :array {
         $data = array(
-            'cityName' => 'cityName' , 
+            'cityName' => 'Mulhouse' , 
             'titleFont' => 'titleFont', 
             'titleColor' => 'titleColor', 
             'titleStyle' => 'titleStyle',
             'paragraphFont' => 'paragraphFont', 
             'paragraphColor' => 'paragraphColor',
             'paragraphStyle' => 'paragraphStyle',
-            'clientFiles' => ['clientLogo' => 'file1', 'clientBackgroud' => 'file2']
+            'clientFiles' => ['clientLogo' => 'file1', 'clientBackground' => 'file2']
 
         );
         return $data;
