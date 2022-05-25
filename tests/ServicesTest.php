@@ -114,9 +114,7 @@ class ServicesTest extends WebTestCase
         $clientName = 'Colmar';
         $clientMail = 'colmar@mail.fr';
         $service = new DummyHubspotService();
-        if (!$service->exist($clientName, $service->getHubspotClientList())) {
-            $service->createClient($dummyDataBase->clientToAdd($clientName, $clientMail));
-        }
+        $service->createClient($dummyDataBase->clientToAdd($clientName, $clientMail));
         $this->assertSame($service->spycreate, true);
     }
 

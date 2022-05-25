@@ -34,12 +34,13 @@ class DummyHubspotService implements HubspotServiceInterface {
         return $clientList;
     }
 
-    public function exist($client, $clientList) {
-        if (in_array($client, $clientList)) $this->exist = true;
+    public function exist($client) {
+        $clientList = $this->getHubspotClientList();
+        if (in_array($client['name'], $clientList)) $this->exist = true;
     }
 
     public function createClient($client){
-        if ($this->exist) $this->spycreate = true;
+        if (!$this->exist) $this->spycreate = true;
     }
     
 }
