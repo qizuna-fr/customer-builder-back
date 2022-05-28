@@ -45,17 +45,25 @@ class ServicesController extends AbstractController
         return new JsonResponse($clientData);
     }
 
+    public function updateGithub() {
+        $file = $this->createFile($this->dataBase->fetchDataFromDataBase($this->client->getClientName()));
+        $branchName = 'update data client'.$this->client->getClientName();
+        $message = 'updated at '.date('h:i:sa');
+        $this->github->pushFileToGithub($file, $branchName, $message);
+    }
+
     #[Route('/format-city-name')]
     public function formatCityName(): Response
     {
         echo ("Formatting city name appellé <br><br>");
 
         $formattedCityName = $this->formattingText->deleteSpace($this->data["cityName"]);
+        $this->dataBase->updateDataBase('cityName',$formattedCityName);
 
-        $branchName = "formatted-cityName";
-        $message = "formatting city name for " . $this->data["cityName"];
-        $file = $this->createFile(array('cityName' => $formattedCityName));
-        $this->github->pushFileToGithub($file, $branchName, $message);
+        // $branchName = "formatted-cityName";
+        // $message = "formatting city name for " . $this->data["cityName"];
+        // $file = $this->createFile(array('cityName' => $formattedCityName));
+        
 
         return new Response("Formatting city name", 200);
     }
@@ -68,11 +76,12 @@ class ServicesController extends AbstractController
         if (!in_array($text . 'Font', $this->data)) throw new Exception($text . "Font n'existe pas !");
         $textName = $this->data[$text . 'Font'];
         $this->textCSSManagement->editTextFont($textName, $font);
-        $file = $this->createFile(array($textName => $font));
+        $this->dataBase->updateDataBase($textName,$font);
+        // $file = $this->createFile(array($textName => $font));
 
-        $branchName = "edit-font-" . $textName;
-        $message = "editing " . $textName . " font for " . $this->data["cityName"];
-        $this->github->pushFileToGithub($file, $branchName, $message);
+        // $branchName = "edit-font-" . $textName;
+        // $message = "editing " . $textName . " font for " . $this->data["cityName"];
+        // $this->github->pushFileToGithub($file, $branchName, $message);
 
         return new Response('Editing ' . $text . ' font to ' . $font, 200);
     }
@@ -85,11 +94,12 @@ class ServicesController extends AbstractController
         if (!in_array($text . 'Style', $this->data)) throw new Exception($text . "Style n'existe pas !");
         $textName = $this->data[$text . 'Style'];
         $this->textCSSManagement->editTextStyle($textName, $style);
-        $file = $this->createFile(array($textName => $style));
+        $this->dataBase->updateDataBase($textName,$style);
+        // $file = $this->createFile(array($textName => $style));
 
-        $branchName = "edit-style-" . $textName;
-        $message = "editing " . $textName . " style for " . $this->data["cityName"];
-        $this->github->pushFileToGithub($file, $branchName, $message);
+        // $branchName = "edit-style-" . $textName;
+        // $message = "editing " . $textName . " style for " . $this->data["cityName"];
+        // $this->github->pushFileToGithub($file, $branchName, $message);
 
         return new Response('Editing ' . $text . ' style controller', 200);
     }
@@ -102,11 +112,12 @@ class ServicesController extends AbstractController
         if (!in_array($text . 'Color', $this->data)) throw new Exception($text . "Color n'existe pas !");
         $textName = $this->data[$text . 'Color'];
         $this->textCSSManagement->editTextColor($textName, $color);
-        $file = $this->createFile(array($textName => $color));
+        $this->dataBase->updateDataBase($textName,$color);
+        // $file = $this->createFile(array($textName => $color));
 
-        $branchName = "edit-color-" . $textName;
-        $message = "editing " . $textName . " color for " . $this->data["cityName"];
-        $this->github->pushFileToGithub($file, $branchName, $message);
+        // $branchName = "edit-color-" . $textName;
+        // $message = "editing " . $textName . " color for " . $this->data["cityName"];
+        // $this->github->pushFileToGithub($file, $branchName, $message);
 
         return new Response('Editing ' . $text . ' color controller', 200);
     }
@@ -117,12 +128,16 @@ class ServicesController extends AbstractController
         echo ('resizeImage'.$clientFile.' appellé <br><br>');
 
         $this->imaginary->resizeImage($clientFile, $width, $hight);
+        $fileClientToModify = $this->clientData['clientFiles'][$clientFile];
+        $fileClientToModify['width'] = $width;
+        $fileClientToModify['hight'] = $hight;
+        $this->dataBase->updateDataBase('clientFiles', $fileClientToModify);
 
-        $branchName = "resize-image";
-        $message = "resizing image for " . $this->data["cityName"];
-        $fileToPush = $this->createFile(array($clientFile => array('width' => $width, 'hight' => $hight)));
+        // $branchName = "resize-image";
+        // $message = "resizing image for " . $this->data["cityName"];
+        // $fileToPush = $this->createFile(array($clientFile => array('width' => $width, 'hight' => $hight)));
 
-        $this->github->pushFileToGithub($fileToPush, $branchName, $message);
+        // $this->github->pushFileToGithub($fileToPush, $branchName, $message);
 
         return new Response('resizing image ' . $clientFile, 200);
     }

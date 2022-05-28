@@ -10,6 +10,8 @@ interface DataBaseManagementInterface {
 
     public function clientToAdd($name, $mail) : array;
 
+    public function updateDataBase($variable, $value);
+
 }
 
 ?>

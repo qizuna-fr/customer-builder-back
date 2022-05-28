@@ -1,7 +1,6 @@
 <?php
 namespace App\Services\Dummy;
 
-use App\Interfaces\ClientInterface;
 use App\Interfaces\HubspotServiceInterface;
 use Exception;
 

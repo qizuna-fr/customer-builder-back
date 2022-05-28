@@ -18,6 +18,10 @@ class DataBaseManagement implements DataBaseManagementInterface {
     public function clientToAdd($name, $mail) : array{
         return [];
     }
+
+    public function updateDataBase($variable, $value){
+        
+    }
 }
 
 ?>

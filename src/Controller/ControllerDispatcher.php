@@ -34,15 +34,15 @@ class ControllerDispatcher extends AbstractController
         var_dump($this->clientData);
         echo ("<br>");
 
-        $cityName = $this->clientData["cityName"];
-        $titleFont = $this->clientData["titleFont"];
-        $titleColor = $this->clientData["titleColor"];
-        $titleStyle = $this->clientData["titleStyle"];
-        $paragraphFont = $this->clientData["paragraphFont"];
-        $paragraphColor = $this->clientData["paragraphColor"];
-        $paragraphStyle = $this->clientData["paragraphStyle"];
-        $clientFileOne = $this->clientData["clientFiles"]["clientLogo"];
-        $clientFileTow = $this->clientData["clientFiles"]["clientBackground"];
+        // $cityName = $this->clientData["cityName"];
+        // $titleFont = $this->clientData["titleFont"];
+        // $titleColor = $this->clientData["titleColor"];
+        // $titleStyle = $this->clientData["titleStyle"];
+        // $paragraphFont = $this->clientData["paragraphFont"];
+        // $paragraphColor = $this->clientData["paragraphColor"];
+        // $paragraphStyle = $this->clientData["paragraphStyle"];
+        // $clientFileOne = $this->clientData["clientFiles"]["clientLogo"];
+        // $clientFileTow = $this->clientData["clientFiles"]["clientBackground"];
 
         echo ("<br> <br>");
 
@@ -59,10 +59,12 @@ class ControllerDispatcher extends AbstractController
         $this->controller->defineColor('title', '#00000');
 
         echo ("Appel de resize image : <br>");
-        $this->controller->resizeImage(120,120, $clientFileOne);
+        $this->controller->resizeImage(120,120, $this->clientData["clientFiles"]["clientLogo"]);
 
         echo ("Appel de creatPennyLaneClient : <br>");
         // $this->controller->createPennyLaneClient($clientName);
+
+        $this->controller->updateGithub();
 
         return new Response("dispatcher controller");
     }

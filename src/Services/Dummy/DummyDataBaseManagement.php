@@ -14,7 +14,10 @@ class DummyDataBaseManagement implements DataBaseManagementInterface {
             'paragraphFont' => 'paragraphFont', 
             'paragraphColor' => 'paragraphColor',
             'paragraphStyle' => 'paragraphStyle',
-            'clientFiles' => ['clientLogo' => 'file1', 'clientBackground' => 'file2']
+            'clientFiles' => [
+                            'clientLogo' => ['name' => 'file1.jpg', 'width' => 'width', 'hight' => 'hight'], 
+                            'clientBackground' => ['name' => 'file2.png', 'width' => 'width', 'hight' => 'hight']
+                            ]
 
         );
         return $data;
@@ -28,6 +31,10 @@ class DummyDataBaseManagement implements DataBaseManagementInterface {
     public function clientToAdd($name, $mail) : array {
         $client = array('name' => $name, 'mail' => $mail);
         return $client;
+    }
+
+    public function updateDataBase($variable, $value){
+        
     }
 }
 
