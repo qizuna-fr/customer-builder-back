@@ -8,7 +8,7 @@ interface ImaginaryServiceInterface {
 
     public function disconnect();
 
-    public function resizeImage(ImaginaryFileInterface $file, int $width, int $hight);
+    public function resizeImage(ImaginaryFileInterface $file, int $width, int $hight) ;
 
     public function convertFile(ImaginaryFileInterface $file, $newType);
 

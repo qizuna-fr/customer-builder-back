@@ -4,9 +4,9 @@ namespace App\Interfaces;
 
 interface DataBaseManagementInterface {
 
-    public function fetchData(ClientInterface $client) : ClientInterface;
+    public function fetchData(CustomerInterface $customer) : array;
 
-    public function persistData(ClientInterface $client);
+    public function persistData(CustomerInterface $customer);
 
 }
 

@@ -8,9 +8,9 @@ interface CRMServiceInterface {
 
     public function disconnect();
 
-    public function getClientList() : array;
+    public function getCustomerList() : array;
 
-    public function createClient(ClientInterface $client); 
+    public function createCustomer(customerInterface $customer); 
 
 }
 
