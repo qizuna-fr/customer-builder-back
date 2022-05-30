@@ -4,13 +4,13 @@ namespace App\Interfaces;
 
 interface ImaginaryServiceInterface {
     
-    public function connectToImaginary();
+    public function connect();
 
-    public function disconnectFromImaginary();
+    public function disconnect();
 
-    public function resizeImage($file, int $width, int $hight);
+    public function resizeImage(ImaginaryFileInterface $file, int $width, int $hight);
 
-    public function convertFile($file, $newType);
+    public function convertFile(ImaginaryFileInterface $file, $newType);
 
 }
 

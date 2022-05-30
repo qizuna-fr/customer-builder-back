@@ -2,15 +2,15 @@
 
 namespace App\Interfaces;
 
-interface HubspotServiceInterface {
+interface CRMServiceInterface {
     
-    public function connectToHubspot();
+    public function connect();
 
-    public function disconnectFromHubspot();
+    public function disconnect();
 
-    public function getHubspotClientList() : array;
+    public function getClientList() : array;
 
-    public function createClient($client);
+    public function createClient(ClientInterface $client); 
 
 }
 

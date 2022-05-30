@@ -2,17 +2,17 @@
 
 namespace App\Interfaces;
 
-interface GitHubServiceInterface {
+interface GitServiceInterface {
     
-    public function connectToGithub();
+    public function connect();
 
-    public function disconnectFromGithub();
+    public function disconnect();
 
-    public function addFileToGithub($file, string $branchName);
+    public function add(GitFileInterface $file, string $branchName);
 
-    public function addCommitMessage(string $branchName, string $message);
+    public function commit(string $branchName, string $message);
 
-    public function pushFileToGithub(string $file, string $branchName, string $message);
+    public function push(GitFileInterface $file, string $branchName, string $message);
 
 }
 

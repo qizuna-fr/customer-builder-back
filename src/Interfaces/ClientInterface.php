@@ -8,6 +8,10 @@ interface ClientInterface {
 
     public function getClientEmail() : string;
 
+    public function getClientData() : array;
+
+    public function setClientData(array $data);
+
 }
 
 ?>
