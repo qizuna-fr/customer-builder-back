@@ -15,10 +15,7 @@ class ControllerDispatcher extends AbstractController
     private $clientData = [];
 
     public function __construct(
-        
-        // private DataBaseManagementInterface $clientDataBase,
         private DataBaseManagementInterface $dataBase,
-        private ClientInterface $client,
         private ServicesController $controller
     ) 
     {

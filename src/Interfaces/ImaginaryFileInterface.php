@@ -14,9 +14,9 @@ interface ImaginaryFileInterface {
 
     public function setHight(int $hight);
 
-    public function setWidth(): int;
+    public function getWidth(): int;
 
-    public function getWidth(int $width);
+    public function setWidth(int $width);
 
 }
 

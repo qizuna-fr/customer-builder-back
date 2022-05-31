@@ -1,10 +1,11 @@
 <?php
 namespace App\Services\Dummy;
 
-use App\Interfaces\HubspotServiceInterface;
+use App\Interfaces\CRMServiceInterface;
+use App\Interfaces\CustomerInterface;
 use Exception;
 
-class DummyHubspotService implements HubspotServiceInterface {
+class DummyCRMService implements CRMServiceInterface {
 
     public bool $spyconnect = false;
 
@@ -16,7 +17,7 @@ class DummyHubspotService implements HubspotServiceInterface {
         $this->spyconnect = true;
     }
 
-    public function connectToHubspot() {
+    public function connect() {
         $this->ping();
         if ($this->spyconnect) {
             return ('Connected');
@@ -24,21 +25,21 @@ class DummyHubspotService implements HubspotServiceInterface {
         else throw new Exception("error");
     }
 
-    public function disconnectFromHubspot() {
+    public function disconnect() {
         return ('Disconnected');
     }
 
-    public function getHubspotClientList() : array {
+    public function getCustomerList() : array {
         $clientList = ['Mulhouse', 'Cernay', 'Colmar'];
         return $clientList;
     }
 
     public function exist($client) {
-        $clientList = $this->getHubspotClientList();
+        $clientList = $this->getCustomerList();
         if (in_array($client['name'], $clientList)) $this->exist = true;
     }
 
-    public function createClient($client){
+    public function createCustomer(CustomerInterface $client){
         if (!$this->exist) $this->spycreate = true;
     }
     

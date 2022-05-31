@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Interfaces\CRMServiceInterface;
+use App\Interfaces\CSSManagementInterface;
 use App\Interfaces\CustomerInterface;
 use App\Interfaces\DataBaseManagementInterface;
 use App\Interfaces\FormattingTextInterface;
@@ -13,7 +14,7 @@ use App\Interfaces\ImaginaryServiceInterface;
 use App\Interfaces\PennyLaneServiceInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ServicesController extends AbstractController
 {
@@ -22,6 +23,7 @@ class ServicesController extends AbstractController
     public function __construct(
         private GitServiceInterface $github,
         private FormattingTextInterface $formattingText,
+        private CSSManagementInterface $cssManagement,
         private ImaginaryServiceInterface $imaginary,
         private DataBaseManagementInterface $dataBase,
         private CustomerInterface $customer,
@@ -32,52 +34,82 @@ class ServicesController extends AbstractController
         $this->customerData = $this->dataBase->fetchData($this->customer);
     }
 
-    public function formatCityName(): Response
+    // public function formatCityName()
+    // {
+    //     $formattedCityName = $this->formattingText->deleteSpace($this->customerData["cityName"]);
+    //     $this->customerData['cityName'] = $formattedCityName;
+    // }
+
+    // // public function cssManagement(string $variable, string $value)
+    // // {
+    // //     if (!in_array($variable, $this->customerData)) throw new Exception($variable . "n'existe pas !");
+    // //     $this->customerData[$variable] = $value;
+    // // }
+
+    // public function resizeImage(ImaginaryFileInterface $clientFile, int $width, int $hight)
+    // {
+    //     $this->imaginary->resizeImage($clientFile, $width, $hight);
+    //     $clientFile->setHight($hight);
+    //     $clientFile->setWidth($width);
+    // }
+
+    // public function convertFile(ImaginaryFileInterface $clientFile, string $extension)
+    // {
+    //     $this->imaginary->convertFile($clientFile, $extension);
+    //     $clientFile->setExtension($extension);
+    // }
+
+    // public function createHubspotCustomer(CustomerInterface $customer)
+    // {
+    //     $this->hubspot->createCustomer($customer);
+    // }
+
+    // public function updateDataBase(){
+    //     $this->customer->setData($this->customerData);
+    //     $this->dataBase->persistData($this->customer);
+    // }
+
+    // public function pushToGithub(GitFileInterface $file) {
+    //     $branchName = 'update data client'.$this->client->getClientName();
+    //     $message = 'updated at '.date('h:i:sa');
+    //     $this->github->push($file, $branchName, $message);
+    // }
+
+    #[Route('/qizuna')]
+    public function index()
     {
         $formattedCityName = $this->formattingText->deleteSpace($this->customerData["cityName"]);
         $this->customerData['cityName'] = $formattedCityName;
-        return new Response("Formatting city name", 200);
-    }
 
-    public function defineFont(string $variable, string $value): Response
-    {
-        if (!in_array($variable, $this->customerData)) throw new Exception($variable . "n'existe pas !");
-        $this->customerData[$variable] = $value;
-        return new Response('Editing ' . $variable . ' to ' . $value, 200);
-    }
+        $this->cssManagement->editColor('titleColor', 'black');
+        $this->customerData['titleColor'] = 'black';
 
-    public function resizeImage(ImaginaryFileInterface $clientFile, int $width, int $hight): Response
-    {
-        $this->imaginary->resizeImage($clientFile, $width, $hight);
-        $clientFile->setHight($hight);
-        $clientFile->setWidth($width);
-        return new Response('resizing image ' . $clientFile, 200);
-    }
+        $this->cssManagement->editStyle('paragraphStyle', 'normal');
+        $this->customerData['paragraphStyle'] = 'normal';
 
-    public function convertFile(ImaginaryFileInterface $clientFile, string $extension): Response
-    {
-        $this->imaginary->convertFile($clientFile, $extension);
-        $clientFile->setExtension($extension);
-        return new Response('resizing image ' . $clientFile, 200);
-    }
+        $image = new ImaginaryFileInterface();
+        $imageCustomer = $this->customerData['clientFiles']['clientLogo'];
+        $image->name($imageCustomer['name']);
+        $image->setExtension($imageCustomer['extension']);
+        $image->setWidth($imageCustomer['width']);
+        $image->setHight($imageCustomer['higth']);
 
-    public function createHubspotCustomer(CustomerInterface $customer): Response
-    {
-        $this->hubspot->createCustomer($customer);
-        return new Response('Creating hubspot client for ' . $customer->getName(), 200);
-    }
+        $this->imaginary->resizeImage($image, 250, 200);
+        $image->setHight(250);
+        $image->setWidth(200);
 
-    public function updateDataBase(){
+        $this->imaginary->convertFile($image, "jpg");
+        $image->setExtension("jpg");
+
         $this->customer->setData($this->customerData);
         $this->dataBase->persistData($this->customer);
-    }
 
-    public function githubService() {
         $file = new GitFileInterface();
         $file->setData($this->customerData);
         $branchName = 'update data client'.$this->client->getClientName();
         $message = 'updated at '.date('h:i:sa');
         $this->github->push($file, $branchName, $message);
+
     }
 
 }

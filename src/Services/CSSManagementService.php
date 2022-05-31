@@ -2,25 +2,25 @@
 
 namespace App\Services;
 
-use App\Interfaces\TextCSSManagementInterface;
+use App\Interfaces\CSSManagementInterface;
 
-class TextCSSManagement implements TextCSSManagementInterface {
+class CSSManagementService implements CSSManagementInterface {
 
     public bool $spyFont = false;
     public bool $spyStyle = false;
     public bool $spyColor = false;
     
-    public function editTextFont(string $text, string $font)  {
+    public function editFont(string $text, string $font)  {
         //code for edit
         $this->spyFont = true;
     }
 
-    public function editTextStyle(string $text, string $style)  {
+    public function editStyle(string $text, string $style)  {
         //code for edit
         $this->spyStyle = true;
     }
 
-    public function editTextColor(string $text, string $color)  {
+    public function editColor(string $text, string $color)  {
         //code for edit
         $this->spyColor = true;
     }

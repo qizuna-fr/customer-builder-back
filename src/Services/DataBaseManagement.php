@@ -1,25 +1,17 @@
 <?php
 namespace App\Services;
 
-use App\Interfaces\ClientInterface;
+use App\Interfaces\CustomerInterface;
 use App\Interfaces\DataBaseManagementInterface;
 
 class DataBaseManagement implements DataBaseManagementInterface {
 
-    public function fetchDataFromDataBase($ClientName) :array {
+    public function fetchData(CustomerInterface $customer) :array {
 
         return [];
     }
 
-    public function getClient() : array {
-        return [];
-    }
-
-    public function clientToAdd($name, $mail) : array{
-        return [];
-    }
-
-    public function updateDataBase($variable, $value){
+    public function persistData(CustomerInterface $customer) {
         
     }
 }
