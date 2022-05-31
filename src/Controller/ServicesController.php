@@ -14,6 +14,7 @@ use App\Interfaces\ImaginaryServiceInterface;
 use App\Interfaces\PennyLaneServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 class ServicesController extends AbstractController
 {
@@ -34,19 +35,19 @@ class ServicesController extends AbstractController
     }
 
     #[Route('/qizuna')]
-    public function index()
+    public function index() : Response
     {
         $formattedCityName = $this->formattingText->deleteSpace($this->customerData["cityName"]);
         $this->customerData['cityName'] = $formattedCityName;
 
-        $this->cssManagement->editColor('titleColor', 'black');
-        $this->customerData['titleColor'] = 'black';
+        $this->cssManagement->editColor('title', 'black');
+        $this->customerData['title']['color'] = 'black';
 
-        $this->cssManagement->editStyle('paragraphStyle', 'normal');
-        $this->customerData['paragraphStyle'] = 'normal';
+        $this->cssManagement->editStyle('paragraph', 'normal');
+        $this->customerData['paragraph']['style'] = 'normal';
 
         $image = new ImaginaryFileInterface();
-        $imageCustomer = $this->customerData['clientFiles']['clientLogo'];
+        $imageCustomer = $this->customerData['files']['logo'];
         $image->name($imageCustomer['name']);
         $image->setExtension($imageCustomer['extension']);
         $image->setWidth($imageCustomer['width']);
@@ -67,6 +68,8 @@ class ServicesController extends AbstractController
         $branchName = 'update data client'.$this->client->getClientName();
         $message = 'updated at '.date('h:i:sa');
         $this->github->push($file, $branchName, $message);
+
+        return new Response("qizuna", 200);
 
     }
 

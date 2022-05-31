@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Interfaces\FormattingTextInterface;
 
-class FormattingText implements FormattingTextInterface {
+class FormattingTextService implements FormattingTextInterface {
     
     public function deleteSpace(string $text) :string {
         $lowerCase = $this->lowerCase($text);

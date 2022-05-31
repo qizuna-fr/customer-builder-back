@@ -2,143 +2,130 @@
 
 namespace App\Tests;
 
-use App\Services\Dummy\DummyDataBaseManagement;
-use App\Services\Dummy\DummyHubspotService;
-use App\Services\FormattingText;
-use App\Services\GitHubService;
-use App\Services\ImaginaryService;
-use App\Services\TextCSSManagement;
+use App\Services\CSSManagementService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use App\Services\Dummy\DummyClient;
-use App\Services\PennyLaneService;
+use App\Services\FormattingTextService;
 
 class ServicesTest extends WebTestCase
 {
 
-    public function testFormatCityName(): void
+    public function testFormatTextIsCalled(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/format-city-name');
-        $this->assertSame($client->getResponse()->getStatusCode(), 200);
+        $client->request('GET', '/qizuna');
     }
 
-    public function testFormattingText(): void
+    public function testFormatText(): void
     {
-        $formattingText = new FormattingText();
+        $formattingText = new FormattingTextService();
         $text = "Hello Word";
         $formattedText = $formattingText->deleteSpace($text);
         $this->assertSame($formattedText, "hello-word");
     }
 
-    public function testDefineFont(): void
+    public function testCSSManagement(): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/edit-font/title/Open Sans');
-        $this->assertSame($client->getResponse()->getContent(), "Editing title font to Open Sans");
-    }
-
-    public function testTextCSSManagement(): void
-    {
-        $textManagement = new TextCSSManagement();
-        $text = "Mulhouse";
+        $cssManagement = new CSSManagementService();
+        $text = "title";
 
         $textFont = "Open Sans";
-        $textManagement->editTextFont($text, $textFont);
-        $this->assertSame($textManagement->spyFont, true);
+        $cssManagement->editFont($text, $textFont);
+
+        $this->assertSame($cssManagement->spyFont, true);
 
         $textStyle = "capitalize";
-        $textManagement->editTextStyle($text, $textStyle);
-        $this->assertSame($textManagement->spyStyle, true);
+        $cssManagement->editStyle($text, $textStyle);
+        $this->assertSame($cssManagement->spyStyle, true);
         
         $textColor = "bold";
-        $textManagement->editTextColor($text, $textColor);
-        $this->assertSame($textManagement->spyColor, true);
+        $cssManagement->editColor($text, $textColor);
+        $this->assertSame($cssManagement->spyColor, true);
     }
 
-    public function testIndexResizeImage(): void
-    {
-        $client = static::createClient();
-        $client->request('GET', '/resize/clientLogo/120/200');
-        $this->assertSame($client->getResponse()->getContent(), "resizing image clientLogo");
-    }
+    // public function testIndexResizeImage(): void
+    // {
+    //     $client = static::createClient();
+    //     $client->request('GET', '/resize/clientLogo/120/200');
+    //     $this->assertSame($client->getResponse()->getContent(), "resizing image clientLogo");
+    // }
     
-    public function testConnectionToImaginary(): void
-    {
-        $service = new ImaginaryService();
-        $service->connectToImaginary();
-        $this->assertSame($service->spy, true);
-    }
+    // public function testConnectionToImaginary(): void
+    // {
+    //     $service = new ImaginaryService();
+    //     $service->connectToImaginary();
+    //     $this->assertSame($service->spy, true);
+    // }
 
-    public function testDisconnectionFromImaginary(): void
-    {
-        $service = new ImaginaryService();
-        $this->assertSame($service->disconnectFromImaginary(), 'Disconnected');
-    }
+    // public function testDisconnectionFromImaginary(): void
+    // {
+    //     $service = new ImaginaryService();
+    //     $this->assertSame($service->disconnectFromImaginary(), 'Disconnected');
+    // }
 
-    public function testConnectionToGithub(): void
-    {
-        $service = new GitHubService();
-        $service->connectToGithub();
-        $this->assertSame($service->spy, true);
-    }
+    // public function testConnectionToGithub(): void
+    // {
+    //     $service = new GitHubService();
+    //     $service->connectToGithub();
+    //     $this->assertSame($service->spy, true);
+    // }
 
-    public function testDisconnectionFromGithub(): void
-    {
-        $service = new GitHubService();
-        $this->assertSame($service->disconnectFromGithub(), 'Disconnected');
-    }
+    // public function testDisconnectionFromGithub(): void
+    // {
+    //     $service = new GitHubService();
+    //     $this->assertSame($service->disconnectFromGithub(), 'Disconnected');
+    // }
 
-    public function testIndexCreateClientHubspot(): void
-    {
-        $client = static::createClient();
-        $client->request('GET', '/create-client-hubspot/colmar/colmar@colmar.fr');
-        $this->assertSame($client->getResponse()->getContent(), 'Creating hubspot client for colmar colmar@colmar.fr');
-    }
+    // public function testIndexCreateClientHubspot(): void
+    // {
+    //     $client = static::createClient();
+    //     $client->request('GET', '/create-client-hubspot/colmar/colmar@colmar.fr');
+    //     $this->assertSame($client->getResponse()->getContent(), 'Creating hubspot client for colmar colmar@colmar.fr');
+    // }
 
-    public function testConnectionToHubspot(): void
-    {
-        $service = new DummyHubspotService();
-        $service->connectToHubspot();
-        $this->assertSame($service->spyconnect, true);
-    }
+    // public function testConnectionToHubspot(): void
+    // {
+    //     $service = new DummyHubspotService();
+    //     $service->connectToHubspot();
+    //     $this->assertSame($service->spyconnect, true);
+    // }
 
-    public function testDisconnectionFromHubspot(): void
-    {
-        $service = new DummyHubspotService();
-        $this->assertSame($service->disconnectFromHubspot(), 'Disconnected');
-    }
+    // public function testDisconnectionFromHubspot(): void
+    // {
+    //     $service = new DummyHubspotService();
+    //     $this->assertSame($service->disconnectFromHubspot(), 'Disconnected');
+    // }
 
-    public function testCreateClientHubspot(): void
-    {
-        $dummyDataBase = new DummyDataBaseManagement();
-        $clientName = 'Colmar';
-        $clientMail = 'colmar@mail.fr';
-        $service = new DummyHubspotService();
-        $service->createClient($dummyDataBase->clientToAdd($clientName, $clientMail));
-        $this->assertSame($service->spycreate, true);
-    }
+    // public function testCreateClientHubspot(): void
+    // {
+    //     $dummyDataBase = new DummyDataBaseManagement();
+    //     $clientName = 'Colmar';
+    //     $clientMail = 'colmar@mail.fr';
+    //     $service = new DummyHubspotService();
+    //     $service->createClient($dummyDataBase->clientToAdd($clientName, $clientMail));
+    //     $this->assertSame($service->spycreate, true);
+    // }
 
-    public int $client_id=0;
+    // public int $client_id=0;
 
-    public function testPennyLaneServiceCreate(): void
-    {
-        $client = new DummyClient();
-        $clientAirtable = $client->getAirTableClient();
+    // public function testPennyLaneServiceCreate(): void
+    // {
+    //     $client = new DummyClient();
+    //     $clientAirtable = $client->getAirTableClient();
 
-        $pennylane = new PennyLaneService();
-        $this->client_id = $pennylane->create($clientAirtable);
-        $this->assertNotNull($this->client_id, "Client_id error");
-        $this->getExpectedExceptionMessage("Client yet created");
-        $this->getExpectedExceptionMessage("Authentification error");
-    }
+    //     $pennylane = new PennyLaneService();
+    //     $this->client_id = $pennylane->create($clientAirtable);
+    //     $this->assertNotNull($this->client_id, "Client_id error");
+    //     $this->getExpectedExceptionMessage("Client yet created");
+    //     $this->getExpectedExceptionMessage("Authentification error");
+    // }
 
-    public function testPennyLaneServiceSubscribe(): void
-    {
-        $pennylane = new PennyLaneService();
-        $subscribe = $pennylane->subscribe($this->client_id);
-        $this->assertTrue($subscribe, "Subscription error");
-        $this->getExpectedExceptionMessage("Authentification error");
+    // public function testPennyLaneServiceSubscribe(): void
+    // {
+    //     $pennylane = new PennyLaneService();
+    //     $subscribe = $pennylane->subscribe($this->client_id);
+    //     $this->assertTrue($subscribe, "Subscription error");
+    //     $this->getExpectedExceptionMessage("Authentification error");
 
-    }
+    // }
 
 }

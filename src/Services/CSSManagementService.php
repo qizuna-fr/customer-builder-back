@@ -12,6 +12,7 @@ class CSSManagementService implements CSSManagementInterface {
     
     public function editFont(string $text, string $font)  {
         //code for edit
+        if ($text == 'title') 
         $this->spyFont = true;
     }
 
