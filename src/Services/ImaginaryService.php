@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Exceptions\ConnectionImaginaryException;
 use App\Exceptions\DimensionErrorException;
+use App\Exceptions\ExtensionErrorException;
 use App\Interfaces\ImaginaryFileInterface;
 use App\Interfaces\ImaginaryServiceInterface;
 use Exception;
@@ -37,6 +38,8 @@ class ImaginaryService implements ImaginaryServiceInterface {
     }
 
     public function convertFile(ImaginaryFileInterface $file, $newType){
+        $extensions = ['jpg', 'png', 'jpeg'];
+        if (!in_array($newType , $extensions)) throw new ExtensionErrorException();
         //code
         $file->setExtension($newType);
         $this->spyConvert = true;

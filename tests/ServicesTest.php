@@ -4,6 +4,7 @@ namespace App\Tests;
 
 use App\Exceptions\ConnectionImaginaryException;
 use App\Exceptions\DimensionErrorException;
+use App\Exceptions\ExtensionErrorException;
 use App\Services\CSSManagementService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Services\FormattingTextService;
@@ -86,6 +87,24 @@ class ServicesTest extends WebTestCase
         $this->assertEquals($file->getWidth(), $width);
     }
 
+    public function testConvertFileFailure(): void
+    {
+        $imaginary = new ImaginaryService();
+        $file = new DummyImaginaryFile();
+        $extension = ".txt";
+        $imaginary->convertFile($file, $extension);
+        $this->expectException(ExtensionErrorException::class);
+    }
+
+    public function testConvertFileSuccessfull(): void
+    {
+        $imaginary = new ImaginaryService();
+        $file = new DummyImaginaryFile();
+        $extension = ".txt";
+        $imaginary->convertFile($file, $extension);
+        $this->assertSame($imaginary->spyConvert, true);
+        $this->assertEquals($file->getExtension(), $extension);
+    }
 
     // public function testConnectionToGithub(): void
     // {
