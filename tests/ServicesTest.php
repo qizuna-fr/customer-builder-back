@@ -2,11 +2,14 @@
 
 namespace App\Tests;
 
+use App\Exceptions\ConnectionCRMException;
 use App\Exceptions\ConnectionGitException;
 use App\Exceptions\ConnectionImaginaryException;
 use App\Exceptions\DimensionErrorException;
 use App\Exceptions\ExtensionErrorException;
+use App\Interfaces\CRMServiceInterface;
 use App\Interfaces\CSSManagementInterface;
+use App\Interfaces\CustomerInterface;
 use App\Interfaces\FormattingTextInterface;
 use App\Interfaces\GitFileInterface;
 use App\Interfaces\GitServiceInterface;
@@ -147,6 +150,38 @@ class ServicesTest extends WebTestCase
         $this->assertTrue($github->spyPush);
     }
 
-    
+    public function testCRMServiceSuccessfullConnection(): void
+    {
+        $hubspot = $this->createMock(CRMServiceInterface::class);
+        $this->assertSame($hubspot->connect(), 'Connected');
+    }
+
+    public function testCRMServiceFailureConnection(): void
+    {
+        $hubspot = $this->createMock(CRMServiceInterface::class);
+        $hubspot->connect();
+        $this->expectException(ConnectionCRMException::class);
+    }
+
+    public function testDisconnectionFromCRM(): void
+    {
+        $hubspot = $this->createMock(CRMServiceInterface::class);
+        $this->assertSame($hubspot->disconnect(), 'Disconnected');
+    }
+
+    public function testCreateCRMClientSuccessfull(): void
+    {
+        $hubspot = $this->createMock(CRMServiceInterface::class);
+        $customer = $this->createMock(CustomerInterface::class);
+        $this->assertTrue($hubspot->createCustomer($customer));
+    }
+
+    public function testCreateCRMClientFailure(): void
+    {
+        $hubspot = $this->createMock(CRMServiceInterface::class);
+        $customer = $this->createMock(CustomerInterface::class);
+        $hubspot->createCustomer($customer);
+        $this->expectException("Customer already exist !");
+    }
 
 }

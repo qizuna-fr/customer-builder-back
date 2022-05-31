@@ -45,6 +45,9 @@ services:
     App\Interfaces\ImaginaryFileInterface:
         alias: App\Tests\DummyImaginaryFile
 
+    App\Interfaces\GitFileInterface:
+        alias: App\Tests\DummyGitFile
+
 
 
     # add more service definitions when explicit configuration is needed

@@ -1,17 +1,18 @@
 <?php
 namespace App\Services;
 
+use App\Exceptions\ConnectionCRMException;
 use App\Interfaces\CRMServiceInterface;
 use App\Interfaces\CustomerInterface;
 use Exception;
 
 class CRMService implements CRMServiceInterface {
 
-    public bool $spyconnect = false;
+    private bool $spyconnect = false;
 
-    public bool $spycreate = false;
+    public bool $exist ;
 
-    public bool $exist;
+    public bool $notExist ;
 
     private function ping(){
         // code
@@ -24,7 +25,7 @@ class CRMService implements CRMServiceInterface {
             // code
             return ('Connected');
         }
-        else throw new Exception("error");
+        else throw new ConnectionCRMException();
     }
 
     public function disconnect() {
@@ -32,20 +33,15 @@ class CRMService implements CRMServiceInterface {
         return ('Disconnected');
     }
 
-    public function getCustomerList() : array {
-        // code
-        $clientList = [];
-        return $clientList;
-    }
-
-    public function exist($client, $clientList) {
-        if (in_array($client, $clientList)) $this->exist = true;
-        else $this->exist = false;
+    public function customerExist(CustomerInterface $customer) : bool {
+        if ($customer->hasCRM()) return true; 
+        else return false;
     }
 
     public function createCustomer(CustomerInterface $customer){
         // code
-        if ($this->exist) $this->spyconnect = true;
+        if (!$this->customerExist($customer)) $this->spyconnect = true;
+        else throw new Exception("Customer already exist !");
     }
 }
 

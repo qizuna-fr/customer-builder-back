@@ -20,14 +20,18 @@ class Customer implements CustomerInterface {
         return "";
     }
 
-    public function getData() :array {
-        
-        return [];
+    public function hasCRM() : bool{
+        return false;
     }
 
-    public function setData(array $customerData){
+    // public function getData() :array {
         
-    }
+    //     return [];
+    // }
+
+    // public function setData(array $customerData){
+        
+    // }
 }
 
 ?>

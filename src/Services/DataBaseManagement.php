@@ -6,12 +6,17 @@ use App\Interfaces\DataBaseManagementInterface;
 
 class DataBaseManagement implements DataBaseManagementInterface {
 
-    public function fetchData(CustomerInterface $customer) :array {
+    public function fetchCustomer(int $customerId) : CustomerInterface {
+        $customer = new CustomerInterface;
+        return $customer;
+    }
+
+    public function fetchCustomerData(CustomerInterface $customer) :array {
 
         return [];
     }
 
-    public function persistData(CustomerInterface $customer) {
+    public function persist(CustomerInterface $customer, array $data) {
         
     }
 }

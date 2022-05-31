@@ -6,7 +6,12 @@ use App\Interfaces\DataBaseManagementInterface;
 
 class DummyDataBaseManagement implements DataBaseManagementInterface {
 
-    public function fetchData(CustomerInterface $customer) :array {
+    public function fetchCustomer(int $customerId) : CustomerInterface {
+        $customer = new CustomerInterface;
+        return $customer;
+    }
+
+    public function fetchCustomerData(CustomerInterface $customer) :array {
         $data = array(
             'cityName' => 'Mulhouse' , 
             'title' => [
@@ -37,7 +42,7 @@ class DummyDataBaseManagement implements DataBaseManagementInterface {
         return $data;
     }
 
-    public function persistData(CustomerInterface $customer){
+    public function persist(CustomerInterface $customer, array $data){
         
     }
 }

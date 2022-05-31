@@ -10,9 +10,11 @@ interface CustomerInterface {
 
     public function getEmail() : string;
 
-    public function getData() : array;
+    public function hasCRM() : bool;
 
-    public function setData(array $customerData);
+    // public function getData() : array;
+
+    // public function setData(array $customerData);
 
 }
 
