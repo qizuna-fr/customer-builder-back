@@ -12,7 +12,6 @@ use App\Interfaces\GitServiceInterface;
 use App\Interfaces\ImaginaryFileInterface;
 use App\Interfaces\ImaginaryServiceInterface;
 use App\Interfaces\PennyLaneServiceInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -33,47 +32,6 @@ class ServicesController extends AbstractController
     {
         $this->customerData = $this->dataBase->fetchData($this->customer);
     }
-
-    // public function formatCityName()
-    // {
-    //     $formattedCityName = $this->formattingText->deleteSpace($this->customerData["cityName"]);
-    //     $this->customerData['cityName'] = $formattedCityName;
-    // }
-
-    // // public function cssManagement(string $variable, string $value)
-    // // {
-    // //     if (!in_array($variable, $this->customerData)) throw new Exception($variable . "n'existe pas !");
-    // //     $this->customerData[$variable] = $value;
-    // // }
-
-    // public function resizeImage(ImaginaryFileInterface $clientFile, int $width, int $hight)
-    // {
-    //     $this->imaginary->resizeImage($clientFile, $width, $hight);
-    //     $clientFile->setHight($hight);
-    //     $clientFile->setWidth($width);
-    // }
-
-    // public function convertFile(ImaginaryFileInterface $clientFile, string $extension)
-    // {
-    //     $this->imaginary->convertFile($clientFile, $extension);
-    //     $clientFile->setExtension($extension);
-    // }
-
-    // public function createHubspotCustomer(CustomerInterface $customer)
-    // {
-    //     $this->hubspot->createCustomer($customer);
-    // }
-
-    // public function updateDataBase(){
-    //     $this->customer->setData($this->customerData);
-    //     $this->dataBase->persistData($this->customer);
-    // }
-
-    // public function pushToGithub(GitFileInterface $file) {
-    //     $branchName = 'update data client'.$this->client->getClientName();
-    //     $message = 'updated at '.date('h:i:sa');
-    //     $this->github->push($file, $branchName, $message);
-    // }
 
     #[Route('/qizuna')]
     public function index()
