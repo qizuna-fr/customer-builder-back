@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Interfaces\CSSManagementInterface;
+use App\Interfaces\CustomerInterface;
 
 class DummyCSSManagementService implements CSSManagementInterface {
 
@@ -12,23 +13,54 @@ class DummyCSSManagementService implements CSSManagementInterface {
     public bool $spyParagraphStyle = false;
     public bool $spyTitleColor = false;
     public bool $spyParagraphColor = false;
+
+    private $dummyCustomerData = [];
+
+    public function __construct(
+        private DummyDataBaseManagement $DummyDataBase,
+        private CustomerInterface $dummyCustomer,
+    ) 
+    {
+        $this->dummyCustomerData = $this->DummyDataBase->fetchData($this->dummyCustomer);
+    }
     
     public function editFont(string $text, string $font)  {
-        //code for edit
-        if ($text == 'title')  $this->spyTitleFont = true;
-        if ($text == 'paragraph')  $this->spyParagraphFont = true;
+
+        if ($text == 'title') {
+            //code for edit title font
+            $this->spyTitleFont = true;
+        }
+
+        if ($text == 'paragraph') {
+            //code for edit paragraph font
+            $this->spyParagraphFont = true;
+        }
     }
 
     public function editStyle(string $text, string $style)  {
-        //code for edit
-        if ($text == 'title')  $this->spyTitleStyle = true;
-        if ($text == 'paragraph')  $this->spyParagraphStyle = true;
+
+        if ($text == 'title') {
+            //code for edit title style
+            $this->spyTitleStyle = true;
+        }
+
+        if ($text == 'paragraph') {
+            //code for edit paragraph style
+            $this->spyParagraphStyle = true;
+        }
     }
 
     public function editColor(string $text, string $color)  {
-        //code for edit
-        if ($text == 'title')  $this->spyTitleColor = true;
-        if ($text == 'paragraph')  $this->spyParagraphColor = true;
+        
+        if ($text == 'title') {
+            //code for edit title color
+            $this->spyTitleColor = true;
+        }
+
+        if ($text == 'paragraph') {
+            //code for edit paragraph color
+            $this->spyParagraphColor = true;
+        }
     }
 }
 
