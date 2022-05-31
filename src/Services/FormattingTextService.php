@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Interfaces\CustomerInterface;
 use App\Interfaces\FormattingTextInterface;
 
 class FormattingTextService implements FormattingTextInterface {

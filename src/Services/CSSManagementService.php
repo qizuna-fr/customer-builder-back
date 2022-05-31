@@ -3,53 +3,30 @@
 namespace App\Services;
 
 use App\Interfaces\CSSManagementInterface;
+use App\Interfaces\CustomerInterface;
 
 class CSSManagementService implements CSSManagementInterface {
 
-    public bool $spyTitleFont = false;
-    public bool $spyParagraphFont = false;
-    public bool $spyTitleStyle = false;
-    public bool $spyParagraphStyle = false;
-    public bool $spyTitleColor = false;
-    public bool $spyParagraphColor = false;
+    public bool $spyFont = false;
+    public bool $spyStyle = false;
+    public bool $spyColor = false;
 
-    public function editFont(string $text, string $font)  {
+    public function editFont(string $textName, string $font)  {
 
-        if ($text == 'title') {
-            //code for edit title font
-            $this->spyTitleFont = true;
-        }
-
-        if ($text == 'paragraph') {
-            //code for edit paragraph font
-            $this->spyParagraphFont = true;
-        }
+        //code for edit font
+        $this->spyFont = true;
     }
 
-    public function editStyle(string $text, string $style)  {
+    public function editStyle(string $textName, string $style)  {
 
-        if ($text == 'title') {
-            //code for edit title style
-            $this->spyTitleStyle = true;
-        }
-
-        if ($text == 'paragraph') {
-            //code for edit paragraph style
-            $this->spyParagraphStyle = true;
-        }
+        //code for edit style
+        $this->spyStyle = true;
     }
 
-    public function editColor(string $text, string $color)  {
+    public function editColor(string $textName, string $color)  {
         
-        if ($text == 'title') {
-            //code for edit title color
-            $this->spyTitleColor = true;
-        }
-
-        if ($text == 'paragraph') {
-            //code for edit paragraph color
-            $this->spyParagraphColor = true;
-        }
+        //code for edit color
+        $this->spyColor = true;
     }
 }
 

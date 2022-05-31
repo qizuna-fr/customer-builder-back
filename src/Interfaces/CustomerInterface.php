@@ -10,9 +10,9 @@ interface CustomerInterface {
 
     public function getEmail() : string;
 
-    // public function getData() : array;
+    public function getData() : array;
 
-    // public function setData(array $customerData);
+    public function setData(array $customerData);
 
 }
 

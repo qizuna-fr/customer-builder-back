@@ -20,14 +20,14 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    App\Interfaces\GitHubServiceInterface:
-        alias: App\Services\GitHubService
+    App\Interfaces\GitServiceInterface:
+        alias: App\Services\GitService
 
-    App\Interfaces\TextCSSManagementInterface:
-        alias: App\Services\TextCSSManagement
+    App\Interfaces\CSSManagementInterface:
+        alias: App\Services\CSSManagement
 
     App\Interfaces\FormattingTextInterface:
-        alias: App\Services\FormattingText
+        alias: App\Services\FormattingTextService
 
     App\Interfaces\ImaginaryServiceInterface:
         alias: App\Services\ImaginaryService
@@ -36,7 +36,7 @@ services:
         # alias: App\Services\DataBaseManagement
         alias: App\Services\Dummy\DummyDataBaseManagement
 
-    App\Interfaces\HubspotServiceInterface:
+    App\Interfaces\CRMServiceInterface:
         # alias: App\Services\HubspotService
         alias: App\Services\Dummy\DummyHubspotService
 

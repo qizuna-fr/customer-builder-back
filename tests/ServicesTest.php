@@ -2,9 +2,12 @@
 
 namespace App\Tests;
 
+use App\Exceptions\ConnectionImaginaryException;
+use App\Exceptions\DimensionErrorException;
 use App\Services\CSSManagementService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Services\FormattingTextService;
+use App\Services\ImaginaryService;
 
 class ServicesTest extends WebTestCase
 {
@@ -15,7 +18,7 @@ class ServicesTest extends WebTestCase
         $client->request('GET', '/qizuna');
     }
 
-    public function testFormatText(): void
+    public function testFormatTextService(): void
     {
         $formattingText = new FormattingTextService();
         $text = "Hello Word";
@@ -23,7 +26,7 @@ class ServicesTest extends WebTestCase
         $this->assertSame($formattedText, "hello-word");
     }
 
-    public function testCSSManagement(): void
+    public function testCSSManagementService(): void
     {
         $cssManagement = new CSSManagementService();
         $text = "title";
@@ -42,25 +45,47 @@ class ServicesTest extends WebTestCase
         $this->assertSame($cssManagement->spyColor, true);
     }
 
-    // public function testIndexResizeImage(): void
-    // {
-    //     $client = static::createClient();
-    //     $client->request('GET', '/resize/clientLogo/120/200');
-    //     $this->assertSame($client->getResponse()->getContent(), "resizing image clientLogo");
-    // }
-    
-    // public function testConnectionToImaginary(): void
-    // {
-    //     $service = new ImaginaryService();
-    //     $service->connectToImaginary();
-    //     $this->assertSame($service->spy, true);
-    // }
+    public function testImaginaryServiceSuccsessfullConnection(): void
+    {
+        $imaginary = new ImaginaryService();
+        $this->assertSame($imaginary->connect(), 'Connected');
+    }
 
-    // public function testDisconnectionFromImaginary(): void
-    // {
-    //     $service = new ImaginaryService();
-    //     $this->assertSame($service->disconnectFromImaginary(), 'Disconnected');
-    // }
+    public function testImaginaryServiceFailureConnection(): void
+    {
+        $imaginary = new ImaginaryService();
+        $imaginary->connect();
+        $this->expectException(ConnectionImaginaryException::class);
+    }
+
+    public function testDisconnectionFromImaginary(): void
+    {
+        $imaginary = new ImaginaryService();
+        $this->assertSame($imaginary->disconnect(), 'Disconnected');
+    }
+
+    public function testResizeImageFailure(): void
+    {
+        $imaginary = new ImaginaryService();
+        $file = new DummyImaginaryFile();
+        $hight = 50;
+        $width = 50;
+        $imaginary->resizeImage($file, $hight, $width);
+        $this->expectException(DimensionErrorException::class);
+    }
+
+    public function testResizeImageSuccessfull(): void
+    {
+        $imaginary = new ImaginaryService();
+        $file = new DummyImaginaryFile();
+        $hight = 150;
+        $width = 150;
+        $imaginary->resizeImage($file, $hight, $width);
+        $this->assertSame($imaginary->spyResize, true);
+        $this->assertEquals($file->getHight(), $hight);
+        $this->assertEquals($file->getWidth(), $width);
+    }
+
 
     // public function testConnectionToGithub(): void
     // {

@@ -37,8 +37,7 @@ class ServicesController extends AbstractController
     #[Route('/qizuna')]
     public function index() : Response
     {
-        $formattedCityName = $this->formattingText->deleteSpace($this->customerData["cityName"]);
-        $this->customerData['cityName'] = $formattedCityName;
+        $formattedText = $this->formattingText->deleteSpace($this->customerData['cityName']);
 
         $this->cssManagement->editColor('title', 'black');
         $this->customerData['title']['color'] = 'black';
@@ -54,11 +53,8 @@ class ServicesController extends AbstractController
         $image->setHight($imageCustomer['higth']);
 
         $this->imaginary->resizeImage($image, 250, 200);
-        $image->setHight(250);
-        $image->setWidth(200);
 
         $this->imaginary->convertFile($image, "jpg");
-        $image->setExtension("jpg");
 
         $this->customer->setData($this->customerData);
         $this->dataBase->persistData($this->customer);
@@ -74,3 +70,4 @@ class ServicesController extends AbstractController
     }
 
 }
+?>
