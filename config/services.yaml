@@ -24,7 +24,7 @@ services:
         alias: App\Services\GitService
 
     App\Interfaces\CSSManagementInterface:
-        alias: App\Services\CSSManagement
+        alias: App\Services\CSSManagementService
 
     App\Interfaces\FormattingTextInterface:
         alias: App\Services\FormattingTextService
@@ -34,20 +34,18 @@ services:
 
     App\Interfaces\DataBaseManagementInterface:
         # alias: App\Services\DataBaseManagement
-        alias: App\Services\Dummy\DummyDataBaseManagement
+        alias: App\Tests\DummyDataBaseManagement
 
     App\Interfaces\CRMServiceInterface:
-        # alias: App\Services\HubspotService
-        alias: App\Services\Dummy\DummyHubspotService
+        alias: App\Services\CRMService
 
-    App\Interfaces\PennyLaneServiceInterface:
-        alias: App\Services\PennyLaneService
-        # alias: App\Services\Dummy\DummyPennyLaneService
+    App\Interfaces\CustomerInterface:
+        alias: App\Tests\DummyCustomer
 
-    App\Interfaces\PennyLaneImplementationInterface:
-        # alias: App\Services\PennyLaneImplementation
-        # alias: App\Services\Dummy\BadPennyLaneImplementation
-        alias: App\Services\Dummy\GoodPennyLaneImplementation
+    App\Interfaces\ImaginaryFileInterface:
+        alias: App\Tests\DummyImaginaryFile
+
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

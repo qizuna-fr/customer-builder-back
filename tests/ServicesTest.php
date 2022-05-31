@@ -2,12 +2,20 @@
 
 namespace App\Tests;
 
+use App\Exceptions\ConnectionGitException;
 use App\Exceptions\ConnectionImaginaryException;
 use App\Exceptions\DimensionErrorException;
 use App\Exceptions\ExtensionErrorException;
+use App\Interfaces\CSSManagementInterface;
+use App\Interfaces\FormattingTextInterface;
+use App\Interfaces\GitFileInterface;
+use App\Interfaces\GitServiceInterface;
+use App\Interfaces\ImaginaryFileInterface;
+use App\Interfaces\ImaginaryServiceInterface;
 use App\Services\CSSManagementService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Services\FormattingTextService;
+use App\Services\GitService;
 use App\Services\ImaginaryService;
 
 class ServicesTest extends WebTestCase
@@ -21,15 +29,14 @@ class ServicesTest extends WebTestCase
 
     public function testFormatTextService(): void
     {
-        $formattingText = new FormattingTextService();
+        $formatText = $this->createMock(FormattingTextInterface::class);
         $text = "Hello Word";
-        $formattedText = $formattingText->deleteSpace($text);
-        $this->assertSame($formattedText, "hello-word");
+        $this->assertSame("hello-word", $formatText->deleteSpace($text));
     }
 
     public function testCSSManagementService(): void
     {
-        $cssManagement = new CSSManagementService();
+        $cssManagement = $this->createMock(CSSManagementInterface::class);
         $text = "title";
 
         $textFont = "Open Sans";
@@ -48,40 +55,42 @@ class ServicesTest extends WebTestCase
 
     public function testImaginaryServiceSuccsessfullConnection(): void
     {
-        $imaginary = new ImaginaryService();
+        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
         $this->assertSame($imaginary->connect(), 'Connected');
     }
 
     public function testImaginaryServiceFailureConnection(): void
     {
-        $imaginary = new ImaginaryService();
+        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
         $imaginary->connect();
         $this->expectException(ConnectionImaginaryException::class);
     }
 
     public function testDisconnectionFromImaginary(): void
     {
-        $imaginary = new ImaginaryService();
+        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
         $this->assertSame($imaginary->disconnect(), 'Disconnected');
     }
 
     public function testResizeImageFailure(): void
     {
-        $imaginary = new ImaginaryService();
-        $file = new DummyImaginaryFile();
+        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
+        $file = $this->createMock(ImaginaryFileInterface::class);
         $hight = 50;
         $width = 50;
         $imaginary->resizeImage($file, $hight, $width);
+        $this->assertInstanceOf(ImaginaryFileInterface::class, $file);
         $this->expectException(DimensionErrorException::class);
     }
 
     public function testResizeImageSuccessfull(): void
     {
-        $imaginary = new ImaginaryService();
-        $file = new DummyImaginaryFile();
+        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
+        $file = $this->createMock(ImaginaryFileInterface::class);
         $hight = 150;
         $width = 150;
         $imaginary->resizeImage($file, $hight, $width);
+        $this->assertInstanceOf(ImaginaryFileInterface::class, $file);
         $this->assertSame($imaginary->spyResize, true);
         $this->assertEquals($file->getHight(), $hight);
         $this->assertEquals($file->getWidth(), $width);
@@ -89,87 +98,55 @@ class ServicesTest extends WebTestCase
 
     public function testConvertFileFailure(): void
     {
-        $imaginary = new ImaginaryService();
-        $file = new DummyImaginaryFile();
+        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
+        $file = $this->createMock(ImaginaryFileInterface::class);
         $extension = ".txt";
         $imaginary->convertFile($file, $extension);
+        $this->assertInstanceOf(ImaginaryFileInterface::class, $file);
         $this->expectException(ExtensionErrorException::class);
     }
 
     public function testConvertFileSuccessfull(): void
     {
-        $imaginary = new ImaginaryService();
-        $file = new DummyImaginaryFile();
+        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
+        $file = $this->createMock(ImaginaryFileInterface::class);
         $extension = ".txt";
         $imaginary->convertFile($file, $extension);
+        $this->assertInstanceOf(ImaginaryFileInterface::class, $file);
         $this->assertSame($imaginary->spyConvert, true);
         $this->assertEquals($file->getExtension(), $extension);
     }
 
-    // public function testConnectionToGithub(): void
-    // {
-    //     $service = new GitHubService();
-    //     $service->connectToGithub();
-    //     $this->assertSame($service->spy, true);
-    // }
+    public function testGitServiceSuccessfullConnection(): void
+    {
+        $github = $this->createMock(GitServiceInterface::class);
+        $this->assertSame($github->connect(), 'Connected');
+    }
 
-    // public function testDisconnectionFromGithub(): void
-    // {
-    //     $service = new GitHubService();
-    //     $this->assertSame($service->disconnectFromGithub(), 'Disconnected');
-    // }
+    public function testGitServiceFailureConnection(): void
+    {
+        $github = $this->createMock(GitServiceInterface::class);
+        $github->connect();
+        $this->expectException(ConnectionGitException::class);
+    }
 
-    // public function testIndexCreateClientHubspot(): void
-    // {
-    //     $client = static::createClient();
-    //     $client->request('GET', '/create-client-hubspot/colmar/colmar@colmar.fr');
-    //     $this->assertSame($client->getResponse()->getContent(), 'Creating hubspot client for colmar colmar@colmar.fr');
-    // }
+    public function testDisconnectionFromGit(): void
+    {
+        $github = $this->createMock(GitServiceInterface::class);
+        $this->assertSame($github->disconnect(), 'Disconnected');
+    }
 
-    // public function testConnectionToHubspot(): void
-    // {
-    //     $service = new DummyHubspotService();
-    //     $service->connectToHubspot();
-    //     $this->assertSame($service->spyconnect, true);
-    // }
+    public function testPushFileToGit(): void
+    {
+        $github = $this->createMock(GitServiceInterface::class);
+        $file = $this->createMock(GitFileInterface::class);
+        $branchName = "myBranch";
+        $message = "commit message";
+        $github->push($file, $branchName, $message);
+        $this->assertInstanceOf(GitFileInterface::class, $file);
+        $this->assertTrue($github->spyPush);
+    }
 
-    // public function testDisconnectionFromHubspot(): void
-    // {
-    //     $service = new DummyHubspotService();
-    //     $this->assertSame($service->disconnectFromHubspot(), 'Disconnected');
-    // }
-
-    // public function testCreateClientHubspot(): void
-    // {
-    //     $dummyDataBase = new DummyDataBaseManagement();
-    //     $clientName = 'Colmar';
-    //     $clientMail = 'colmar@mail.fr';
-    //     $service = new DummyHubspotService();
-    //     $service->createClient($dummyDataBase->clientToAdd($clientName, $clientMail));
-    //     $this->assertSame($service->spycreate, true);
-    // }
-
-    // public int $client_id=0;
-
-    // public function testPennyLaneServiceCreate(): void
-    // {
-    //     $client = new DummyClient();
-    //     $clientAirtable = $client->getAirTableClient();
-
-    //     $pennylane = new PennyLaneService();
-    //     $this->client_id = $pennylane->create($clientAirtable);
-    //     $this->assertNotNull($this->client_id, "Client_id error");
-    //     $this->getExpectedExceptionMessage("Client yet created");
-    //     $this->getExpectedExceptionMessage("Authentification error");
-    // }
-
-    // public function testPennyLaneServiceSubscribe(): void
-    // {
-    //     $pennylane = new PennyLaneService();
-    //     $subscribe = $pennylane->subscribe($this->client_id);
-    //     $this->assertTrue($subscribe, "Subscription error");
-    //     $this->getExpectedExceptionMessage("Authentification error");
-
-    // }
+    
 
 }

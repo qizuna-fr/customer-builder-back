@@ -6,7 +6,6 @@ use App\Exceptions\DimensionErrorException;
 use App\Exceptions\ExtensionErrorException;
 use App\Interfaces\ImaginaryFileInterface;
 use App\Interfaces\ImaginaryServiceInterface;
-use Exception;
 
 class ImaginaryService implements ImaginaryServiceInterface {
 
@@ -30,6 +29,8 @@ class ImaginaryService implements ImaginaryServiceInterface {
 
     public function resizeImage(ImaginaryFileInterface $file, int $hight, int $width){
         if ($hight < 100 || $width < 100) throw new DimensionErrorException();
+        $this->connect();
+        if (!$this->spyPing) throw new ConnectionImaginaryException();
         //code
         $file->setHight($hight);
         $file->setWidth($width);
@@ -40,6 +41,8 @@ class ImaginaryService implements ImaginaryServiceInterface {
     public function convertFile(ImaginaryFileInterface $file, $newType){
         $extensions = ['jpg', 'png', 'jpeg'];
         if (!in_array($newType , $extensions)) throw new ExtensionErrorException();
+        $this->connect();
+        if (!$this->spyPing) throw new ConnectionImaginaryException();
         //code
         $file->setExtension($newType);
         $this->spyConvert = true;

@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 class ConnectionImaginaryException extends \Exception
 {
-    protected $message = 'Connection failed !';
+    protected $message = 'Connection to imaginary failed !';
 }
 
 ?>
