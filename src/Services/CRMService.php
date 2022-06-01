@@ -8,20 +8,19 @@ use Exception;
 
 class CRMService implements CRMServiceInterface {
 
-    private bool $spyconnect = false;
 
-    public bool $exist ;
+    public bool $spyExist = false;
 
-    public bool $notExist ;
+    public bool $spyConnect =false;
 
-    private function ping(){
-        // code
-        $this->spyconnect = true;
+    public bool $spyCreate =false;
+
+    public function ping(){
+        $this->spyConnect = true;
     }
 
     public function connect() {
-        $this->ping();
-        if ($this->spyconnect) {
+        if ($this->spyConnect) {
             // code
             return ('Connected');
         }
@@ -34,13 +33,21 @@ class CRMService implements CRMServiceInterface {
     }
 
     public function customerExist(CustomerInterface $customer) : bool {
-        if ($customer->hasCRM()) return true; 
-        else return false;
+        if ($this->spyConnect) {
+            $this->spyExist = true;
+
+            //code
+        }
+        else throw new Exception('You should connect to CRM first !');
+        return false;
     }
 
     public function createCustomer(CustomerInterface $customer){
-        // code
-        if (!$this->customerExist($customer)) $this->spyconnect = true;
+        if ($this->spyExist) {
+            $this->spyCreate = true;
+
+            //code
+        }
         else throw new Exception("Customer already exist !");
     }
 }

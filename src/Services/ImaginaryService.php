@@ -6,21 +6,21 @@ use App\Exceptions\DimensionErrorException;
 use App\Exceptions\ExtensionErrorException;
 use App\Interfaces\ImaginaryFileInterface;
 use App\Interfaces\ImaginaryServiceInterface;
+use Exception;
 
 class ImaginaryService implements ImaginaryServiceInterface {
 
-    private bool $spyPing = false;
+    public bool $spyPing = false;
     public bool $spyResize = false;
     public bool $spyConvert = false;
 
-    private function ping(){
+    public function ping(){
         $this->spyPing = true;
     }
 
     public function connect() {
-        $this->ping();
         if ($this->spyPing) return ('Connected');
-        else throw new ConnectionImaginaryException();
+        else throw new ConnectionImaginaryException(); 
     }
 
     public function disconnect() {
@@ -28,25 +28,30 @@ class ImaginaryService implements ImaginaryServiceInterface {
     }
 
     public function resizeImage(ImaginaryFileInterface $file, int $hight, int $width){
-        if ($hight < 100 || $width < 100) throw new DimensionErrorException();
-        $this->connect();
-        if (!$this->spyPing) throw new ConnectionImaginaryException();
-        //code
-        $file->setHight($hight);
-        $file->setWidth($width);
-        $this->spyResize = true;
+        
+        if ($this->connect() == 'Connected') {
+            $this->spyResize = true;
 
+            //code
+            
+            // implementation ??
+            // $file->setHight($hight);
+            // $file->setWidth($width);
+        }
+        else throw new Exception('You should connect to Imaginary first !');
+        
     }
 
     public function convertFile(ImaginaryFileInterface $file, $newType){
-        $extensions = ['jpg', 'png', 'jpeg'];
-        if (!in_array($newType , $extensions)) throw new ExtensionErrorException();
-        $this->connect();
-        if (!$this->spyPing) throw new ConnectionImaginaryException();
-        //code
-        $file->setExtension($newType);
-        $this->spyConvert = true;
+        if ($this->connect() == 'Connected') {
+            $this->spyConvert = true;
 
+            //code
+    
+            // implementation ??
+            // $file->setExtension($newType);
+        }
+        else throw new Exception('You should connect to Imaginary first !');
     }
 
 }

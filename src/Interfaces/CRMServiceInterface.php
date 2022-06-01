@@ -3,6 +3,8 @@
 namespace App\Interfaces;
 
 interface CRMServiceInterface {
+
+    public function ping();
     
     public function connect();
 

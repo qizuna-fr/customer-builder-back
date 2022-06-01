@@ -2,186 +2,184 @@
 
 namespace App\Tests;
 
-use App\Exceptions\ConnectionCRMException;
-use App\Exceptions\ConnectionGitException;
-use App\Exceptions\ConnectionImaginaryException;
-use App\Exceptions\DimensionErrorException;
-use App\Exceptions\ExtensionErrorException;
-use App\Interfaces\CRMServiceInterface;
-use App\Interfaces\CSSManagementInterface;
-use App\Interfaces\CustomerInterface;
-use App\Interfaces\FormattingTextInterface;
-use App\Interfaces\GitFileInterface;
-use App\Interfaces\GitServiceInterface;
-use App\Interfaces\ImaginaryFileInterface;
-use App\Interfaces\ImaginaryServiceInterface;
+use App\Services\CRMService;
 use App\Services\CSSManagementService;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Services\FormattingTextService;
 use App\Services\GitService;
 use App\Services\ImaginaryService;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ServicesTest extends WebTestCase
 {
 
-    public function testFormatTextIsCalled(): void
+    // public function testFormatTextIsCalled(): void
+    // {
+    //     $client = static::createClient();
+    //     $client->request('GET', '/qizuna');
+    // }
+
+    public function testUpperCaseBeforeDeleteSpace(): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/qizuna');
+        $formatText = new FormattingTextService;
+        $this->assertTrue($formatText->spyLowerCase);
     }
 
-    public function testFormatTextService(): void
+    public function testDeleteSpaceIsCalled(): void
     {
-        $formatText = $this->createMock(FormattingTextInterface::class);
-        $text = "Hello Word";
-        $this->assertSame("hello-word", $formatText->deleteSpace($text));
+        $formatText = new FormattingTextService;
+        $this->assertTrue($formatText->spyDeleteSpace);
     }
 
-    public function testCSSManagementService(): void
+    public function testCSSManagementServices(): void
     {
-        $cssManagement = $this->createMock(CSSManagementInterface::class);
+        $cssManagement = new CSSManagementService;
         $text = "title";
 
         $textFont = "Open Sans";
         $cssManagement->editFont($text, $textFont);
-
-        $this->assertSame($cssManagement->spyFont, true);
+        $this->assertTrue($cssManagement->spyFont);
 
         $textStyle = "capitalize";
         $cssManagement->editStyle($text, $textStyle);
-        $this->assertSame($cssManagement->spyStyle, true);
+        $this->assertTrue($cssManagement->spyStyle);
         
         $textColor = "bold";
         $cssManagement->editColor($text, $textColor);
-        $this->assertSame($cssManagement->spyColor, true);
+        $this->assertTrue($cssManagement->spyColor);
     }
 
-    public function testImaginaryServiceSuccsessfullConnection(): void
+    public function testImaginaryPingBeforeConnect(): void
     {
-        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
-        $this->assertSame($imaginary->connect(), 'Connected');
-    }
-
-    public function testImaginaryServiceFailureConnection(): void
-    {
-        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
+        $imaginary = new ImaginaryService;
         $imaginary->connect();
-        $this->expectException(ConnectionImaginaryException::class);
+        $this->assertTrue($imaginary->spyPing);
+    }
+
+    public function testImaginaryServiceSuccessfulConnection(): void
+    {
+        $imaginary = new ImaginaryService;
+        $this->assertSame($imaginary->connect(), 'Connected');
     }
 
     public function testDisconnectionFromImaginary(): void
     {
-        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
+        $imaginary = new ImaginaryService;
         $this->assertSame($imaginary->disconnect(), 'Disconnected');
     }
 
-    public function testResizeImageFailure(): void
+    public function testConnectionToImaginaryBeforeResizingImage(): void
     {
-        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
-        $file = $this->createMock(ImaginaryFileInterface::class);
+        $imaginary = new ImaginaryService;
+        $file = new DummyImaginaryFile;
         $hight = 50;
         $width = 50;
         $imaginary->resizeImage($file, $hight, $width);
-        $this->assertInstanceOf(ImaginaryFileInterface::class, $file);
-        $this->expectException(DimensionErrorException::class);
+        $this->assertTrue($imaginary->spyResize);
     }
 
     public function testResizeImageSuccessfull(): void
     {
-        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
-        $file = $this->createMock(ImaginaryFileInterface::class);
+        $imaginary = new ImaginaryService;
+        $file = new DummyImaginaryFile;
         $hight = 150;
         $width = 150;
         $imaginary->resizeImage($file, $hight, $width);
-        $this->assertInstanceOf(ImaginaryFileInterface::class, $file);
-        $this->assertSame($imaginary->spyResize, true);
-        $this->assertEquals($file->getHight(), $hight);
-        $this->assertEquals($file->getWidth(), $width);
+
+        // Fonctionnel ???
+        // $this->assertEquals($file->getHight(), $hight);
+        // $this->assertEquals($file->getWidth(), $width);
     }
 
-    public function testConvertFileFailure(): void
+    public function testConnectionToImaginaryBeforeConvertFile(): void
     {
-        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
-        $file = $this->createMock(ImaginaryFileInterface::class);
-        $extension = ".txt";
+        $imaginary = new ImaginaryService;
+        $file = new DummyImaginaryFile;
+        $extension = ".jpg";
         $imaginary->convertFile($file, $extension);
-        $this->assertInstanceOf(ImaginaryFileInterface::class, $file);
-        $this->expectException(ExtensionErrorException::class);
+        $this->assertTrue($imaginary->spyConvert);
     }
 
     public function testConvertFileSuccessfull(): void
     {
-        $imaginary = $this->createMock(ImaginaryServiceInterface::class);
-        $file = $this->createMock(ImaginaryFileInterface::class);
-        $extension = ".txt";
+        $imaginary = new ImaginaryService;
+        $file = new DummyImaginaryFile;
+        $extension = ".jpg";
         $imaginary->convertFile($file, $extension);
-        $this->assertInstanceOf(ImaginaryFileInterface::class, $file);
-        $this->assertSame($imaginary->spyConvert, true);
-        $this->assertEquals($file->getExtension(), $extension);
+
+        // Fonctionnel ???
+        // $this->assertEquals($file->getExtension(), $extension);
+    }
+
+    public function testPingBeforeGitConnection(): void
+    {
+        $github = new GitService;
+        $github->connect();
+        $this->assertTrue($github->spyPing);
     }
 
     public function testGitServiceSuccessfullConnection(): void
     {
-        $github = $this->createMock(GitServiceInterface::class);
+        $github = new GitService;
         $this->assertSame($github->connect(), 'Connected');
-    }
-
-    public function testGitServiceFailureConnection(): void
-    {
-        $github = $this->createMock(GitServiceInterface::class);
-        $github->connect();
-        $this->expectException(ConnectionGitException::class);
     }
 
     public function testDisconnectionFromGit(): void
     {
-        $github = $this->createMock(GitServiceInterface::class);
+        $github = new GitService;
         $this->assertSame($github->disconnect(), 'Disconnected');
     }
 
-    public function testPushFileToGit(): void
+    public function testConnectToGitBeforeAdd(): void
     {
-        $github = $this->createMock(GitServiceInterface::class);
-        $file = $this->createMock(GitFileInterface::class);
+        $github = new GitService;
+        $file = new DummyGitFile;
+        $branchName = "myBranch";
+        $github->add($file, $branchName);
+        $this->assertTrue($github->spyAdd);
+    }
+
+    public function testGitAddBeforeCommit(): void
+    {
+        $github = new GitService;
+        $branchName = "myBranch";
+        $message = "commit message";
+        $github->commit($branchName, $message);
+        $this->assertTrue($github->spyCommit);
+    }
+    public function testGitCommitBeforePush(): void
+    {
+        $github = new GitService;
+        $file = new DummyGitFile;
         $branchName = "myBranch";
         $message = "commit message";
         $github->push($file, $branchName, $message);
-        $this->assertInstanceOf(GitFileInterface::class, $file);
         $this->assertTrue($github->spyPush);
     }
 
-    public function testCRMServiceSuccessfullConnection(): void
+    public function testCRMPingBeforeConnection(): void
     {
-        $hubspot = $this->createMock(CRMServiceInterface::class);
-        $this->assertSame($hubspot->connect(), 'Connected');
+        $hubspot = new CRMService;
+        $hubspot->connect();
+        $this->assertTrue($hubspot->spyConnect);
     }
 
-    public function testCRMServiceFailureConnection(): void
+    public function testCRMSuccessfullConnection(): void
     {
-        $hubspot = $this->createMock(CRMServiceInterface::class);
-        $hubspot->connect();
-        $this->expectException(ConnectionCRMException::class);
+        $hubspot = new CRMService;
+        $this->assertSame($hubspot->connect(), 'Connected');
     }
 
     public function testDisconnectionFromCRM(): void
     {
-        $hubspot = $this->createMock(CRMServiceInterface::class);
+        $hubspot = new CRMService;
         $this->assertSame($hubspot->disconnect(), 'Disconnected');
     }
 
-    public function testCreateCRMClientSuccessfull(): void
+    public function testIfCRMClientExistBeforeCreation(): void
     {
-        $hubspot = $this->createMock(CRMServiceInterface::class);
-        $customer = $this->createMock(CustomerInterface::class);
-        $this->assertTrue($hubspot->createCustomer($customer));
-    }
-
-    public function testCreateCRMClientFailure(): void
-    {
-        $hubspot = $this->createMock(CRMServiceInterface::class);
-        $customer = $this->createMock(CustomerInterface::class);
+        $hubspot = new CRMService;
+        $customer = new DummyCustomer();
         $hubspot->createCustomer($customer);
-        $this->expectException("Customer already exist !");
+        $this->assertTrue($hubspot->spyExist);
     }
-
 }

@@ -8,17 +8,16 @@ use Exception;
 
 class GitService implements GitServiceInterface {
 
-    private bool $spyPing = false;
+    public bool $spyPing = false;
     public bool $spyAdd = false;
     public bool $spyCommit = false;
     public bool $spyPush = false;
 
-    private function ping(){
+    public function ping(){
         $this->spyPing = true;
     }
 
     public function connect() {
-        $this->ping();
         if ($this->spyPing) return ('Connected');
         else throw new ConnectionGitException();
     }
@@ -28,20 +27,30 @@ class GitService implements GitServiceInterface {
     }
 
     public function add(GitFileInterface $file, string $branchName)  {
-        $this->connect();
-        if (!$this->spyPing) throw new ConnectionGitException();
-        $this->spyAdd = true;
+        if ($this->spyPing) {
+            $this->spyAdd = true;
+
+            //code
+        }
+        else throw new Exception('You should connect to Git first !');
     }
 
     public function commit(string $branchName, string $message){
-        if (!$this->spyPing) throw new ConnectionGitException();
-        if ($this->spyAdd) $this->spyCommit = true;
+        if ($this->spyAdd) {
+            $this->spyCommit = true;
+
+            //code
+        }
         else throw new Exception('you should add file first ! ');
     }
 
     public function push(GitFileInterface $file, string $branchName, string $message){
-        if (!$this->spyPing) throw new ConnectionGitException();
-        if ($this->spyCommit) $this->spyPush = true;
+        if ($this->spyCommit) {
+            $this->spyPush = true;
+
+            //code
+
+        }
         else throw new Exception('you should commit first ! ');
     }
 }

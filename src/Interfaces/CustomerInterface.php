@@ -4,17 +4,15 @@ namespace App\Interfaces;
 
 interface CustomerInterface {
 
-    public function getId() : int;
+    public function id() : int;
 
     public function getName() : string;
 
     public function getEmail() : string;
 
-    public function hasCRM() : bool;
+    public function getData() : array;
 
-    // public function getData() : array;
-
-    // public function setData(array $customerData);
+    public function setData(array $customerData);
 
 }
 

@@ -3,6 +3,8 @@
 namespace App\Interfaces;
 
 interface ImaginaryServiceInterface {
+
+    public function ping();
     
     public function connect();
 

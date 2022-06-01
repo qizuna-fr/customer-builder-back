@@ -3,6 +3,8 @@
 namespace App\Interfaces;
 
 interface GitServiceInterface {
+
+    public function ping();
     
     public function connect();
 
