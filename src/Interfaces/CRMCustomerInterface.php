@@ -2,17 +2,13 @@
 
 namespace App\Interfaces;
 
-interface CustomerInterface {
+interface CRMCustomerInterface {
 
     public function id() : int;
 
     public function getName() : string;
 
-    public function setName(string $name);
-
     public function getEmail() : string;
-
-    public function setEmail(string $mail);
 
     public function getData() : array;
 

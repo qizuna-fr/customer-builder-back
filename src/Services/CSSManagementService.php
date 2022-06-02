@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Interfaces\CSSManagementInterface;
-use App\Interfaces\CustomerInterface;
 
 class CSSManagementService implements CSSManagementInterface {
 

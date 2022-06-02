@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Interfaces\CustomerInterface;
 use App\Interfaces\FormattingTextInterface;
+use Exception;
 
 class FormattingTextService implements FormattingTextInterface {
 
@@ -11,9 +12,11 @@ class FormattingTextService implements FormattingTextInterface {
     public $spyDeleteSpace = false ;
     
     public function deleteSpace(string $text) :string {
-        $lowerCase = $this->lowerCase($text);
-        $formattedText = str_replace(' ', '-', $lowerCase);
-        $this->spyDeleteSpace = true;
+        if ($this->spyLowerCase){
+            $this->spyDeleteSpace = true;
+        }
+        else throw new Exception('You should use lowercase function first !');
+        $formattedText = str_replace(' ', '-', $text);
         return $formattedText;
     }
 

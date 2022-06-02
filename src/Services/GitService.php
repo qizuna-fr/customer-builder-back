@@ -18,6 +18,7 @@ class GitService implements GitServiceInterface {
     }
 
     public function connect() {
+        $this->ping();
         if ($this->spyPing) return ('Connected');
         else throw new ConnectionGitException();
     }

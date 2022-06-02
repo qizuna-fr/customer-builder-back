@@ -19,6 +19,7 @@ class ImaginaryService implements ImaginaryServiceInterface {
     }
 
     public function connect() {
+        $this->ping();
         if ($this->spyPing) return ('Connected');
         else throw new ConnectionImaginaryException(); 
     }

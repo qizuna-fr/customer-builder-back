@@ -13,7 +13,6 @@ use App\Interfaces\GitServiceInterface;
 use App\Interfaces\ImaginaryFileInterface;
 use App\Interfaces\ImaginaryServiceInterface;
 use App\Interfaces\PennyLaneServiceInterface;
-use App\Tests\DummyCustomer;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,7 +26,6 @@ class ServicesController extends AbstractController
         private CSSManagementInterface $cssManagement,
         private ImaginaryServiceInterface $imaginary,
         private DataBaseManagementInterface $dataBase,
-        private CustomerInterface $customer,
         private CRMServiceInterface $hubspot,
         private PennyLaneServiceInterface $pennyLane
     ) 
@@ -37,15 +35,18 @@ class ServicesController extends AbstractController
     #[Route('/qizuna')]
     public function index() : Response
     {
-        $customer = new DummyCustomer;
+        $customerId = 1;
+        $customerData = $this->dataBase->fetchData($customerId);
 
-        $formattedText = $this->formattingText->deleteSpace($this->customerData['cityName']);
+        $text = $customerData['cityName'];
+        $lowerCaseText = $this->formattingText->lowerCase($text);
+        $formattedText = $this->formattingText->deleteSpace($lowerCaseText);
 
         $this->cssManagement->editColor('title', 'black');
-        // $this->customerData['title']['color'] = 'black';
+        $customerData['title']['color'] = 'black';
 
         $this->cssManagement->editStyle('paragraph', 'normal');
-        // $this->customerData['paragraph']['style'] = 'normal';
+        $customerData['paragraph']['style'] = 'normal';
 
         $image = new ImaginaryFileInterface();
         $imageCustomer = $this->customerData['files']['logo'];
@@ -59,30 +60,38 @@ class ServicesController extends AbstractController
 
         $newExtension = "jpg";
 
+        $this-> imaginary->connect();
+
         try{
             $this->imaginary->resizeImage($image, $higth, $width);
+            // $customerData['files']['logo']['hight'] = $higth;
+            // $customerData['files']['logo']['width'] = $width;
 
             $this->imaginary->convertFile($image, $newExtension);
+            // $customerData['files']['logo']['extension'] = $newExtension;
         }
         catch(ConnectionImaginaryException $e){
             echo 'Exception reçue : ',  $e->getMessage(), "\n";
         }
 
-        $this->dataBase->persist($this->customer, $this->customerData);
+        // $this->dataBase->persist();
 
         $file = new GitFileInterface();
         $file->setData($this->customerData);
         $branchName = 'update data client'.$this->client->getClientName();
         $message = 'updated at '.date('h:i:sa');
 
+        $this->github->connect();
+
         try{
+            $this->github->add($file, $branchName);
+            $this->github->commit($branchName, $message);
             $this->github->push($file, $branchName, $message);
         }
         catch(Exception $e){
             echo 'Exception reçue : ',  $e->getMessage(), "\n";
         }
         
-
         // $billing= new BillingService();
         //     $billing->create($this->customer);
         //     $billing->subscribe($this->customer->getId());

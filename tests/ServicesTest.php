@@ -2,6 +2,9 @@
 
 namespace App\Tests;
 
+use App\Interfaces\CustomerInterface;
+use App\Interfaces\GitFileInterface;
+use App\Interfaces\ImaginaryFileInterface;
 use App\Services\CRMService;
 use App\Services\CSSManagementService;
 use App\Services\FormattingTextService;
@@ -18,15 +21,11 @@ class ServicesTest extends WebTestCase
     //     $client->request('GET', '/qizuna');
     // }
 
-    public function testUpperCaseBeforeDeleteSpace(): void
+    public function testLowerCaseBeforeDeleteSpace(): void
     {
         $formatText = new FormattingTextService;
-        $this->assertTrue($formatText->spyLowerCase);
-    }
-
-    public function testDeleteSpaceIsCalled(): void
-    {
-        $formatText = new FormattingTextService;
+        $text = 'Mulhouse';
+        $formatText->deleteSpace($text);
         $this->assertTrue($formatText->spyDeleteSpace);
     }
 
@@ -70,7 +69,8 @@ class ServicesTest extends WebTestCase
     public function testConnectionToImaginaryBeforeResizingImage(): void
     {
         $imaginary = new ImaginaryService;
-        $file = new DummyImaginaryFile;
+        // $file = new DummyImaginaryFile;
+        $file = $this->createMock(ImaginaryFileInterface::class);
         $hight = 50;
         $width = 50;
         $imaginary->resizeImage($file, $hight, $width);
@@ -80,7 +80,8 @@ class ServicesTest extends WebTestCase
     public function testResizeImageSuccessfull(): void
     {
         $imaginary = new ImaginaryService;
-        $file = new DummyImaginaryFile;
+        // $file = new DummyImaginaryFile;
+        $file = $this->createMock(ImaginaryFileInterface::class);
         $hight = 150;
         $width = 150;
         $imaginary->resizeImage($file, $hight, $width);
@@ -93,7 +94,8 @@ class ServicesTest extends WebTestCase
     public function testConnectionToImaginaryBeforeConvertFile(): void
     {
         $imaginary = new ImaginaryService;
-        $file = new DummyImaginaryFile;
+        // $file = new DummyImaginaryFile;
+        $file = $this->createMock(ImaginaryFileInterface::class);
         $extension = ".jpg";
         $imaginary->convertFile($file, $extension);
         $this->assertTrue($imaginary->spyConvert);
@@ -102,7 +104,8 @@ class ServicesTest extends WebTestCase
     public function testConvertFileSuccessfull(): void
     {
         $imaginary = new ImaginaryService;
-        $file = new DummyImaginaryFile;
+        // $file = new DummyImaginaryFile;
+        $file = $this->createMock(ImaginaryFileInterface::class);
         $extension = ".jpg";
         $imaginary->convertFile($file, $extension);
 
@@ -132,7 +135,8 @@ class ServicesTest extends WebTestCase
     public function testConnectToGitBeforeAdd(): void
     {
         $github = new GitService;
-        $file = new DummyGitFile;
+        // $file = new DummyGitFile;
+        $file = $this->createMock(GitFileInterface::class);
         $branchName = "myBranch";
         $github->add($file, $branchName);
         $this->assertTrue($github->spyAdd);
@@ -149,7 +153,8 @@ class ServicesTest extends WebTestCase
     public function testGitCommitBeforePush(): void
     {
         $github = new GitService;
-        $file = new DummyGitFile;
+        // $file = new DummyGitFile;
+        $file = $this->createMock(GitFileInterface::class);
         $branchName = "myBranch";
         $message = "commit message";
         $github->push($file, $branchName, $message);
@@ -178,7 +183,8 @@ class ServicesTest extends WebTestCase
     public function testIfCRMClientExistBeforeCreation(): void
     {
         $hubspot = new CRMService;
-        $customer = new DummyCustomer();
+        // $customer = new DummyCustomer();
+        $customer = $this->createMock(CustomerInterface::class);
         $hubspot->createCustomer($customer);
         $this->assertTrue($hubspot->spyExist);
     }
