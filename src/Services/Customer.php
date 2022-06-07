@@ -12,7 +12,7 @@ class Customer implements CustomerInterface {
     }
 
 
-    public function id() : int {
+    public function getId() : int {
 
         return 1;
     }

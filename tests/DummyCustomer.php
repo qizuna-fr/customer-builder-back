@@ -5,7 +5,7 @@ use App\Interfaces\CustomerInterface;
 
 class DummyCustomer implements CustomerInterface {
 
-    public function id() : int {
+    public function getId() : int {
 
         return 1;
     }
@@ -62,6 +62,18 @@ class DummyCustomer implements CustomerInterface {
     public function setData(array $customerData){
         
     }
+
+    public function setName(string $name)
+    {
+        
+    }
+
+    public function setEmail(string $mail)
+    {
+                
+    }
+
+
 }
 
 ?>

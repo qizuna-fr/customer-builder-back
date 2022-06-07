@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 interface CRMCustomerInterface {
 
-    public function id() : int;
+    public function getId() : int;
 
     public function getName() : string;
 

@@ -7,9 +7,12 @@ use App\Interfaces\GitFileInterface;
 use App\Interfaces\ImaginaryFileInterface;
 use App\Services\CRMService;
 use App\Services\CSSManagementService;
+use App\Services\Customer;
+use App\Tests\DummyCustomer;
 use App\Services\FormattingTextService;
 use App\Services\GitService;
 use App\Services\ImaginaryService;
+use App\Services\BillingService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ServicesTest extends WebTestCase
@@ -43,7 +46,7 @@ class ServicesTest extends WebTestCase
         $textStyle = "capitalize";
         $cssManagement->editStyle($text, $textStyle);
         $this->assertTrue($cssManagement->spyStyle);
-        
+
         $textColor = "bold";
         $cssManagement->editColor($text, $textColor);
         $this->assertTrue($cssManagement->spyColor);
@@ -191,4 +194,58 @@ class ServicesTest extends WebTestCase
     //     $this->assertTrue($hubspot->spyExist);
     // }
 
+    public function testIfCRMClientExistBeforeCreation(): void
+    {
+        $hubspot = new CRMService;
+        // $customer = new DummyCustomer();
+        $customer = $this->createMock(CustomerInterface::class);
+        $hubspot->createCustomer($customer);
+        $this->assertTrue($hubspot->spyExist);
+    }
+
+    public function testBillingConnect()
+    {
+        $billing = new BillingService();
+        $this->assertTrue($billing->connect());
+    }
+
+    public function testBillingDisConnect()
+    {
+        $billing = new BillingService();
+        $this->assertTrue($billing->disconnect());
+    }
+
+    public function testBillingCreate()
+    {
+        $customer = new DummyCustomer();
+        $billing = new BillingService();
+
+        $this->assertTrue($billing->create($customer));
+        $this->expectException("Client yet created..");
+    }
+
+    public function testBillingSubmission()
+    {
+        $customer = new DummyCustomer();
+        $billing = new BillingService();
+
+        $this->assertTrue($billing->subscribe($customer));
+    }
+
+    public function testIsThisCustomerYetCreated()
+    {
+        $customer = new DummyCustomer();
+        $billing = new BillingService();
+
+        $this->assertTrue($billing->isThisCustomerYetCreated($customer));
+    }
+
+
+    public function testHasCustomerYetSubscribe()
+    {
+        $customer = new DummyCustomer();
+        $billing = new BillingService();
+
+        $this->assertTrue($billing->hasCustomerYetSubscribe($customer));
+    }
 }
