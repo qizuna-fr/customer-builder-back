@@ -18,11 +18,11 @@ class DummyImaginaryFile implements ImaginaryFileInterface {
 
     }
 
-    public function getHight() : int {
+    public function getHeight () : int {
         return 120;
     }
 
-    public function setHight(int $hight) {
+    public function setHeight (int $height ) {
 
     }
 

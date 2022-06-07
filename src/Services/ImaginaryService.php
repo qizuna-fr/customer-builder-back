@@ -28,7 +28,7 @@ class ImaginaryService implements ImaginaryServiceInterface {
         return('Disconnected');
     }
 
-    public function resizeImage(ImaginaryFileInterface $file, int $hight, int $width){
+    public function resizeImage(ImaginaryFileInterface $file, int $height , int $width){
         
         if ($this->connect() == 'Connected') {
             $this->spyResize = true;
@@ -36,7 +36,7 @@ class ImaginaryService implements ImaginaryServiceInterface {
             //code
             
             // implementation ??
-            // $file->setHight($hight);
+            // $file->setHeight ($height );
             // $file->setWidth($width);
         }
         else throw new Exception('You should connect to Imaginary first !');

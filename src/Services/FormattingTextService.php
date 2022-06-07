@@ -12,6 +12,7 @@ class FormattingTextService implements FormattingTextInterface {
     public $spyDeleteSpace = false ;
     
     public function deleteSpace(string $text) :string {
+        $this->lowerCase($text);
         if ($this->spyLowerCase){
             $this->spyDeleteSpace = true;
         }

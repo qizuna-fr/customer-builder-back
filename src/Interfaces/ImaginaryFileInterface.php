@@ -10,9 +10,9 @@ interface ImaginaryFileInterface {
 
     public function setExtension(string $extension);
 
-    public function getHight() : int;
+    public function getHeight () : int;
 
-    public function setHight(int $hight);
+    public function setHeight (int $height );
 
     public function getWidth(): int;
 

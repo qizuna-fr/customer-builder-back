@@ -22,6 +22,7 @@ services:
 
     App\Interfaces\GitServiceInterface:
         alias: App\Services\GitService
+        # alias: App\Tests\GitServiceStub
 
     App\Interfaces\CSSManagementInterface:
         alias: App\Services\CSSManagementService
@@ -33,8 +34,8 @@ services:
         alias: App\Services\ImaginaryService
 
     App\Interfaces\DataBaseManagementInterface:
-        # alias: App\Services\DataBaseManagement
-        alias: App\Tests\DummyDataBaseManagement
+        alias: App\Services\DataBaseManagement
+        # alias: App\Tests\Dummy\DummyDataBaseManagement
 
     App\Interfaces\CRMServiceInterface:
         alias: App\Services\CRMService

@@ -13,6 +13,8 @@ use App\Interfaces\GitServiceInterface;
 use App\Interfaces\ImaginaryFileInterface;
 use App\Interfaces\ImaginaryServiceInterface;
 use App\Interfaces\PennyLaneServiceInterface;
+use App\Tests\DummyGitFile;
+use App\Tests\DummyImaginaryFile;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,14 +50,14 @@ class ServicesController extends AbstractController
         $this->cssManagement->editStyle('paragraph', 'normal');
         $customerData['paragraph']['style'] = 'normal';
 
-        $image = new ImaginaryFileInterface();
-        $imageCustomer = $this->customerData['files']['logo'];
+        $image = new DummyImaginaryFile();
+        $imageCustomer = $customerData['files']['logo'];
         $image->name($imageCustomer['name']);
         $image->setExtension($imageCustomer['extension']);
         $image->setWidth($imageCustomer['width']);
-        $image->setHight($imageCustomer['higth']);
+        $image->setHeight ($imageCustomer['height']);
 
-        $higth = 250;
+        $height = 250;
         $width = 250;
 
         $newExtension = "jpg";
@@ -63,8 +65,8 @@ class ServicesController extends AbstractController
         $this-> imaginary->connect();
 
         try{
-            $this->imaginary->resizeImage($image, $higth, $width);
-            // $customerData['files']['logo']['hight'] = $higth;
+            $this->imaginary->resizeImage($image, $height , $width);
+            // $customerData['files']['logo']['height '] = $height ;
             // $customerData['files']['logo']['width'] = $width;
 
             $this->imaginary->convertFile($image, $newExtension);
@@ -76,9 +78,9 @@ class ServicesController extends AbstractController
 
         // $this->dataBase->persist();
 
-        $file = new GitFileInterface();
-        $file->setData($this->customerData);
-        $branchName = 'update data client'.$this->client->getClientName();
+        $file = new DummyGitFile();
+        $file->setData($customerData);
+        $branchName = 'update data client';
         $message = 'updated at '.date('h:i:sa');
 
         $this->github->connect();
