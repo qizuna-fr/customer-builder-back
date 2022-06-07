@@ -1,5 +1,5 @@
 <?php
-namespace App\Tests;
+namespace App\Services\Dummy;
 
 use App\Interfaces\ImaginaryFileInterface;
 

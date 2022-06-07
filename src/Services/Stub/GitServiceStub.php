@@ -1,5 +1,5 @@
 <?php
-namespace App\Tests;
+namespace App\Services\Stub;
 
 use App\Exceptions\ConnectionGitException;
 use App\Interfaces\GitFileInterface;
@@ -8,11 +8,11 @@ use Exception;
 
 class GitServiceStub implements GitServiceInterface {
 
-    public $spyHasCheckConnection = false;
+    public bool $spyHasCheckConnection = false;
 
-    public $spyCheckAdd = false;
+    public bool $spyCheckAdd = false;
 
-    public $spyCheckCommit = false;
+    public bool $spyCheckCommit = false;
 
     public bool $spyPing = false;
     public bool $spyAdd = false;

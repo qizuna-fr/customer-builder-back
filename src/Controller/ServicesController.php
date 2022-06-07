@@ -13,6 +13,9 @@ use App\Interfaces\GitServiceInterface;
 use App\Interfaces\ImaginaryFileInterface;
 use App\Interfaces\ImaginaryServiceInterface;
 use App\Interfaces\BillingServiceInterface;
+use App\Services\Customer;
+use App\Services\Dummy\DummyGitFile;
+use App\Services\Dummy\DummyImaginaryFile;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,63 +41,74 @@ class ServicesController extends AbstractController
         $customerId = 1;
         $customerData = $this->dataBase->fetchData($customerId);
 
-        // $text = $customerData['cityName'];
-        // $lowerCaseText = $this->formattingText->lowerCase($text);
-        // $formattedText = $this->formattingText->deleteSpace($lowerCaseText);
+        $text = $customerData['cityName'];
+        $lowerCaseText = $this->formattingText->lowerCase($text);
+        $formattedText = $this->formattingText->deleteSpace($lowerCaseText);
 
-        // $this->cssManagement->editColor('title', 'black');
-        // $customerData['title']['color'] = 'black';
+        $this->cssManagement->editColor('title', 'black');
+        $customerData['title']['color'] = 'black';
 
-        // $this->cssManagement->editStyle('paragraph', 'normal');
-        // $customerData['paragraph']['style'] = 'normal';
+        $this->cssManagement->editStyle('paragraph', 'normal');
+        $customerData['paragraph']['style'] = 'normal';
 
-        // $image = new ImaginaryFileInterface();
-        // $imageCustomer = $this->customerData['files']['logo'];
-        // $image->name($imageCustomer['name']);
-        // $image->setExtension($imageCustomer['extension']);
-        // $image->setWidth($imageCustomer['width']);
-        // $image->setHight($imageCustomer['higth']);
+        $image = new DummyImaginaryFile();
+        $imageCustomer = $customerData['files']['logo'];
+        $image->name($imageCustomer['name']);
+        $image->setExtension($imageCustomer['extension']);
+        $image->setWidth($imageCustomer['width']);
+        $image->setHeight($imageCustomer['height']);
 
-        // $higth = 250;
-        // $width = 250;
+        $higth = 250;
+        $width = 250;
 
-        // $newExtension = "jpg";
+        $newExtension = "jpg";
 
-        // $this-> imaginary->connect();
+        $this-> imaginary->connect();
 
-        // try{
-        //     $this->imaginary->resizeImage($image, $higth, $width);
-        //     // $customerData['files']['logo']['hight'] = $higth;
-        //     // $customerData['files']['logo']['width'] = $width;
+        try{
+            $this->imaginary->resizeImage($image, $higth, $width);
+            // $customerData['files']['logo']['height'] = $higth;
+            // $customerData['files']['logo']['width'] = $width;
 
-        //     $this->imaginary->convertFile($image, $newExtension);
-        //     // $customerData['files']['logo']['extension'] = $newExtension;
-        // }
-        // catch(ConnectionImaginaryException $e){
-        //     echo 'Exception reçue : ',  $e->getMessage(), "\n";
-        // }
+            $this->imaginary->convertFile($image, $newExtension);
+            // $customerData['files']['logo']['extension'] = $newExtension;
+        }
+        catch(ConnectionImaginaryException $e){
+            echo 'Exception reçue : ',  $e->getMessage(), "\n";
+        }
 
-        // // $this->dataBase->persist();
+        // $this->dataBase->persist();
 
-        // $file = new GitFileInterface();
-        // $file->setData($this->customerData);
-        // $branchName = 'update data client'.$this->client->getClientName();
-        // $message = 'updated at '.date('h:i:sa');
+        $file = new DummyGitFile();
+        $file->setData($customerData);
+        $branchName = 'update data client';
+        $message = 'updated at '.date('h:i:sa');
 
-        // $this->github->connect();
+        $this->github->connect();
 
-        // try{
-        //     $this->github->add($file, $branchName);
-        //     $this->github->commit($branchName, $message);
-        //     $this->github->push($file, $branchName, $message);
-        // }
-        // catch(Exception $e){
-        //     echo 'Exception reçue : ',  $e->getMessage(), "\n";
-        // }
+        try{
+            $this->github->add($file, $branchName);
+            $this->github->commit($branchName, $message);
+            $this->github->push($file, $branchName, $message);
+        }
+        catch(Exception $e){
+            echo 'Exception reçue : ',  $e->getMessage(), "\n";
+        }
    
         
         try{
-        //     $this->billing->create($customerData);
+            $this->billing->connect();
+
+            $customerName=$customerData['cityName'];
+            $customerEmail=$customerData['email'];
+            $customerData = array ();
+
+            $customer = new Customer($customerName, $customerEmail, $customerData);
+
+            $this->billing->create($customer);
+            $this->billing->subscribe($customerId);
+
+            $this->billing->disconnect();
         }
         catch(Exception $e){
             echo 'Exception reçue : ',  $e->getMessage(), "\n";

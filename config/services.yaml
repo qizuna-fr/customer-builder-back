@@ -21,8 +21,8 @@ services:
             - "../src/Kernel.php"
 
     App\Interfaces\GitServiceInterface:
-        alias: App\Services\GitService
-        # alias: App\Tests\GitServiceStub
+        # alias: App\Services\GitService
+        alias: App\Services\Stub\GitServiceStub
 
     App\Interfaces\CSSManagementInterface:
         alias: App\Services\CSSManagementService
@@ -38,20 +38,21 @@ services:
         # alias: App\Tests\Dummy\DummyDataBaseManagement
 
     App\Interfaces\CRMServiceInterface:
-        alias: App\Services\CRMService
+        # alias: App\Services\CRMService
+        alias: App\Services\Stub\CRMServiceStub
 
     App\Interfaces\CustomerInterface:
-        alias: App\Tests\DummyCustomer
+        alias: App\Services\Dummy\DummyCustomer
 
     App\Interfaces\ImaginaryFileInterface:
-        alias: App\Tests\DummyImaginaryFile
+        alias: App\Services\Dummy\DummyImaginaryFile
 
     App\Interfaces\GitFileInterface:
-        alias: App\Tests\DummyGitFile
+        alias: App\Services\Dummy\DummyGitFile
 
     App\Interfaces\BillingServiceInterface:
         # alias: App\Services\BillingService
-        alias: App\Tests\DummyBillingService
+        alias: App\Services\Dummy\DummyBillingService
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

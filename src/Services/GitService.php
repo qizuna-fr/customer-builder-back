@@ -1,13 +1,10 @@
 <?php
 namespace App\Services;
 
-use App\Exceptions\ConnectionGitException;
 use App\Interfaces\GitFileInterface;
 use App\Interfaces\GitServiceInterface;
-use Exception;
 
 class GitService implements GitServiceInterface {
-
 
     public function ping(){
         $this->spyPing = true;

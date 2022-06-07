@@ -1,11 +1,34 @@
 <?php
-namespace App\Tests;
+namespace App\Services\Dummy;
 
-use App\Interfaces\DataBaseManagementInterface;
+use App\Interfaces\CustomerInterface;
 
-class DummyDataBaseManagement implements DataBaseManagementInterface {
+class DummyCustomer implements CustomerInterface {
 
-    public function fetchData(int $clientId) : array {
+    public function getId() : int {
+
+        return 1;
+    }
+
+    public function getName() : string {
+
+        return "Mulhouse";
+    }
+
+    public function setName(string $mail) {
+        
+    }
+
+    public function getEmail(): string {
+
+        return "mulhouse@mail.fr";
+    }
+
+    public function setEmail(string $mail) {
+
+    }
+
+    public function getData() :array {
         $data = array(
             'cityName' => 'Mulhouse' , 
             'title' => [
@@ -28,17 +51,18 @@ class DummyDataBaseManagement implements DataBaseManagementInterface {
             ],
             'files' => [
                 'logo' =>
-                    ['name' => 'file1.jpg', 'width' => '100', 'height ' => '120', 'extension' => 'jpg'], 
+                    ['name' => 'file1.jpg', 'width' => '100', 'height' => '120', 'extension' => 'jpg'], 
                 'background' => 
-                    ['name' => 'file2.png', 'width' => '110', 'height ' => '150', 'extension' => 'jpeg']
+                    ['name' => 'file2.png', 'width' => '110', 'height' => '150', 'extension' => 'jpeg']
             ]
         );
         return $data;
     }
 
-    public function persist(){
+    public function setData(array $customerData){
         
     }
+
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Services\Dummy;
 
 use App\Interfaces\BillingServiceInterface;
 use App\Interfaces\CustomerInterface;
