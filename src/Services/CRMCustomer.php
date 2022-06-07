@@ -11,7 +11,7 @@ class CRMCustomer implements CustomerInterface {
         
     }
 
-    public function id() : int {
+    public function Getid() : int {
 
         return 1;
     }
