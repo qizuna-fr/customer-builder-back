@@ -1,10 +1,8 @@
 <?php
 namespace App\Services;
 
-use App\Exceptions\ConnectionCRMException;
 use App\Interfaces\CRMServiceInterface;
 use App\Interfaces\CustomerInterface;
-use Exception;
 
 class CRMService implements CRMServiceInterface {
 

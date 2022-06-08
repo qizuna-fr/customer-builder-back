@@ -5,12 +5,9 @@ namespace App\Controller;
 use App\Exceptions\ConnectionImaginaryException;
 use App\Interfaces\CRMServiceInterface;
 use App\Interfaces\CSSManagementInterface;
-use App\Interfaces\CustomerInterface;
 use App\Interfaces\DataBaseManagementInterface;
 use App\Interfaces\FormattingTextInterface;
-use App\Interfaces\GitFileInterface;
 use App\Interfaces\GitServiceInterface;
-use App\Interfaces\ImaginaryFileInterface;
 use App\Interfaces\ImaginaryServiceInterface;
 use App\Interfaces\BillingServiceInterface;
 use App\Services\Customer;
@@ -77,7 +74,7 @@ class ServicesController extends AbstractController
             echo 'Exception reçue : ',  $e->getMessage(), "\n";
         }
 
-        // $this->dataBase->persist();
+        $this->dataBase->persist();
 
         $file = new DummyGitFile();
         $file->setData($customerData);
@@ -94,7 +91,6 @@ class ServicesController extends AbstractController
         catch(Exception $e){
             echo 'Exception reçue : ',  $e->getMessage(), "\n";
         }
-   
         
         try{
             $this->billing->connect();
@@ -114,7 +110,6 @@ class ServicesController extends AbstractController
             echo 'Exception reçue : ',  $e->getMessage(), "\n";
         }
 
-   
         return new Response("qizuna", 200);
 
     }
