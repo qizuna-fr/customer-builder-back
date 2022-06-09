@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Entity\ApiConnection;
 use App\Interfaces\CustomerInterface;
 use App\Interfaces\GitFileInterface;
 use App\Interfaces\ImaginaryFileInterface;
@@ -235,4 +236,11 @@ class ServicesTest extends WebTestCase
 
         $this->assertTrue($billing->hasCustomerYetSubscribe($customer));
     }
+
+    public function testApiConnection()
+    {
+        $apiconnection = new ApiConnection();
+
+    }
+
 }
