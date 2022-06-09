@@ -8,7 +8,6 @@ class DummyDataBaseManagement implements DataBaseManagementInterface {
     public function fetchData(int $clientId) : array {
         $data = array(
             'cityName' => 'Mulhouse' , 
-            'email' => 'mulhouse@mail.fr' ,
             'title' => [
                 'font' => 'Open sans', 
                 'color' =>'blue', 
@@ -29,9 +28,9 @@ class DummyDataBaseManagement implements DataBaseManagementInterface {
             ],
             'files' => [
                 'logo' =>
-                    ['name' => 'file1.jpg', 'width' => '100', 'height ' => '120', 'extension' => 'jpg'], 
+                    ['name' => 'file1.jpg', 'width' => '100', 'height' => '120', 'extension' => 'jpg'], 
                 'background' => 
-                    ['name' => 'file2.png', 'width' => '110', 'height ' => '150', 'extension' => 'jpeg']
+                    ['name' => 'file2.png', 'width' => '110', 'height' => '150', 'extension' => 'jpeg']
             ]
         );
         return $data;
