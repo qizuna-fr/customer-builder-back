@@ -6,7 +6,7 @@ use App\Interfaces\CustomerInterface;
 
 class Customer implements CustomerInterface {
 
-    public function __construct(private int $name, private string $mail, private array $data)
+    public function __construct(private string $name, private string $mail, private array $data)
     {
         
     }

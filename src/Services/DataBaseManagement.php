@@ -8,6 +8,7 @@ class DataBaseManagement implements DataBaseManagementInterface {
     public function fetchData(int $clientId) : array {
         $data = array(
             'cityName' => 'Mulhouse' , 
+            'email' => 'mulhouse@mail.fr' ,
             'title' => [
                 'font' => 'Open sans', 
                 'color' =>'blue', 
