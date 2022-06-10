@@ -16,9 +16,18 @@ interface CustomerInterface {
 
     public function setEmail(string $mail);
 
-    public function getData() : array;
+    public function getTitleStyle() : array;
 
-    public function setData(array $customerData);
+    public function setTitleStyle(array $titleStyle);
+
+    public function setParagraphStyle(array $paragraphStyle);
+
+    public function getParagraphStyle() : array;
+
+    public function setFiles(array $files);
+
+    public function getFiles() : array;
+
 
 }
 

@@ -21,12 +21,44 @@ class DataBaseManagement implements DataBaseManagementInterface {
         }
         $clientId = $client['Id-Client'];
         $dataClientRecords = $this->airtable->findBy('Data', 'Client', $clientId);
-        $dataClientFromAirtable = [];
+        $dataClientParagraphStyle = [];
+        $dataClientTitleStyle = [];
+        $dataClientFiles = [];
+        $paragraphStyle = [];
+        $titleStyle = [];
+        $paragraphFont = "";
+        $titleFont = "";
+        $paragraphColor = "";
+        $titleColor = "";
         foreach($dataClientRecords as $record) {
             $dataClient = $record->getFields();
-            array_push($dataClientFromAirtable, [$dataClient['VariableName'] => $dataClient['Choices']]);
+            echo $dataClient['VariableName'];
+            if ($dataClient['VariableName'] == 'StyleEcritureParagraphes') $paragraphStyle = explode(" ", $dataClient['Choices']);
+            if ($dataClient['VariableName'] == 'StyleEcritureTitre') $titleStyle = explode(" ", $dataClient['Choices']);
+            if ($dataClient['VariableName'] == 'PoliceParagraphe') $paragraphFont = $dataClient['Choices'];
+            if ($dataClient['VariableName'] == 'PoliceTitre') $titleFont = $dataClient['Choices'];
+            if ($dataClient['VariableName'] == 'CouleurParagraphes') $paragraphColor = $dataClient['Choices'];
+            if ($dataClient['VariableName'] == 'CouleurTitlre') $titleColor = $dataClient['Choices'];
+            if ($dataClient['VariableName'] == 'LogoCommune') $file = $dataClient['Choices'];
         }
-        $airtableClient = new Customer($client['Id-Client'], $client['CityName'], $client['Email'], $dataClientFromAirtable);
+        $dataClientParagraphStyle = [
+            'font' => $paragraphFont, 
+            'color' => $paragraphColor,
+            'text-transform' => $paragraphStyle[0],
+            'font-weight' => $paragraphStyle[1],
+            'font-style' => $paragraphStyle[2]
+        ];
+        $dataClientTitleStyle = [
+            'font' => $titleFont, 
+            'color' => $titleColor,
+            'text-transform' => $titleStyle[0],
+            'font-weight' => $titleStyle[1],
+            'font-style' => $titleStyle[2]
+        ];
+        $dataClientFiles = [
+            'name' => $file
+        ];
+        $airtableClient = new Customer($client['Id-Client'], $client['CityName'], $client['Email'], $dataClientTitleStyle, $dataClientParagraphStyle, $dataClientFiles);
         return $airtableClient;
     }
     

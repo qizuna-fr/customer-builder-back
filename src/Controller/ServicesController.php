@@ -43,8 +43,7 @@ class ServicesController extends AbstractController
         $cityName = "Mulhouse";
         $dataBase = new DataBaseManagement($airtable);
         $client = $dataBase->fetchByCityName($cityName);
-        dd($client->getData());
-
+        dd($client);
         // $customerId = 1;
         // $customerData = $this->dataBase->fetchByCityName($customerId);
         // $customerEmail=$customerData['email'];
