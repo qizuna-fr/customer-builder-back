@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\ApiConnection;
 use App\Entity\GenCssFile;
+use App\Entity\GenZipFile;
 use App\Exceptions\ConnectionImaginaryException;
 use App\Interfaces\CRMServiceInterface;
 use App\Interfaces\CSSManagementInterface;
@@ -138,8 +139,11 @@ class ServicesController extends AbstractController
         // $connection = new ApiConnection();
         // $connection->billing();
 
-        $cssfile = new GenCssFile($testArray);
+        // $cssfile = new GenCssFile($testArray);
 
+        $zip = new GenZipFile("F:\qizuna.zip");
+        $zip->add("qizunaCity.css");
+        $zip->export();
 
         return new Response("", 200);
     }

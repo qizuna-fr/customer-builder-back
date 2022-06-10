@@ -306,6 +306,9 @@
             ".env"
         ]
     },
+    "symfony/form": {
+        "version": "v6.0.9"
+    },
     "symfony/framework-bundle": {
         "version": "6.0",
         "recipe": {
@@ -346,6 +349,9 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
+    "symfony/options-resolver": {
+        "version": "v6.0.3"
+    },
     "symfony/password-hasher": {
         "version": "v6.0.8"
     },
@@ -366,6 +372,9 @@
     },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.25.0"
+    },
+    "symfony/polyfill-intl-icu": {
+        "version": "v1.26.0"
     },
     "symfony/polyfill-intl-normalizer": {
         "version": "v1.25.0"
@@ -488,5 +497,8 @@
     },
     "willdurand/negotiation": {
         "version": "3.1.0"
+    },
+    "yoanbernabeu/airtable-client-bundle": {
+        "version": "0.1.5"
     }
 }
