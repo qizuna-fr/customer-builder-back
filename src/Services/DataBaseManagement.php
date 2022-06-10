@@ -2,40 +2,36 @@
 namespace App\Services;
 
 use App\Interfaces\DataBaseManagementInterface;
+use Yoanbernabeu\AirtableClientBundle\AirtableClientInterface;
 
 class DataBaseManagement implements DataBaseManagementInterface {
+    
+    private $airtable;
 
-    public function fetchData(int $clientId) : array {
-        $data = array(
-            'cityName' => 'Mulhouse' , 
-            'email' => 'mulhouse@mail.fr' ,
-            'title' => [
-                'font' => 'Open sans', 
-                'color' =>'blue', 
-                'style' => [
-                    'text-transform' => 'italic', 
-                    'font-weight' => 'bold', 
-                    'font-style' => 'capitalize'
-                ]
-            ], 
-            'paragraph' => [
-                'font' => 'Open sans', 
-                'color' =>'black', 
-                'style' => [
-                    'text-transform' => 'normal', 
-                    'font-weight' => 'normal', 
-                    'font-style' => 'normal'
-                ]
-            ],
-            'files' => [
-                'logo' =>
-                    ['name' => 'file1.jpg', 'width' => '100', 'height' => '120', 'extension' => 'jpg'], 
-                'background' => 
-                    ['name' => 'file2.png', 'width' => '110', 'height' => '150', 'extension' => 'jpeg']
-            ]
-        );
-        return $data;
+    public function __construct(AirtableClientInterface  $airtable)
+    {
+        $this->airtable = $airtable;
     }
+
+    public function fetchByCityName(string $cityName) : Customer{
+        // $clientRecords = $this->airtable->findAll('Client');
+        $clientRecords = $this->airtable->findBy('Client', 'CityName', $cityName);
+        foreach($clientRecords as $record) {
+            $client = $record->getFields();
+        }
+        $clientId = $client['Id-Client'];
+        $dataClientRecords = $this->airtable->findBy('Data', 'Client', $clientId);
+        $dataClientFromAirtable = [];
+        foreach($dataClientRecords as $record) {
+            $dataClient = $record->getFields();
+            array_push($dataClientFromAirtable, [$dataClient['VariableName'] => $dataClient['Choices']]);
+        }
+        $airtableClient = new Customer($client['Id-Client'], $client['CityName'], $client['Email'], $dataClientFromAirtable);
+        return $airtableClient;
+    }
+    
+    // public function fetchByClientID (int $clientId) : Customer {
+    // }
 
     public function persist(){
         

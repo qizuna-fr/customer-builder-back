@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DataBaseController!{% endblock %}
+
+{% block body %}
+<h2>Informations sur le Client</h2>
+      Nom de la commune : {{ client.getName() }}
+      Email : {{ client.getEmail() }}
+
+    <table>
+      <th>{{ 'Couleur des Titres ' }}</th>
+      <th>{{ 'Logo de la Commune ' }}</th>
+      <th>{{ 'Police des Titres ' }}</th>
+      {% for data in client.getData() %}
+      {% for d in data %}
+      <tr>
+        <td>{{ d }}</td>
+        <td>{{ d }}</td>
+        <td>{{ d }}</td>
+      </tr>
+      {% endfor %}
+      {% endfor %}
+    </table>
+{% endblock %}

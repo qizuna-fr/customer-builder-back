@@ -6,14 +6,27 @@ use App\Interfaces\CustomerInterface;
 
 class Customer implements CustomerInterface {
 
-    public function __construct(private string $name, private string $mail, private array $data)
+    private int $id;
+    private string $name; 
+    private string $mail; 
+    private array $data;
+
+    public function __construct(int $id, string $name, string $mail, array $data)
     {
-        
+        $this->id = $id;
+        $this->name = $name;
+        $this->mail = $mail;
+        $this->data = $data;
     }
 
     public function getId() : int {
 
-        return 1;
+        return $this->id;
+    }
+
+    public function setId(int $id) {
+
+        $this->id = $id;
     }
 
     public function getName() : string {

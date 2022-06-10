@@ -7,7 +7,12 @@ class DummyCustomer implements CustomerInterface {
 
     public function getId() : int {
 
-        return 1;
+        return $this->id;
+    }
+
+    public function setId(int $id) {
+
+        $this->id = $id;
     }
 
     public function getName() : string {
