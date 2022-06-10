@@ -1,0 +1,22 @@
+@startuml "PennyLaneService"
+
+class User {
+    +identifiant
+    +motdepasse
+}
+
+class Services {
+    +type
+}
+
+class PennyLaneService {
+    +pennyLaneCreate(client): client_id
+    +isClientYetCreated(client): boolean
+    +pennyLaneSubscribe(client_id): boolean
+
+}
+
+User "1" -- "*" Services 
+Services o-- PennyLaneService
+
+@enduml

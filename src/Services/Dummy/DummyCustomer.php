@@ -1,14 +1,36 @@
 <?php
-namespace App\Services;
+namespace App\Services\Dummy;
 
-use App\Interfaces\DataBaseManagementInterface;
+use App\Interfaces\CustomerInterface;
 
-class DataBaseManagement implements DataBaseManagementInterface {
+class DummyCustomer implements CustomerInterface {
 
-    public function fetchData(int $clientId) : array {
+    public function getId() : int {
+
+        return 1;
+    }
+
+    public function getName() : string {
+
+        return "Mulhouse";
+    }
+
+    public function setName(string $mail) {
+        
+    }
+
+    public function getEmail(): string {
+
+        return "mulhouse@mail.fr";
+    }
+
+    public function setEmail(string $mail) {
+
+    }
+
+    public function getData() :array {
         $data = array(
             'cityName' => 'Mulhouse' , 
-            'email' => 'mulhouse@mail.fr' ,
             'title' => [
                 'font' => 'Open sans', 
                 'color' =>'blue', 
@@ -37,9 +59,10 @@ class DataBaseManagement implements DataBaseManagementInterface {
         return $data;
     }
 
-    public function persist(){
+    public function setData(array $customerData){
         
     }
+
 }
 
 ?>

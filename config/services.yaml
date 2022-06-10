@@ -8,50 +8,51 @@ parameters:
 services:
     # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
+        autowire: true # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/'
+        resource: "../src/"
         exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
+            - "../src/DependencyInjection/"
+            - "../src/Entity/"
+            - "../src/Kernel.php"
 
-<<<<<<< HEAD
-    App\Services\GitHubServiceInterface:
-        alias: App\Services\GitHubService
-    App\Services\PennyLaneServiceInterface:
-        alias: App\Services\PennyLaneService
+    App\Interfaces\GitServiceInterface:
+        # alias: App\Services\GitService
+        alias: App\Services\Stub\GitServiceStub
 
-    # # add more service definitions when explicit configuration is needed
-=======
-    App\Interfaces\GitHubServiceInterface:
-        # alias: App\Services\GitHubService
-        alias: App\Services\Dummy\DummyGitHubService
-
-    App\Interfaces\TextCSSManagementInterface:
-        # alias: App\Services\TextCSSManagement
-        alias: App\Services\Dummy\DummyTextCSSManagement
+    App\Interfaces\CSSManagementInterface:
+        alias: App\Services\CSSManagementService
 
     App\Interfaces\FormattingTextInterface:
-        # alias: App\Services\FormattingText
-        alias: App\Services\Dummy\DummyFormattingText
+        alias: App\Services\FormattingTextService
+
+    App\Interfaces\ImaginaryServiceInterface:
+        alias: App\Services\ImaginaryService
 
     App\Interfaces\DataBaseManagementInterface:
         # alias: App\Services\DataBaseManagement
         alias: App\Services\Dummy\DummyDataBaseManagement
 
-    App\Interfaces\ClientInterface:
-        # alias: App\Services\Client
-        alias: App\Services\Dummy\DummyClient
+    App\Interfaces\CRMServiceInterface:
+        # alias: App\Services\CRMService
+        alias: App\Services\Stub\CRMServiceStub
 
-    App\Interfaces\ImaginaryServiceInterface:
-        # alias: App\Services\ImaginaryService
-        alias: App\Services\Dummy\DummyImaginaryService
+    App\Interfaces\CustomerInterface:
+        alias: App\Services\Dummy\DummyCustomer
+
+    App\Interfaces\ImaginaryFileInterface:
+        alias: App\Services\Dummy\DummyImaginaryFile
+
+    App\Interfaces\GitFileInterface:
+        alias: App\Services\Dummy\DummyGitFile
+
+    App\Interfaces\BillingServiceInterface:
+        # alias: App\Services\BillingService
+        alias: App\Services\Dummy\DummyBillingService
 
     # add more service definitions when explicit configuration is needed
->>>>>>> 330836ab5426d98a1ebf48786b59d2fe01484ec5
     # please note that last definitions always *replace* previous ones

@@ -1,0 +1,18 @@
+@startuml "composantmanaging"
+
+skinparam actorStyle Hollow 
+
+:User: as user
+(gestion des composants) as (composantmanaging)
+
+user -- (composantmanaging)
+
+(Ajout composant) as (composantadd)
+(Modification composant) as (composantupdate)
+(Suppression composant) as (composantdelete)
+
+(composantmanaging) -- (composantadd)
+(composantmanaging) -- (composantupdate)
+(composantmanaging) -- (composantdelete)
+
+@enduml

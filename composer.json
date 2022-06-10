@@ -30,7 +30,9 @@
         "symfony/serializer": "6.0.*",
         "symfony/twig-bundle": "6.0.*",
         "symfony/validator": "6.0.*",
-        "symfony/yaml": "6.0.*"
+        "symfony/var-dumper": "6.0.*",
+        "symfony/yaml": "6.0.*",
+        "yoanbernabeu/airtable-client-bundle": "^0.1.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",

@@ -1,0 +1,31 @@
+@startuml "usecaseglobaltotal"
+
+skinparam actorStyle Hollow 
+
+:User: as user
+
+(gestion des services) as (servicemanaging)
+
+(GitHub) as (github)
+
+(Authentification) as (authentification)
+
+(Commit) as (commitgithub)
+(Gestion des branches) as (branchgithub)
+(Gestion des repositories) as (repositorygithub)
+(Push) as (pushgithub)
+(Ajout content) as (contentgithub)
+
+user -- (servicemanaging)
+
+(github) -- (authentification)
+
+(servicemanaging) -- (github)
+
+(authentification) <.. (repositorygithub)
+(authentification) <.. (branchgithub)
+(authentification) <.. (commitgithub)
+(authentification) <.. (pushgithub)
+(authentification) <.. (contentgithub)
+
+@enduml

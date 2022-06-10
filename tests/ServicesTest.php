@@ -2,148 +2,247 @@
 
 namespace App\Tests;
 
-use App\Services\Dummy\DummyDataBaseManagement;
-use App\Services\Dummy\DummyGitHubService;
-use App\Services\Dummy\DummyFormattingText;
-use App\Services\Dummy\DummyImaginaryService;
-use App\Services\Dummy\DummyTextCSSManagement;
+use App\Entity\ApiConnection;
+use App\Interfaces\CustomerInterface;
+use App\Interfaces\GitFileInterface;
+use App\Interfaces\ImaginaryFileInterface;
+use App\Services\CSSManagementService;
+use App\Services\FormattingTextService;
+use App\Services\ImaginaryService;
+use App\Services\BillingService;
+use App\Services\Dummy\DummyCustomer;
+use App\Services\Stub\CRMServiceStub;
+use App\Services\Stub\GitServiceStub;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ServicesTest extends WebTestCase
 {
-    public function testFormatCityName(): void
+
+    public function testController(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/format-city-name');
-        $this->assertSame($client->getResponse()->getStatusCode(), 200);
+        $client->request('GET', '/qizuna');
+        
+        $this->assertSame($client->getResponse()->getContent(), "qizuna");
     }
 
-    public function testDefineTitleStyle(): void
+    public function testLowerCaseBeforeDeleteSpace(): void
     {
-        $client = static::createClient();
-        $client->request('GET', '/edit/title/style-and-font');
-        $this->assertSame($client->getResponse()->getContent(), "Editing title style controller");
+        $formatText = new FormattingTextService();
+        $text = 'Mulhouse';
+        $formatText->deleteSpace($text);
+        $this->assertTrue($formatText->spyDeleteSpace);
     }
 
-    public function testConnectionToGithub(): void
+    public function testCSSManagementServices(): void
     {
-        $service = new DummyGitHubService();
-        $this->assertSame($service->connectToGithub(), 200);
+        $cssManagement = new CSSManagementService();
+        $text = "title";
+
+        $textFont = "Open Sans";
+        $cssManagement->editFont($text, $textFont);
+        $this->assertTrue($cssManagement->spyFont);
+
+        $textStyle = "capitalize";
+        $cssManagement->editStyle($text, $textStyle);
+        $this->assertTrue($cssManagement->spyStyle);
+
+        $textColor = "bold";
+        $cssManagement->editColor($text, $textColor);
+        $this->assertTrue($cssManagement->spyColor);
     }
 
-    public function testDisconnectionFromGithub(): void
+    public function testImaginaryPingBeforeConnect(): void
     {
-        $service = new DummyGitHubService();
-        $this->assertSame($service->disconnectFromGithub(), 'Disconnected');
+        $imaginary = new ImaginaryService();
+        $imaginary->connect();
+        $this->assertTrue($imaginary->spyPing);
     }
 
-    public function testConnectionToImaginary(): void
+    public function testImaginaryServiceSuccessfulConnection(): void
     {
-        $service = new DummyImaginaryService();
-        $this->assertSame($service->connectToImaginary(), 200);
+        $imaginary = new ImaginaryService();
+        $this->assertSame($imaginary->connect(), 'Connected');
     }
 
     public function testDisconnectionFromImaginary(): void
     {
-        $service = new DummyImaginaryService();
-        $this->assertSame($service->disconnectFromImaginary(), 'Disconnected');
+        $imaginary = new ImaginaryService();
+        $this->assertSame($imaginary->disconnect(), 'Disconnected');
     }
 
-    public function testCreateBranchGithub(): void
+    public function testConnectionToImaginaryBeforeResizingImage(): void
     {
-        $service = new DummyGitHubService();
-        $branchName = "MaBranche";
-        $this->assertSame($service->createBranchGithub($branchName), true);
+        $imaginary = new ImaginaryService();
+        $file = $this->createMock(ImaginaryFileInterface::class);
+        $height  = 50;
+        $width = 50;
+        $imaginary->resizeImage($file, $height , $width);
+        $this->assertTrue($imaginary->spyResize);
     }
 
-    public function testCreateRepositoryGithub(): void
+    public function testResizeImageSuccessfull(): void
     {
-        $service = new DummyGitHubService();
-        $clientCityName = "CityName";
-        $repositoryName = "Repository-name";
-        $this->assertSame($service->createRepositoryGithub($repositoryName, $clientCityName), true);
+        $imaginary = new ImaginaryService();
+        $file = $this->createMock(ImaginaryFileInterface::class);
+        $height  = 150;
+        $width = 150;
+        $imaginary->resizeImage($file, $height , $width);
+        $this->assertTrue($imaginary->spyResize);
+
+        // Fonctionnel ???
+        // $this->assertEquals($file->getHeight(), $height );
+        // $this->assertEquals($file->getWidth(), $width);
     }
 
-    public function testAddContent(): void
+    public function testConnectionToImaginaryBeforeConvertFile(): void
     {
-        $service = new DummyGitHubService();
-        $content = "";
-        $this->assertSame($service->addContent($content), "");
+        $imaginary = new ImaginaryService();
+        $file = $this->createMock(ImaginaryFileInterface::class);
+        $extension = ".jpg";
+        $imaginary->convertFile($file, $extension);
+        $this->assertTrue($imaginary->spyConvert);
     }
 
-    public function testFetchRepository(): void
+    public function testConvertFileSuccessfull(): void
     {
-        $service = new DummyGitHubService();
-        $clientCityName = "CityName";
-        $this->assertSame($service->fetchRepository($clientCityName), "CityName-repository");
+        $imaginary = new ImaginaryService();
+        $file = $this->createMock(ImaginaryFileInterface::class);
+        $extension = ".jpg";
+        $imaginary->convertFile($file, $extension);
+        $this->assertTrue($imaginary->spyConvert);
+
+        // Fonctionnel ???
+        // $this->assertEquals($file->getExtension(), $extension);
     }
 
-    public function testFetchBranch(): void
+    public function testPingBeforeGitConnection(): void
     {
-        $service = new DummyGitHubService();
-        $branchName = "";
-        $this->assertSame($service->fetchBranch($branchName), "");
+        $github = new GitServiceStub();
+        $github->connect();
+        $this->assertTrue($github->spyPing);
     }
 
-    public function testAddCommitMessage(): void
+    public function testGitServiceSuccessfullConnection(): void
     {
-        $service = new DummyGitHubService();
-        $clientCityName = "cityName";
-        $branchName = "ma-branche";
-        $message = "message for commit branch";
-        $content = "content";
-        $this->assertSame($service->addCommitMessage($clientCityName, $branchName, $content, $message), true);
+        $github = new GitServiceStub();
+        $this->assertSame($github->connect(), 'Connected');
     }
 
-    public function testPushBranchGithub(): void
+    public function testDisconnectionFromGit(): void
     {
-        $service = new DummyGitHubService();
-        $clientCityName = "cityName";
-        $branchName = "ma-branche";
-        $this->assertSame($service->pushBranchGithub($clientCityName, $branchName), true);
+        $github = new GitServiceStub();
+        $this->assertSame($github->disconnect(), 'Disconnected');
     }
 
-    public function testFetchDataFromDataBase(): void
+    public function testConnectToGitBeforeAdd(): void
     {
-        $dataBase = new DummyDataBaseManagement();
-        $clientName = "clientName";
-        $datas = $dataBase->fetchDataFromDataBase($clientName);
-        $this->assertNotEmpty($datas);
+        $github = new GitServiceStub();
+        $file = $this->createMock(GitFileInterface::class);
+        $github->add($file, "mybranch");
+
+        $this->assertTrue($github->spyHasCheckConnection);
     }
 
-    public function testFormattingText(): void
+    public function testGitAddBeforeCommit(): void
     {
-        $formattingText = new DummyFormattingText();
-        $text = "Hello Word";
-        $formattedText = $formattingText->deleteSpace($formattingText->lowerCase($text));
-        $this->assertSame($formattedText, "hello-word");
+        $github = new GitServiceStub();
+        $branchName = "myBranch";
+        $message = "commit message";
+        $github->commit($branchName, $message);
+        $this->assertTrue($github->spyCheckAddFile);
     }
 
-    public function testTextCSSManagement(): void
+    public function testGitCommitBeforePush(): void
     {
-        $textManagement = new DummyTextCSSManagement();
-        $textFont = "Open Sans";
-        $this->assertSame($textManagement->editTextFont($textFont), true);
-        $textStyle = "capitalize";
-        $this->assertSame($textManagement->editTextStyle($textStyle), true);
-        $textColor = "bold";
-        $this->assertSame($textManagement->editTextColor($textColor), true);
+        $github = new GitServiceStub();
+        $file = $this->createMock(GitFileInterface::class);
+        $branchName = "myBranch";
+        $message = "commit message";
+        $github->push($file, $branchName, $message);
+        $this->assertTrue($github->spyCheckFileIsCommitTed);
     }
 
-    public function testResizeImage(): void
+    public function testCRMPingBeforeConnection(): void
     {
-        $service = new DummyImaginaryService();
-        $file = "fileName";
-        $higth = 120;
-        $width = 100;
-        $this->assertSame($service->resizeImage($file, $width, $higth), 'fileName 100 120');
+        $hubspot = new CRMServiceStub();
+        $hubspot->connect();
+        $this->assertTrue($hubspot->spyConnect);
     }
-    
-    public function testConvertImage(): void
+
+    public function testCRMSuccessfullConnection(): void
     {
-        $service = new DummyImaginaryService();
-        $file = "fileName";
-        $newTyme = "jpg";
-        $this->assertSame($service->convertFile($file, $newTyme), 'fileName.jpg');
+        $hubspot = new CRMServiceStub();
+        $this->assertSame($hubspot->connect(), 'Connected');
     }
+
+    public function testDisconnectionFromCRM(): void
+    {
+        $hubspot = new CRMServiceStub();
+        $this->assertSame($hubspot->disconnect(), 'Disconnected');
+    }
+
+    public function testIfCRMClientExistBeforeCreation(): void
+    {
+        $hubspot = new CRMServiceStub();
+        $customer = $this->createMock(CustomerInterface::class);
+        $hubspot->connect();
+        $hubspot->createCustomer($customer);
+        $this->assertTrue($hubspot->spyCheckIfClientExist);
+    }
+
+    public function testCRMClientCreation(): void
+    {
+        $hubspot = new CRMServiceStub();
+        $customer = $this->createMock(CustomerInterface::class);
+        $hubspot->connect();
+        $hubspot->createCustomer($customer);
+        $this->assertTrue($hubspot->spyCreate);
+    }
+
+    public function testBillingConnect()
+    {
+        $billing = new BillingService();
+        $this->assertTrue($billing->connect());
+    }
+
+    public function testBillingDisConnect()
+    {
+        $billing = new BillingService();
+        $this->assertTrue($billing->disconnect());
+    }
+
+    public function testBillingCreate()
+    {
+        $customer = new DummyCustomer();
+        $billing = new BillingService();
+
+        $this->assertTrue($billing->create($customer));
+    }
+
+    public function testBillingSubmission()
+    {
+        $customer = new DummyCustomer();
+        $billing = new BillingService();
+
+        $this->assertTrue($billing->subscribe($customer));
+    }
+
+    public function testIsThisCustomerYetCreated()
+    {
+        $customer = new DummyCustomer();
+        $billing = new BillingService();
+
+        $this->assertFalse($billing->isThisCustomerYetCreated($customer));
+    }
+
+
+    public function testHasCustomerYetSubscribe()
+    {
+        $customer = new DummyCustomer();
+        $billing = new BillingService();
+
+        $this->assertTrue($billing->hasCustomerYetSubscribe($customer));
+    }
+
 }

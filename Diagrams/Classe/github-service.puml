@@ -1,0 +1,27 @@
+@startuml "PennyLaneService"
+
+class User {
+    +identifiant
+    +motdepasse
+}
+
+class Services {
+    +type
+}
+
+class GithubService {
+    +connectToGithub()
+    +disconnectFromGithub()
+    +Commit(githubClient, branchName, content, message)
+    +AddContent(content)
+    +CreateBranch(branchName) 
+    +CreateRepository(githubClient)
+    +FetchBranch(branchName)
+    +FetchRepository(githubClient) 
+    +push(githubClient, branchName) 
+}
+
+User "1" -- "*" Services 
+Services o-- GithubService
+
+@enduml
