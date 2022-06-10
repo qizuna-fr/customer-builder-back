@@ -150,7 +150,7 @@ class ServicesTest extends WebTestCase
         $branchName = "myBranch";
         $message = "commit message";
         $github->commit($branchName, $message);
-        $this->assertTrue($github->spyCheckAdd);
+        $this->assertTrue($github->spyCheckAddFile);
     }
 
     public function testGitCommitBeforePush(): void
@@ -160,7 +160,7 @@ class ServicesTest extends WebTestCase
         $branchName = "myBranch";
         $message = "commit message";
         $github->push($file, $branchName, $message);
-        $this->assertTrue($github->spyCheckCommit);
+        $this->assertTrue($github->spyCheckFileIsCommitTed);
     }
 
     public function testCRMPingBeforeConnection(): void
@@ -188,7 +188,16 @@ class ServicesTest extends WebTestCase
         $customer = $this->createMock(CustomerInterface::class);
         $hubspot->connect();
         $hubspot->createCustomer($customer);
-        $this->assertTrue($hubspot->spyCheckExist);
+        $this->assertTrue($hubspot->spyCheckIfClientExist);
+    }
+
+    public function testCRMClientCreation(): void
+    {
+        $hubspot = new CRMServiceStub();
+        $customer = $this->createMock(CustomerInterface::class);
+        $hubspot->connect();
+        $hubspot->createCustomer($customer);
+        $this->assertTrue($hubspot->spyCreate);
     }
 
     public function testBillingConnect()
@@ -209,7 +218,6 @@ class ServicesTest extends WebTestCase
         $billing = new BillingService();
 
         $this->assertTrue($billing->create($customer));
-        $this->expectException("Client yet created..");
     }
 
     public function testBillingSubmission()
@@ -225,7 +233,7 @@ class ServicesTest extends WebTestCase
         $customer = new DummyCustomer();
         $billing = new BillingService();
 
-        $this->assertTrue($billing->isThisCustomerYetCreated($customer));
+        $this->assertFalse($billing->isThisCustomerYetCreated($customer));
     }
 
 
@@ -235,12 +243,6 @@ class ServicesTest extends WebTestCase
         $billing = new BillingService();
 
         $this->assertTrue($billing->hasCustomerYetSubscribe($customer));
-    }
-
-    public function testApiConnection()
-    {
-        $apiconnection = new ApiConnection();
-
     }
 
 }

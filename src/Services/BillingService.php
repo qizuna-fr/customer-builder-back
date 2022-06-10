@@ -13,13 +13,13 @@ class BillingService implements BillingServiceInterface
     public function connect(): bool
     {
         // throw new Exception("billing connect error...");
-        return false;
+        return true;
     }
 
     public function Disconnect(): bool
     {
         // throw new Exception("billing disconnect error...");
-        return false;
+        return true;
     }
 
     public function create(CustomerInterface $client): bool
@@ -28,12 +28,12 @@ class BillingService implements BillingServiceInterface
         if ($this->isThisCustomerYetCreated($client))
             throw new Exception("Client yet created..");
 
-        return false;
+        return true;
     }
 
     public function subscribe($client_id): bool
     {
-        return false;
+        return true;
     }
 
 
@@ -44,6 +44,6 @@ class BillingService implements BillingServiceInterface
 
     public function hasCustomerYetSubscribe(CustomerInterface $client): bool
     {
-        return false;
+        return true;
     }
 }

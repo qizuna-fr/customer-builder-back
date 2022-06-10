@@ -8,9 +8,7 @@ use Exception;
 
 class CRMServiceStub implements CRMServiceInterface {
 
-    public bool $spyCheckExist = false;
-
-    public bool $spyExist = false;
+    public bool $spyCheckIfClientExist = false;
 
     public bool $spyConnect =false;
 
@@ -36,30 +34,29 @@ class CRMServiceStub implements CRMServiceInterface {
 
     public function customerExist(CustomerInterface $customer) : bool {
         if ($this->spyConnect) {
-            $this->checkExist();
+            $this->checkConnectedBeforeVerifyingIfClientExist();
 
             //code
         }
-        else throw new Exception('You should connect to CRM first !');
         return false;
     }
 
     public function createCustomer(CustomerInterface $customer){
-        if ($this->spyCheckExist) {
-            $this->spyCreate = true;
-
+        if ($this->spyCheckIfClientExist) {
+            
             //code
         }
         if (!$this->customerExist($customer)) 
         {
+            $this->spyCreate = true;
             //code
         }
         else throw new Exception("Customer already exist !");
     }
 
-    public function checkExist() : bool{
-        $this->spyCheckExist = true;
-        return $this->spyCheckExist;
+    public function checkConnectedBeforeVerifyingIfClientExist() : bool{
+        $this->spyCheckIfClientExist = true;
+        return $this->spyCheckIfClientExist;
     }
 }
 

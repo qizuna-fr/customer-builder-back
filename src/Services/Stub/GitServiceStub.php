@@ -10,14 +10,11 @@ class GitServiceStub implements GitServiceInterface {
 
     public bool $spyHasCheckConnection = false;
 
-    public bool $spyCheckAdd = false;
+    public bool $spyCheckAddFile = false;
 
-    public bool $spyCheckCommit = false;
+    public bool $spyCheckFileIsCommitTed = false;
 
     public bool $spyPing = false;
-    public bool $spyAdd = false;
-    public bool $spyCommit = false;
-    public bool $spyPush = false;
 
     public function ping(){
         $this->spyPing = true;
@@ -31,7 +28,6 @@ class GitServiceStub implements GitServiceInterface {
 
     public function add(GitFileInterface $file, string $branchName){
         $this->checkIsConnected();
-        if (!$this->spyHasCheckConnection) throw new Exception('You should connect to Git first !');
     }
 
 
@@ -40,13 +36,11 @@ class GitServiceStub implements GitServiceInterface {
     }
 
     public function commit(string $branchName, string $message){
-        $this->checkAdd();
-        if (!$this->spyCheckAdd) throw new Exception('you should add file first ! ');
+        $this->checkhasFileToCommit(); 
     }
 
     public function push(GitFileInterface $file, string $branchName, string $message){
-        $this->checkCommit();
-        if (!$this->spyCheckCommit) throw new Exception('you should commit first ! ');
+        $this->checkBranchIsCommited();
     }
 
     public function checkIsConnected() : bool{
@@ -54,14 +48,14 @@ class GitServiceStub implements GitServiceInterface {
         return $this->spyHasCheckConnection;
     }
 
-    public function checkAdd() : bool{
-        $this->spyCheckAdd = true;
-        return $this->spyCheckAdd;
+    public function checkhasFileToCommit() : bool{
+        $this->spyCheckAddFile = true;
+        return $this->spyCheckAddFile;
     }
 
-    public function checkCommit() : bool{
-        $this->spyCheckCommit = true;
-        return $this->spyCheckCommit;
+    public function checkBranchIsCommited() : bool{
+        $this->spyCheckFileIsCommitTed = true;
+        return $this->spyCheckFileIsCommitTed;
     }
 
 }

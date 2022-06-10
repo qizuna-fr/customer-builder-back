@@ -14,7 +14,6 @@ interface CRMServiceInterface {
 
     public function createCustomer(customerInterface $customer); 
 
-    public function checkExist() : bool;
 }
 
 ?>

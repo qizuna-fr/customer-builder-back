@@ -15,12 +15,6 @@ interface GitServiceInterface {
     public function commit(string $branchName, string $message);
 
     public function push(GitFileInterface $file, string $branchName, string $message);
-
-    public function checkIsConnected(): bool;
-
-    public function checkAdd(): bool;
-
-    public function checkCommit(): bool;
 }
 
 ?>
