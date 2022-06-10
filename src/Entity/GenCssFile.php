@@ -8,7 +8,7 @@ class GenCssFile
     {
         // dump($cssParameters);
 
-        $keyName = array_keys($cssParameters);
+        $cssClassName = array_keys($cssParameters);
 
         $file = "";
         $i = 0;
@@ -16,25 +16,27 @@ class GenCssFile
         $crlf = "\r\n";
 
         foreach ($cssParameters as $value) {
-            $cssClassName = $keyName[$i];
 
-            $file .= "." . $cssClassName . "\r\n{\r\n";
+            $file .= "." . $cssClassName[$i] . "\r\n{\r\n";
             $file .="\tfont-family: " . $value["font"] . ";" . $crlf;
             $file .= "\tcolor: " . $value["color"] . ";" . $crlf;
-
-            $style = $value["style"];
-
-            $file .= "\ttext-transform : " . $style["text-transform"] . ";" . $crlf;
-            $file .= "\tfont-style : " . $style["font-style"] . ";" . $crlf;
-            $file .= "\tfont-weight : " . $style["font-weight"] . ";";
+            $file .= "\ttext-transform : " . $value["text-transform"] . ";" . $crlf;
+            $file .= "\tfont-style : " . $value["font-style"] . ";" . $crlf;
+            $file .= "\tfont-weight : " . $value["font-weight"] . ";";
 
             $file = $file . "\r\n}" . "\r\n";
 
             $i++;
+
         }
 
         // echo ($file);
 
         file_put_contents('qizunaCity.css', $file);
+    }
+
+    private function extractAndGenCss($Arrayline)
+    {
+        dump($Arrayline);
     }
 }

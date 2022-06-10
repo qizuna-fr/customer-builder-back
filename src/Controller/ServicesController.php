@@ -46,20 +46,19 @@ class ServicesController extends AbstractController
             'title' => [
                 'font' => 'Open sans',
                 'color' => 'blue',
-                'style' => [
-                    'text-transform' => 'italic',
-                    'font-weight' => 'bold',
-                    'font-style' => 'capitalize'
-                ]
+                'text-transform' => 'italic',
+                'font-weight' => 'bold',
+                'font-style' => 'capitalize'
+
             ],
             'paragraph' => [
                 'font' => 'Open sans',
                 'color' => 'black',
-                'style' => [
-                    'text-transform' => 'normal',
-                    'font-weight' => 'normal',
-                    'font-style' => 'normal'
-                ]
+
+                'text-transform' => 'normal',
+                'font-weight' => 'normal',
+                'font-style' => 'normal'
+
             ]
         ];
 
@@ -141,9 +140,10 @@ class ServicesController extends AbstractController
 
         // $cssfile = new GenCssFile($testArray);
 
-        $zip = new GenZipFile("F:\qizuna.zip");
-        $zip->add("qizunaCity.css");
-        $zip->export();
+        // $zip = new GenZipFile("F:\qizuna.zip");
+        // $zip->add("qizunaCity.css");
+        // $zip->add("index.php");
+        // $zip->export();
 
         return new Response("", 200);
     }
