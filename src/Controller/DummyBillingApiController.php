@@ -18,7 +18,7 @@ class DummyBillingApiController extends AbstractController
         // ]);
 
         echo ("Index :".$index."<br>");
-        // dump($request->query->);
+        dump($request);
 
         $response = new Response();
         $response->setContent("Hello de Lu");

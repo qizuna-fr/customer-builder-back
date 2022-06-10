@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ApiConnection;
+use App\Entity\GenCssFile;
 use App\Exceptions\ConnectionImaginaryException;
 use App\Interfaces\CRMServiceInterface;
 use App\Interfaces\CSSManagementInterface;
@@ -18,6 +19,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ServicesController extends AbstractController
 {
@@ -28,17 +30,37 @@ class ServicesController extends AbstractController
         private ImaginaryServiceInterface $imaginary,
         private DataBaseManagementInterface $dataBase,
         private CRMServiceInterface $hubspot,
-        private BillingServiceInterface $billing
-    ) 
-    {
+        private BillingServiceInterface $billing,
+    ) {
     }
 
     #[Route('/qizuna')]
-    public function index() : Response
+    public function index(): Response
     {
         $customerId = 1;
         $customerData = $this->dataBase->fetchData($customerId);
-        $customerEmail=$customerData['email'];
+        $customerEmail = $customerData['email'];
+
+        $testArray = [
+            'title' => [
+                'font' => 'Open sans',
+                'color' => 'blue',
+                'style' => [
+                    'text-transform' => 'italic',
+                    'font-weight' => 'bold',
+                    'font-style' => 'capitalize'
+                ]
+            ],
+            'paragraph' => [
+                'font' => 'Open sans',
+                'color' => 'black',
+                'style' => [
+                    'text-transform' => 'normal',
+                    'font-weight' => 'normal',
+                    'font-style' => 'normal'
+                ]
+            ]
+        ];
 
         // $text = $customerData['cityName'];
         // $lowerCaseText = $this->formattingText->lowerCase($text);
@@ -93,7 +115,7 @@ class ServicesController extends AbstractController
         // catch(Exception $e){
         //     echo 'Exception reçue : ',  $e->getMessage(), "\n";
         // }
-        
+
         // try{
         //     $this->billing->connect();
 
@@ -112,12 +134,13 @@ class ServicesController extends AbstractController
         //     echo 'Exception reçue : ',  $e->getMessage(), "\n";
         // }
 
-        echo ("billing connection <br>");
-        $connection = new ApiConnection();
-        $connection->billing();
-        
-        return new Response("qizuna", 200);
-    }
+        // echo ("billing connection <br>");
+        // $connection = new ApiConnection();
+        // $connection->billing();
 
+        $cssfile = new GenCssFile($testArray);
+
+
+        return new Response("", 200);
+    }
 }
-?>
