@@ -138,7 +138,7 @@ class ServicesController extends AbstractController
         // $connection = new ApiConnection();
         // $connection->billing();
 
-        // $cssfile = new GenCssFile($testArray);
+        $cssfile = new GenCssFile($testArray);
 
         // $zip = new GenZipFile("F:\qizuna.zip");
         // $zip->add("qizunaCity.css");

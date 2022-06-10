@@ -6,7 +6,7 @@ use App\Interfaces\FileExportInterface;
 use Exception;
 use ZipArchive;
 
-class GenZipFile implements FileExportInterface
+class ZipFile implements FileExportInterface
 {
     private $zip;
 
