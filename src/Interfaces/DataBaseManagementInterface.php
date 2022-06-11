@@ -8,9 +8,11 @@ interface DataBaseManagementInterface {
 
     // public function fetchByClientID(int $clientId) : Customer;
 
-    public function fetchByCityName(string $cityName) : Customer;
+    public function fetchByCityName(string $cityName) : array;
 
-    public function persist();
+    public function getClientList () : array ;
+
+    public function persist(Customer $customer);
 
 }
 

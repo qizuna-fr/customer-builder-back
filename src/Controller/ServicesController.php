@@ -19,6 +19,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Console\Helper\Dumper;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Yoanbernabeu\AirtableClientBundle\AirtableClientInterface;
@@ -37,13 +38,83 @@ class ServicesController extends AbstractController
     {
     }
 
+    #[Route('/qizuna/client-information', name : 'client-information')]
+    public function clientByCityName(AirtableClientInterface  $airtable, Request $request) : Response
+    {
+        $cityName = $request->get("cityName");
+        $dataBase = new DataBaseManagement($airtable);
+        $client = $dataBase->fetchByCityName($cityName);
+        $dataClientRecords = $airtable->findBy('Data', 'Client', $client['Id-Client']);
+        $dataClientParagraphStyle = [];
+        $dataClientTitleStyle = [];
+        $dataClientFiles = [];
+        $paragraphStyle = [];
+        $titleStyle = [];
+        $paragraphFont = "";
+        $titleFont = "";
+        $paragraphColor = "";
+        $titleColor = "";
+        foreach($dataClientRecords as $record) {
+            $dataClient = $record->getFields();
+            if ($dataClient['VariableName'] == 'StyleEcritureParagraphes') $paragraphStyle = explode(" ", $dataClient['Choices']);
+            if ($dataClient['VariableName'] == 'StyleEcritureTitre') $titleStyle = explode(" ", $dataClient['Choices']);
+            if ($dataClient['VariableName'] == 'PoliceParagraphe') $paragraphFont = $dataClient['Choices'];
+            if ($dataClient['VariableName'] == 'PoliceTitre') $titleFont = $dataClient['Choices'];
+            if ($dataClient['VariableName'] == 'CouleurParagraphes') $paragraphColor = $dataClient['Choices'];
+            if ($dataClient['VariableName'] == 'CouleurTitlre') $titleColor = $dataClient['Choices'];
+            if ($dataClient['VariableName'] == 'LogoCommune') $file = $dataClient['Choices'];
+        }
+        $dataClientParagraphStyle = [
+            'font' => $paragraphFont, 
+            'color' => $paragraphColor,
+            'text-transform' => $paragraphStyle[0],
+            'font-weight' => $paragraphStyle[1],
+            'font-style' => $paragraphStyle[2]
+        ];
+        $dataClientTitleStyle = [
+            'font' => $titleFont, 
+            'color' => $titleColor,
+            'text-transform' => $titleStyle[0],
+            'font-weight' => $titleStyle[1],
+            'font-style' => $titleStyle[2]
+        ];
+        $dataClientFiles = [
+            'name' => $file
+        ];
+        $airtableClient = new Customer($client['Id-Client'], $client['CityName'], $client['Email'], $dataClientTitleStyle, $dataClientParagraphStyle, $dataClientFiles);
+
+        return $this->render('airtable/index.html.twig', [
+            'client' => $airtableClient
+        ]);
+    }
+
+    #[Route('/qizuna/client-list', name : 'client-list')]
+    public function clientList(AirtableClientInterface  $airtable) : Response
+    {
+        $dataBase = new DataBaseManagement($airtable);
+        $clientList = $dataBase->getClientList();
+        $dataClientParagraphStyle = [];
+        $dataClientTitleStyle = [];
+        $dataClientFiles = [];
+        $clients = [];
+        foreach($clientList as $record) {
+            $dataClient = $record->getFields();
+            $airtableClient = new Customer($dataClient['Id-Client'], $dataClient['CityName'], $dataClient['Email'], $dataClientTitleStyle, $dataClientParagraphStyle, $dataClientFiles);
+            array_push($clients, $airtableClient);
+        }
+        // dd($clients);
+        return $this->render('airtable/clientList.html.twig', [
+            'clients' => $clients
+        ]);
+    }
+
     #[Route('/qizuna')]
     public function index(AirtableClientInterface  $airtable) : Response
     {
         $cityName = "Mulhouse";
         $dataBase = new DataBaseManagement($airtable);
         $client = $dataBase->fetchByCityName($cityName);
-        dd($client);
+
         // $customerId = 1;
         // $customerData = $this->dataBase->fetchByCityName($customerId);
         // $customerEmail=$customerData['email'];

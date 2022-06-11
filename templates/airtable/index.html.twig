@@ -1,24 +1,46 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello DataBaseController!{% endblock %}
-
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('/Assets/client-info.css') }}"/>
+{% endblock %}
 {% block body %}
-<h2>Informations sur le Client</h2>
-      Nom de la commune : {{ client.getName() }}
-      Email : {{ client.getEmail() }}
 
-    <table>
-      <th>{{ 'Couleur des Titres ' }}</th>
-      <th>{{ 'Logo de la Commune ' }}</th>
-      <th>{{ 'Police des Titres ' }}</th>
-      {% for data in client.getData() %}
-      {% for d in data %}
-      <tr>
-        <td>{{ d }}</td>
-        <td>{{ d }}</td>
-        <td>{{ d }}</td>
-      </tr>
-      {% endfor %}
-      {% endfor %}
-    </table>
+<div >
+    <div class="row">
+        <div class="column">
+            <img src="/Assets/qizuna.png" style="width:80%">
+        </div>
+        <div class="column">
+            <div class="container">
+                <h3><b>{{client.getName()}}</b></h3> 
+                <details>
+                    <summary>Style des titres</summary>
+                    <p>
+                    <ul >
+                        <li>Police : {{client.getTitleStyle()['font']}}</li>
+                        <li>Couleur : {{client.getTitleStyle()['color']}}</li>
+                        <li>text-transform : {{client.getTitleStyle()['text-transform']}}</li>
+                        <li>font-weight : {{client.getTitleStyle()['font-weight']}}</li>
+                        <li>font-style : {{client.getTitleStyle()['font-style']}}</li>
+                    </ul>
+                    </p>
+                </details>
+                <details>
+                    <summary>Style des paragraphe</summary>
+                    <p>
+                    <ul >
+                        <li>Police : {{client.getParagraphStyle()['font']}}</li>
+                        <li>Couleur : {{client.getParagraphStyle()['color']}}</li>
+                        <li>text-transform : {{client.getParagraphStyle()['text-transform']}}</li>
+                        <li>font-weight : {{client.getParagraphStyle()['font-weight']}}</li>
+                        <li>font-style : {{client.getParagraphStyle()['font-style']}}</li>
+                    </ul>
+                    </p>
+                </details> 
+            </div>
+        </div>
+    </div>
+</div>
+  
 {% endblock %}

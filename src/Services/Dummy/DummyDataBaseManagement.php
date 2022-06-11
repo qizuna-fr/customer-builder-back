@@ -38,7 +38,7 @@ class DummyDataBaseManagement implements DataBaseManagementInterface {
     //     return $data;
     // }
 
-    public function fetchByCityName(string $cityName) : Customer{
+    public function fetchByCityName(string $cityName) : array{
         $clientRecords = $this->airtable->findAll('Client');
         foreach($clientRecords as $record) {
             $client = $record->getFields();
@@ -51,7 +51,12 @@ class DummyDataBaseManagement implements DataBaseManagementInterface {
     // public function fetchByClientID (int $clientId) : Customer {
     // }
 
-    public function persist(){
+    public function getClientList () : array{
+        return [];
+    }
+
+
+    public function persist(Customer $customer){
         
     }
 }

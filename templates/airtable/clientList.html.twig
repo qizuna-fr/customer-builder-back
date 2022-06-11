@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DataBaseController!{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+{% endblock %}
+{% block body %}
+
+<div class="w3-container">
+  <h2>Liste des clients</h2>
+  <p>Cliquer sur le client pour afficher plus d'informations !</p>
+  <ul class="w3-ul w3-hoverable">
+  {% for client in clients %}
+    <li>
+    <div class="w3-bar-item">
+        <span class="w3-large">{{client.getName()}}</span><br>
+        <span>{{client.getEmail()}}</span>
+        <span><a href="{{ path('client-information')}}?cityName={{client.getName()}}"> edit </a></span>
+      </div>
+    </li>
+  {% endfor %}
+  </ul>
+</div>
+
+{# <div class="w3-container">
+
+  <h2>Liste des clients</h2>
+
+  <ul class="w3-ul w3-card-4">
+  {% for client in clients %}
+    <li class="w3-bar">
+      <img src="/Assets/qizuna.png" class="w3-bar-item w3-circle w3-hide-small" style="width:100px">
+      <div class="w3-bar-item">
+        <span class="w3-large">client.getName()</span><br>
+        <span>cliens.getEmail()</span>
+      </div>
+    </li>
+  {% endfor %}
+
+  </ul>
+</div> #}
+{% endblock %}
