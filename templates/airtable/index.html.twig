@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DataBaseController!{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('/Assets/style.css') }}"/>
+{% endblock %}
+{% block body %}
+<div >
+
+    <table id="customers">
+        <tr>
+            <th colspan="2">{{client.getName()}}</th> 
+        </tr>
+        <tr>
+            <td><p class="b">Logo</p></td> 
+            <td><p class="b">CSS</p></td> 
+        </tr>
+      <tr>
+        <td>
+            <img src={{ '/Assets/'~client.getFiles()['name'] }} style="width:50%">
+        </td>
+        <td>
+        <p>Style des titres</p>
+            <dl>
+                <dt>Police </dt> <dd>{{client.getTitleStyle()['font']}}</dd>
+                <dt>Couleur </dt> <dd>{{client.getTitleStyle()['color']}}</dd>
+                <dt>text-transform </dt> <dd>{{client.getTitleStyle()['text-transform']}}</dd>
+                <dt>font-weight </dt> <dd>{{client.getTitleStyle()['font-weight']}}</dd>
+                <dt>font-style </dt> <dd>{{client.getTitleStyle()['font-style']}}</dd>
+            </dl>
+        <p>Style des paragraphes</p>
+            <dl>
+                <dt>Police </dt> <dd>{{client.getParagraphStyle()['font']}}</dd>
+                <dt>Couleur </dt> <dd>{{client.getParagraphStyle()['color']}}</dd>
+                <dt>text-transform </dt> <dd>{{client.getParagraphStyle()['text-transform']}}</dd>
+                <dt>font-weight </dt> <dd>{{client.getParagraphStyle()['font-weight']}}</dd>
+                <dt>font-style </dt> <dd>{{client.getParagraphStyle()['font-style']}}</dd>
+            </dl> 
+        </td>
+      </tr>
+    </table>
+</div>
+{% endblock %}

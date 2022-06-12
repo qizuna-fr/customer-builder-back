@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DataBaseController!{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('/Assets/style.css') }}">
+{% endblock %}
+{% block body %}
+<div class="row">
+  <div>
+    <table id="customers">
+      <tr>
+        <th>Liste des clients</th>
+      </tr>
+      {% for client in clients %}
+      <tr>
+        <td>
+          <span><h3>{{client.getName()}}</h3></span><br>
+          <span class="right"> 
+            <a href="{{ path('client-information')}}?cityName={{client.getName()}}">
+              afficher
+            </a>
+          </span>
+          <span>{{client.getEmail()}}</span>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}
