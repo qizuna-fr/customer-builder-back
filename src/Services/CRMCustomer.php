@@ -11,16 +11,14 @@ class CRMCustomer implements CustomerInterface {
     private string $mail; 
     private array $titleStyle;
     private array $paragraphStyle;
-    private array $files;
+    private array $datas;
 
-    public function __construct(int $id, string $name, string $mail, array $titleStyle, array $paragraphStyle, array $files)
+    public function __construct(int $id, string $name, string $mail, array $datas)
     {
         $this->id = $id;
         $this->name = $name;
         $this->mail = $mail;
-        $this->titleStyle = $titleStyle;
-        $this->paragraphStyle = $paragraphStyle;
-        $this->files = $files;
+        $this->datas = $datas;
     }
 
     public function getId() : int {
@@ -75,6 +73,14 @@ class CRMCustomer implements CustomerInterface {
 
     public function getFiles() : array{
         return $this->files;
+    }
+
+    public function setDatas(array $datas){
+        $this->datas = $datas;
+    }
+
+    public function getDatas() : array{
+        return $this->datas;
     }
 }
 

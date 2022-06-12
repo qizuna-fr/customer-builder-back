@@ -4,7 +4,7 @@ namespace App\Services\Dummy;
 use App\Interfaces\DataBaseManagementInterface;
 use App\Services\Customer;
 
-class DummyDataBaseManagement implements DataBaseManagementInterface {
+class DummyDataBaseManagement  {
 
     // public function fetchData(int $clientId) : array {
     //     $data = array(
@@ -38,14 +38,14 @@ class DummyDataBaseManagement implements DataBaseManagementInterface {
     //     return $data;
     // }
 
-    public function fetchByCityName(string $cityName) : array{
-        $clientRecords = $this->airtable->findAll('Client');
-        foreach($clientRecords as $record) {
-            $client = $record->getFields();
-            // dd($client);
-            echo $client['Id']."</br>";
-        }
-        return $client;
+    public function fetchByCityName(string $cityName) {
+        // $clientRecords = $this->airtable->findAll('Client');
+        // foreach($clientRecords as $record) {
+        //     $client = $record->getFields();
+        //     // dd($client);
+        //     echo $client['Id']."</br>";
+        // }
+        // return $client;
     }
     
     // public function fetchByClientID (int $clientId) : Customer {

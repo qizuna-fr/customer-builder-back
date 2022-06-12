@@ -28,6 +28,9 @@ interface CustomerInterface {
 
     public function getFiles() : array;
 
+    public function setDatas(array $datas);
+
+    public function getDatas() : array;
 
 }
 

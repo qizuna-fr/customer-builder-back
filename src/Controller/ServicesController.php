@@ -39,12 +39,18 @@ class ServicesController extends AbstractController
     }
 
     #[Route('/qizuna/client-information', name : 'client-information')]
-    public function clientByCityName(AirtableClientInterface  $airtable, Request $request) : Response
+    public function clientByCityName(Request $request) : Response
     {
         $cityName = $request->get("cityName");
-        $dataBase = new DataBaseManagement($airtable);
-        $client = $dataBase->fetchByCityName($cityName);
-        $dataClientRecords = $airtable->findBy('Data', 'Client', $client['Id-Client']);
+        // $dataBase = new DataBaseManagement();
+        $client = $this->dataBase->fetchCustomerByCityName($cityName);
+        $clientDataId = $client->getDatas();
+        $clientDatas = [];
+        foreach ($clientDataId as $id){
+            $data = $this->dataBase->getClientData($id);
+            array_push($clientDatas, $data);
+        }
+        // dd($dataClientRecords);
         $dataClientParagraphStyle = [];
         $dataClientTitleStyle = [];
         $dataClientFiles = [];
@@ -54,15 +60,15 @@ class ServicesController extends AbstractController
         $titleFont = "";
         $paragraphColor = "";
         $titleColor = "";
-        foreach($dataClientRecords as $record) {
-            $dataClient = $record->getFields();
-            if ($dataClient['VariableName'] == 'StyleEcritureParagraphes') $paragraphStyle = explode(" ", $dataClient['Choices']);
-            if ($dataClient['VariableName'] == 'StyleEcritureTitre') $titleStyle = explode(" ", $dataClient['Choices']);
-            if ($dataClient['VariableName'] == 'PoliceParagraphe') $paragraphFont = $dataClient['Choices'];
-            if ($dataClient['VariableName'] == 'PoliceTitre') $titleFont = $dataClient['Choices'];
-            if ($dataClient['VariableName'] == 'CouleurParagraphes') $paragraphColor = $dataClient['Choices'];
-            if ($dataClient['VariableName'] == 'CouleurTitlre') $titleColor = $dataClient['Choices'];
-            if ($dataClient['VariableName'] == 'LogoCommune') $file = $dataClient['Choices'];
+        // dd($clientDatas);
+        foreach($clientDatas as $dataClient) {
+            if ($dataClient->VariableName == 'StyleEcritureParagraphes') $paragraphStyle = explode(" ", $dataClient->Choices);
+            if ($dataClient->VariableName == 'StyleEcritureTitre') $titleStyle = explode(" ", $dataClient->Choices);
+            if ($dataClient->VariableName == 'PoliceParagraphe') $paragraphFont = $dataClient->Choices;
+            if ($dataClient->VariableName == 'PoliceTitre') $titleFont = $dataClient->Choices;
+            if ($dataClient->VariableName == 'CouleurParagraphes') $paragraphColor = $dataClient->Choices;
+            if ($dataClient->VariableName == 'CouleurTitlre') $titleColor = $dataClient->Choices;
+            if ($dataClient->VariableName == 'LogoCommune') $file = $dataClient->Choices;
         }
         $dataClientParagraphStyle = [
             'font' => $paragraphFont, 
@@ -71,6 +77,7 @@ class ServicesController extends AbstractController
             'font-weight' => $paragraphStyle[1],
             'font-style' => $paragraphStyle[2]
         ];
+        // dd($dataClientParagraphStyle);
         $dataClientTitleStyle = [
             'font' => $titleFont, 
             'color' => $titleColor,
@@ -81,25 +88,26 @@ class ServicesController extends AbstractController
         $dataClientFiles = [
             'name' => $file
         ];
-        $airtableClient = new Customer($client['Id-Client'], $client['CityName'], $client['Email'], $dataClientTitleStyle, $dataClientParagraphStyle, $dataClientFiles);
-
+        $client->setTitleStyle($dataClientTitleStyle);
+        $client->setParagraphStyle($dataClientParagraphStyle);
+        $client->setFiles($dataClientFiles);
+        
         return $this->render('airtable/index.html.twig', [
-            'client' => $airtableClient
+            'client' => $client
         ]);
     }
 
     #[Route('/qizuna/client-list', name : 'client-list')]
-    public function clientList(AirtableClientInterface  $airtable) : Response
+    public function clientList() : Response
     {
-        $dataBase = new DataBaseManagement($airtable);
-        $clientList = $dataBase->getClientList();
+        $clientList = $this->dataBase->getClientList();
         $dataClientParagraphStyle = [];
         $dataClientTitleStyle = [];
         $dataClientFiles = [];
         $clients = [];
         foreach($clientList as $record) {
-            $dataClient = $record->getFields();
-            $airtableClient = new Customer($dataClient['Id-Client'], $dataClient['CityName'], $dataClient['Email'], $dataClientTitleStyle, $dataClientParagraphStyle, $dataClientFiles);
+            $dataClient = $record->fields;
+            $airtableClient = new Customer($dataClient->Id, $dataClient->CityName, $dataClient->Email, $dataClient->Data);
             array_push($clients, $airtableClient);
         }
         // dd($clients);
@@ -113,7 +121,7 @@ class ServicesController extends AbstractController
     {
         $cityName = "Mulhouse";
         $dataBase = new DataBaseManagement($airtable);
-        $client = $dataBase->fetchByCityName($cityName);
+        $client = $dataBase->fetchCustomerByCityName($cityName);
 
         // $customerId = 1;
         // $customerData = $this->dataBase->fetchByCityName($customerId);

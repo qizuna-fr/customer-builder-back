@@ -91,6 +91,14 @@ class DummyCustomer implements CustomerInterface {
         return [];
     }
 
+    public function setDatas(array $datas){
+        $this->datas = $datas;
+    }
+
+    public function getDatas() : array{
+        return $this->datas;
+    }
+
 }
 
 ?>
