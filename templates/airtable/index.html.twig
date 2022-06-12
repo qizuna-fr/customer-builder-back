@@ -2,45 +2,42 @@
 
 {% block title %}Hello DataBaseController!{% endblock %}
 {% block stylesheets %}
-<link rel="stylesheet" href="{{ asset('/Assets/client-info.css') }}"/>
+<link rel="stylesheet" href="{{ asset('/Assets/style.css') }}"/>
 {% endblock %}
 {% block body %}
-
 <div >
-    <div class="row">
-        <div class="column">
-            <img src="/Assets/qizuna.png" style="width:80%">
-        </div>
-        <div class="column">
-            <div class="container">
-                <h3><b>{{client.getName()}}</b></h3> 
-                <details>
-                    <summary>Style des titres</summary>
-                    <p>
-                    <ul >
-                        <li>Police : {{client.getTitleStyle()['font']}}</li>
-                        <li>Couleur : {{client.getTitleStyle()['color']}}</li>
-                        <li>text-transform : {{client.getTitleStyle()['text-transform']}}</li>
-                        <li>font-weight : {{client.getTitleStyle()['font-weight']}}</li>
-                        <li>font-style : {{client.getTitleStyle()['font-style']}}</li>
-                    </ul>
-                    </p>
-                </details>
-                <details>
-                    <summary>Style des paragraphe</summary>
-                    <p>
-                    <ul >
-                        <li>Police : {{client.getParagraphStyle()['font']}}</li>
-                        <li>Couleur : {{client.getParagraphStyle()['color']}}</li>
-                        <li>text-transform : {{client.getParagraphStyle()['text-transform']}}</li>
-                        <li>font-weight : {{client.getParagraphStyle()['font-weight']}}</li>
-                        <li>font-style : {{client.getParagraphStyle()['font-style']}}</li>
-                    </ul>
-                    </p>
-                </details> 
-            </div>
-        </div>
-    </div>
+
+    <table id="customers">
+        <tr>
+            <th colspan="2">{{client.getName()}}</th> 
+        </tr>
+        <tr>
+            <td><p class="b">Logo</p></td> 
+            <td><p class="b">CSS</p></td> 
+        </tr>
+      <tr>
+        <td>
+            <img src={{ '/Assets/'~client.getFiles()['name'] }} style="width:50%">
+        </td>
+        <td>
+        <p>Style des titres</p>
+            <dl>
+                <dt>Police </dt> <dd>{{client.getTitleStyle()['font']}}</dd>
+                <dt>Couleur </dt> <dd>{{client.getTitleStyle()['color']}}</dd>
+                <dt>text-transform </dt> <dd>{{client.getTitleStyle()['text-transform']}}</dd>
+                <dt>font-weight </dt> <dd>{{client.getTitleStyle()['font-weight']}}</dd>
+                <dt>font-style </dt> <dd>{{client.getTitleStyle()['font-style']}}</dd>
+            </dl>
+        <p>Style des paragraphes</p>
+            <dl>
+                <dt>Police </dt> <dd>{{client.getParagraphStyle()['font']}}</dd>
+                <dt>Couleur </dt> <dd>{{client.getParagraphStyle()['color']}}</dd>
+                <dt>text-transform </dt> <dd>{{client.getParagraphStyle()['text-transform']}}</dd>
+                <dt>font-weight </dt> <dd>{{client.getParagraphStyle()['font-weight']}}</dd>
+                <dt>font-style </dt> <dd>{{client.getParagraphStyle()['font-style']}}</dd>
+            </dl> 
+        </td>
+      </tr>
+    </table>
 </div>
-  
 {% endblock %}

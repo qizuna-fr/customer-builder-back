@@ -48,8 +48,8 @@ class ServicesController extends AbstractController
         $dataClientParagraphStyle = [];
         $dataClientTitleStyle = [];
         $dataClientFiles = [];
-        $paragraphStyle = [];
-        $titleStyle = [];
+        $paragraphStyle = ["normal", "normal", "normal"];
+        $titleStyle = ["normal", "normal", "normal"];
         $paragraphFont = "";
         $titleFont = "";
         $paragraphColor = "";
