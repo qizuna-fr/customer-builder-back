@@ -6,14 +6,31 @@ use App\Interfaces\CustomerInterface;
 
 class Customer implements CustomerInterface {
 
-    public function __construct(private string $name, private string $mail, private array $data)
+    private int $id;
+    private string $name; 
+    private string $mail; 
+    private array $titleStyle;
+    private array $paragraphStyle;
+    private array $files;
+
+    public function __construct(int $id, string $name, string $mail, array $titleStyle, array $paragraphStyle, array $files)
     {
-        
+        $this->id = $id;
+        $this->name = $name;
+        $this->mail = $mail;
+        $this->titleStyle = $titleStyle;
+        $this->paragraphStyle = $paragraphStyle;
+        $this->files = $files;
     }
 
     public function getId() : int {
 
-        return 1;
+        return $this->id;
+    }
+
+    public function setId(int $id) {
+
+        $this->id = $id;
     }
 
     public function getName() : string {
@@ -35,12 +52,29 @@ class Customer implements CustomerInterface {
         return $this->mail;
     }
 
-    public function getData() : array{
-        return $this->data;
+    public function getTitleStyle() : array{
+        return $this->titleStyle;
     }
 
-    public function setData(array $data){
-        
+    public function setTitleStyle(array $titleStyle){
+        $this->titleStyle = $titleStyle;
+    }
+
+    public function setParagraphStyle(array $paragraphStyle){
+        $this->paragraphStyle = $paragraphStyle;
+
+    }
+
+    public function getParagraphStyle() : array{
+        return $this->paragraphStyle;
+    }
+
+    public function setFiles(array $files){
+        $this->files = $files;
+    }
+
+    public function getFiles() : array{
+        return $this->files;
     }
 }
 

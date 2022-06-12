@@ -2,11 +2,17 @@
 
 namespace App\Interfaces;
 
+use App\Services\Customer;
+
 interface DataBaseManagementInterface {
 
-    public function fetchData(int $clientId) : array;
+    // public function fetchByClientID(int $clientId) : Customer;
 
-    public function persist();
+    public function fetchByCityName(string $cityName) : array;
+
+    public function getClientList () : array ;
+
+    public function persist(Customer $customer);
 
 }
 
