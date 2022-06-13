@@ -13,16 +13,13 @@ use App\Interfaces\FormattingTextInterface;
 use App\Interfaces\GitServiceInterface;
 use App\Interfaces\ImaginaryServiceInterface;
 use App\Interfaces\BillingServiceInterface;
-use App\Services\Customer;
-use App\Services\Dummy\DummyGitFile;
-use App\Services\Dummy\DummyImaginaryFile;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Yoanbernabeu\AirtableClientBundle\AirtableClient;
 
-class ServicesController extends AbstractController
+class ServicesControlle extends AbstractController
 {
     public function __construct(
         private GitServiceInterface $github,
@@ -36,11 +33,17 @@ class ServicesController extends AbstractController
     }
 
     #[Route('/qizuna')]
-    public function index(): Response
+    public function index(AirtableClient $airtable): Response
     {
-        $customerId = 1;
-        $customerData = $this->dataBase->fetchData($customerId);
-        $customerEmail = $customerData['email'];
+        // $customerId = 1;
+        // $customerData = $this->dataBase->fetchData($customerId);
+        // $customerEmail = $customerData['email'];
+
+        $cityName = "Mulhouse";
+        $dataBase = new DataBaseManagement($airtable);
+        $client = $dataBase->fetchByCityName($cityName);
+
+        dump($client);
 
         $testArray = [
             'title' => [
@@ -138,7 +141,7 @@ class ServicesController extends AbstractController
         // $connection = new ApiConnection();
         // $connection->billing();
 
-        $cssfile = new GenCssFile($testArray);
+        // $cssfile = new GenCssFile($testArray);
 
         // $zip = new GenZipFile("F:\qizuna.zip");
         // $zip->add("qizunaCity.css");

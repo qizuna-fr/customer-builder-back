@@ -35,7 +35,6 @@ services:
 
     App\Interfaces\DataBaseManagementInterface:
         alias: App\Services\DataBaseManagement
-        # alias: App\Services\Dummy\DummyDataBaseManagement
 
     App\Interfaces\CRMServiceInterface:
         # alias: App\Services\CRMService
