@@ -116,16 +116,17 @@ class ServicesController extends AbstractController
     public function index(): Response
     {
 
-        $client = $this->getClientByCityName("Mulhouse");
+        $cityName="Mulhouse";
+        $client = $this->getClientByCityName($cityName);
         $clientParagraphStyle = $client->getParagraphStyle();
         $clientTextStyle = $client->getTitleStyle();
 
         $clientFile = $client->getFiles();
         $clientLogo = $clientFile["name"];
-        $genCss = new GenCssFile($clientParagraphStyle, $clientTextStyle);
+        $genCss = new GenCssFile($cityName, $clientParagraphStyle, $clientTextStyle);
 
         $zip = new ZipFile("Assets/qizuna.zip");
-        $zip->add("Assets/qizunaCity.css");
+        $zip->add("Assets/".$cityName.".css");
         $zip->add("Assets/" . $clientLogo);
         $zip->export();
 
