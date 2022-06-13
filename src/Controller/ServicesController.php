@@ -28,11 +28,8 @@ class ServicesController extends AbstractController
     ) {
     }
 
-    #[Route('/qizuna/client-information', name : 'client-information')]
-    public function clientByCityName(Request $request) : Response
+    public function getClientByCityName($cityName) : Customer
     {
-        $cityName = $request->get("cityName");
-        // $dataBase = new DataBaseManagement();
         $client = $this->dataBase->fetchCustomerByCityName($cityName);
         $clientDataId = $client->getDatas();
         $clientDatas = [];
@@ -81,6 +78,16 @@ class ServicesController extends AbstractController
         $client->setTitleStyle($dataClientTitleStyle);
         $client->setParagraphStyle($dataClientParagraphStyle);
         $client->setFiles($dataClientFiles);
+        return $client;
+    }
+
+
+    #[Route('/qizuna/client-information', name : 'client-information')]
+    public function clientByCityName(Request $request) : Response
+    {
+        $cityName = $request->get("cityName");
+        // $dataBase = new DataBaseManagement();
+        $client = $this->getClientByCityName($cityName);
         
         return $this->render('airtable/index.html.twig', [
             'client' => $client
@@ -91,9 +98,6 @@ class ServicesController extends AbstractController
     public function clientList() : Response
     {
         $clientList = $this->dataBase->getClientList();
-        $dataClientParagraphStyle = [];
-        $dataClientTitleStyle = [];
-        $dataClientFiles = [];
         $clients = [];
         foreach($clientList as $record) {
             $dataClient = $record->fields;
@@ -109,7 +113,8 @@ class ServicesController extends AbstractController
     #[Route('/qizuna')]
     public function index(): Response
     {
-
+        $client = $this->getClientByCityName("Mulhouse");
+        dd($client->getParagraphStyle());
         // $customerId = 1;
         // $customerData = $this->dataBase->fetchByCityName($customerId);
         // $customerEmail=$customerData['email'];
