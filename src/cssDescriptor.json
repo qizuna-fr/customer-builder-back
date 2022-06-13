@@ -1,0 +1,13 @@
+[{
+    "name": "Alex",
+    "age": "25",
+    "address": "Paris"
+}, {
+    "name": "Emily",
+    "age": "18",
+    "address": "Toulouse"
+}, {
+    "name": "Thomas",
+    "age": "22",
+    "address": "Lile"
+}]

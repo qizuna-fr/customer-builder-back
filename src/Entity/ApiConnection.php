@@ -3,35 +3,32 @@
 namespace App\Entity;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Dotenv\Dotenv;
+// use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpClient\HttpClient;
 
 class ApiConnection
 {
-    private $client;
-
-    public function github()
-    {
-    }
 
     public function billing()
     {
         $billingurl = $_ENV['BILLINGSERVICEURL'];
 
-        $parameters=[];
-        $cookies=[];
-        $file=[];
-        $server=[];
+        $httpClient = HttpClient::create();
+        // $response = $httpClient->request('GET', "http://127.0.0.1:8000/billing/48");
 
-        $contenu=["content","content1"];
+        $response = $httpClient->request('GET', "https://jsonplaceholder.typicode.com/users");
 
-        $request = new Request();
-        $response= $request->create($billingurl, 'POST',$parameters, $cookies, $file, $server, $contenu);
-        
-        return $response;
-        // dump($response);
+        echo ($response->getContent());
+
+        $statusCode = $response->getStatusCode();
+        echo ($statusCode);
 
     }
+
+    public function github()
+    {
+    }
+
     public function imaginary()
     {
     }

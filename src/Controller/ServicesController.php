@@ -24,9 +24,8 @@ class ServicesController extends AbstractController
         private ImaginaryServiceInterface $imaginary,
         private DataBaseManagementInterface $dataBase,
         private CRMServiceInterface $hubspot,
-        private BillingServiceInterface $billing
-    ) 
-    {
+        private BillingServiceInterface $billing,
+    ) {
     }
 
     #[Route('/qizuna/client-information', name : 'client-information')]
@@ -108,7 +107,7 @@ class ServicesController extends AbstractController
     }
 
     #[Route('/qizuna')]
-    public function index() : Response
+    public function index(): Response
     {
 
         // $customerId = 1;
@@ -168,7 +167,7 @@ class ServicesController extends AbstractController
         // catch(Exception $e){
         //     echo 'Exception reçue : ',  $e->getMessage(), "\n";
         // }
-        
+
         // try{
         //     $this->billing->connect();
 
@@ -201,5 +200,13 @@ class ServicesController extends AbstractController
         return new Response("qizuna", 200);
     }
 
+        // $cssfile = new GenCssFile($testArray);
+
+        // $zip = new GenZipFile("F:\qizuna.zip");
+        // $zip->add("qizunaCity.css");
+        // $zip->add("index.php");
+        // $zip->export();
+
+    //     return new Response("", 200);
+    // }
 }
-?>
