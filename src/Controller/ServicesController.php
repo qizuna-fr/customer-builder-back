@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\ApiConnection;
-use App\Exceptions\ConnectionImaginaryException;
 use App\Interfaces\CRMServiceInterface;
 use App\Interfaces\CSSManagementInterface;
 use App\Interfaces\DataBaseManagementInterface;
@@ -12,17 +10,10 @@ use App\Interfaces\GitServiceInterface;
 use App\Interfaces\ImaginaryServiceInterface;
 use App\Interfaces\BillingServiceInterface;
 use App\Services\Customer;
-use App\Services\DataBaseManagement;
-use App\Services\Dummy\DummyGitFile;
-use App\Services\Dummy\DummyImaginaryFile;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Console\Helper\Dumper;
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
-use Yoanbernabeu\AirtableClientBundle\AirtableClientInterface;
 
 class ServicesController extends AbstractController
 {
@@ -117,11 +108,8 @@ class ServicesController extends AbstractController
     }
 
     #[Route('/qizuna')]
-    public function index(AirtableClientInterface  $airtable) : Response
+    public function index() : Response
     {
-        $cityName = "Mulhouse";
-        $dataBase = new DataBaseManagement($airtable);
-        $client = $dataBase->fetchCustomerByCityName($cityName);
 
         // $customerId = 1;
         // $customerData = $this->dataBase->fetchByCityName($customerId);
