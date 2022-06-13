@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\GenCssFile;
 use App\Interfaces\CRMServiceInterface;
 use App\Interfaces\CSSManagementInterface;
 use App\Interfaces\DataBaseManagementInterface;
@@ -14,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use App\Entity\ZipFile;
 
 class ServicesController extends AbstractController
 {
@@ -33,7 +35,7 @@ class ServicesController extends AbstractController
         $client = $this->dataBase->fetchCustomerByCityName($cityName);
         $clientDataId = $client->getDatas();
         $clientDatas = [];
-        foreach ($clientDataId as $id){
+        foreach ($clientDataId as $id) {
             $data = $this->dataBase->getClientData($id);
             array_push($clientDatas, $data);
         }
@@ -48,7 +50,7 @@ class ServicesController extends AbstractController
         $paragraphColor = "";
         $titleColor = "";
         // dd($clientDatas);
-        foreach($clientDatas as $dataClient) {
+        foreach ($clientDatas as $dataClient) {
             if ($dataClient->VariableName == 'StyleEcritureParagraphes') $paragraphStyle = explode(" ", $dataClient->Choices);
             if ($dataClient->VariableName == 'StyleEcritureTitre') $titleStyle = explode(" ", $dataClient->Choices);
             if ($dataClient->VariableName == 'PoliceParagraphe') $paragraphFont = $dataClient->Choices;
@@ -58,7 +60,7 @@ class ServicesController extends AbstractController
             if ($dataClient->VariableName == 'LogoCommune') $file = $dataClient->Choices;
         }
         $dataClientParagraphStyle = [
-            'font' => $paragraphFont, 
+            'font' => $paragraphFont,
             'color' => $paragraphColor,
             'text-transform' => $paragraphStyle[0],
             'font-weight' => $paragraphStyle[1],
@@ -66,7 +68,7 @@ class ServicesController extends AbstractController
         ];
         // dd($dataClientParagraphStyle);
         $dataClientTitleStyle = [
-            'font' => $titleFont, 
+            'font' => $titleFont,
             'color' => $titleColor,
             'text-transform' => $titleStyle[0],
             'font-weight' => $titleStyle[1],
@@ -94,12 +96,12 @@ class ServicesController extends AbstractController
         ]);
     }
 
-    #[Route('/qizuna/client-list', name : 'client-list')]
-    public function clientList() : Response
+    #[Route('/qizuna/client-list', name: 'client-list')]
+    public function clientList(): Response
     {
         $clientList = $this->dataBase->getClientList();
         $clients = [];
-        foreach($clientList as $record) {
+        foreach ($clientList as $record) {
             $dataClient = $record->fields;
             $airtableClient = new Customer($dataClient->Id, $dataClient->CityName, $dataClient->Email, $dataClient->Data);
             array_push($clients, $airtableClient);
@@ -113,10 +115,32 @@ class ServicesController extends AbstractController
     #[Route('/qizuna')]
     public function index(): Response
     {
+
         $client = $this->getClientByCityName("Mulhouse");
-        dd($client->getParagraphStyle());
-        // $customerId = 1;
-        // $customerData = $this->dataBase->fetchByCityName($customerId);
+        $clientParagraphStyle = $client->getParagraphStyle();
+        $clientTextStyle = $client->getTitleStyle();
+
+        $clientFile = $client->getFiles();
+        $clientLogo=$clientFile["name"];
+
+        dump($clientParagraphStyle);
+        dump($clientTextStyle);
+        dump($clientFile);
+       
+        // $genCss = new GenCssFile($clientCssParagraph, );
+
+
+        // $zip = new ZipFile("Assets/qizuna.zip");
+        // $zip->add("Assets/qizunaCity.css");
+        // $zip->add("Assets/".$clientLogo);
+        // $zip->export();
+
+        echo ("Zip generated");
+
+        // dd($client->getParagraphStyle());
+        // dd($client->getFiles());
+
+
         // $customerEmail=$customerData['email'];
 
         // $text = $customerData['cityName'];
@@ -205,12 +229,12 @@ class ServicesController extends AbstractController
         return new Response("qizuna", 200);
     }
 
-        // $cssfile = new GenCssFile($testArray);
+    // $cssfile = new GenCssFile($testArray);
 
-        // $zip = new GenZipFile("F:\qizuna.zip");
-        // $zip->add("qizunaCity.css");
-        // $zip->add("index.php");
-        // $zip->export();
+    // $zip = new GenZipFile("F:\qizuna.zip");
+    // $zip->add("qizunaCity.css");
+    // $zip->add("index.php");
+    // $zip->export();
 
     //     return new Response("", 200);
     // }
