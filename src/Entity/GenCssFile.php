@@ -4,47 +4,24 @@ namespace App\Entity;
 
 class GenCssFile
 {
+    private $file = "";
+
     public function __construct(array $cssParagraph, array $cssText)
     {
-        // dump($cssParameters);
 
-        // $cssClassName = array_keys($cssParameters);
+        self::extractAndGenCss("paragraph", $cssParagraph);
+        self::extractAndGenCss("titleStyle", $cssText);
 
-        $file = "";
-        $i = 0;
-
-        $crlf = "\r\n";
-
-
-        foreach ($cssParagraph as $key => $value)
-        {
-           echo($key);
-           echo($value);
-
-        }
-
-        // foreach ($cssParameters as $value) {
-
-            // $file .= "." . $cssClassName[$i] . "\r\n{\r\n";
-            // $file .="\tfont-family: " . $value["font"] . ";" . $crlf;
-            // $file .= "\tcolor: " . $value["color"] . ";" . $crlf;
-            // $file .= "\ttext-transform : " . $value["text-transform"] . ";" . $crlf;
-            // $file .= "\tfont-style : " . $value["font-style"] . ";" . $crlf;
-            // $file .= "\tfont-weight : " . $value["font-weight"] . ";";
-
-            // $file = $file . "\r\n}" . "\r\n";
-
-        //     $i++;
-
-        // }
-
-        // echo ($file);
-
-        file_put_contents('Assets/qizunaCity.css', $file);
+        file_put_contents('Assets/qizunaCity.css', $this->file);
     }
 
-    private function extractAndGenCss($Arrayline)
+    private function extractAndGenCss($cssClassName, $ArrayData)
     {
-        dump($Arrayline);
+        $this->file .= "." . $cssClassName . "\r\n{\r\n";
+        foreach ($ArrayData as $key => $value) {
+            if (!$value == "")
+                $this->file .= "\t" . $key . ": " . $value . ";\r\n";
+        }
+        $this->file .= "}\r\n";
     }
 }

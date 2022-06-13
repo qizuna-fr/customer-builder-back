@@ -1,20 +1,13 @@
-.font
+.paragraph
 {
-
+	text-transform: italic;
+	font-weight: normal;
+	font-style: uppercase;
 }
-.color
+.titleStyle
 {
-
-}
-.text-transform
-{
-
-}
-.font-weight
-{
-
-}
-.font-style
-{
-
+	font: Oswald;
+	text-transform: italic;
+	font-weight: bold;
+	font-style: capitalize;
 }
