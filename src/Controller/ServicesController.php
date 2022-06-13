@@ -112,11 +112,17 @@ class ServicesController extends AbstractController
         ]);
     }
 
-    #[Route('/qizuna')]
-    public function index(): Response
+    #[Route('/qizuna/image-edit', name: 'image-edit')]
+    public function imageEdit(): Response
     {
+        return new Response("imaginary service here", 200);
+    }
 
-        $client = $this->getClientByCityName("Mulhouse");
+    #[Route('/qizuna/css-generate', name: 'css-generate')]
+    public function cssGenerate(Request $request): Response
+    {
+        $cityName = $request->get("cityName");
+        $client = $this->getClientByCityName($cityName);
         $clientParagraphStyle = $client->getParagraphStyle();
         $clientTextStyle = $client->getTitleStyle();
 

@@ -12,8 +12,14 @@
             <th colspan="2">{{client.getName()}}</th> 
         </tr>
         <tr>
-            <td><p class="b">Logo</p></td> 
-            <td><p class="b">CSS</p></td> 
+            <td>
+                <p class="b">Logo</p>
+                <span class="right"> <a href="{{ path('image-edit')}}">Redimensionner l'image</a> </span>
+            </td> 
+            <td>
+                <p class="b">CSS</p>
+                <span class="right"> <a href="{{ path('css-generate')}}?cityName={{client.getName()}}">Générer ccs file</a> </span>
+            </td> 
         </tr>
       <tr>
         <td>
