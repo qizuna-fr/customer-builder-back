@@ -128,14 +128,14 @@ class ServicesController extends AbstractController
 
         $clientFile = $client->getFiles();
         $clientLogo = $clientFile["name"];
-        $genCss = new GenCssFile($clientParagraphStyle, $clientTextStyle);
+        $genCss = new GenCssFile($cityName, $clientParagraphStyle, $clientTextStyle);
 
-        $zip = new ZipFile("Assets/qizuna.zip");
+        $zip = new ZipFile("Assets/".$cityName.".zip");
         $zip->add("Assets/".$cityName.".css");
         $zip->add("Assets/" . $clientLogo);
         $zip->export();
 
-        echo ("<br> Zip generated <br>");
+        echo ("<br> Zip generated for ".$cityName." <br>");
 
         // dd($client->getParagraphStyle());
         // dd($client->getFiles());

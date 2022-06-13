@@ -6,13 +6,13 @@ class GenCssFile
 {
     private $file = "";
 
-    public function __construct(array $cssParagraph, array $cssText)
+    public function __construct(string $cityName, array $cssParagraph, array $cssText)
     {
 
         self::extractAndGenCss("paragraph", $cssParagraph);
         self::extractAndGenCss("titleStyle", $cssText);
 
-        file_put_contents('Assets/qizunaCity.css', $this->file);
+        file_put_contents("Assets/".$cityName.".css", $this->file);
     }
 
     private function extractAndGenCss($cssClassName, $ArrayData)
