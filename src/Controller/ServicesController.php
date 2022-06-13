@@ -30,7 +30,7 @@ class ServicesController extends AbstractController
     ) {
     }
 
-    public function getClientByCityName($cityName) : Customer
+    public function getClientByCityName($cityName): Customer
     {
         $client = $this->dataBase->fetchCustomerByCityName($cityName);
         $clientDataId = $client->getDatas();
@@ -84,13 +84,13 @@ class ServicesController extends AbstractController
     }
 
 
-    #[Route('/qizuna/client-information', name : 'client-information')]
-    public function clientByCityName(Request $request) : Response
+    #[Route('/qizuna/client-information', name: 'client-information')]
+    public function clientByCityName(Request $request): Response
     {
         $cityName = $request->get("cityName");
         // $dataBase = new DataBaseManagement();
         $client = $this->getClientByCityName($cityName);
-        
+
         return $this->render('airtable/index.html.twig', [
             'client' => $client
         ]);
@@ -127,21 +127,15 @@ class ServicesController extends AbstractController
         $clientTextStyle = $client->getTitleStyle();
 
         $clientFile = $client->getFiles();
-        $clientLogo=$clientFile["name"];
+        $clientLogo = $clientFile["name"];
+        $genCss = new GenCssFile($clientParagraphStyle, $clientTextStyle);
 
-        dump($clientParagraphStyle);
-        dump($clientTextStyle);
-        dump($clientFile);
-       
-        // $genCss = new GenCssFile($clientCssParagraph, );
+        $zip = new ZipFile("Assets/qizuna.zip");
+        $zip->add("Assets/qizunaCity.css");
+        $zip->add("Assets/" . $clientLogo);
+        $zip->export();
 
-
-        // $zip = new ZipFile("Assets/qizuna.zip");
-        // $zip->add("Assets/qizunaCity.css");
-        // $zip->add("Assets/".$clientLogo);
-        // $zip->export();
-
-        echo ("Zip generated");
+        echo ("<br> Zip generated <br>");
 
         // dd($client->getParagraphStyle());
         // dd($client->getFiles());
