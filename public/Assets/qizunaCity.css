@@ -1,13 +1,15 @@
 .paragraph
 {
-	text-transform: italic;
+	font: Raleway;
+	color: #ffaa00;
+	text-transform: normal;
 	font-weight: normal;
-	font-style: uppercase;
+	font-style: normal;
 }
 .titleStyle
 {
 	font: Oswald;
-	text-transform: italic;
-	font-weight: bold;
-	font-style: capitalize;
+	text-transform: normal;
+	font-weight: normal;
+	font-style: normal;
 }
