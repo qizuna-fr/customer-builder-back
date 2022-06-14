@@ -121,6 +121,7 @@ class ServicesController extends AbstractController
     #[Route('/qizuna/css-generate', name: 'css-generate')]
     public function cssGenerate(Request $request): Response
     {
+
         $cityName = $request->get("cityName");
         $client = $this->getClientByCityName($cityName);
         $clientParagraphStyle = $client->getParagraphStyle();
@@ -130,112 +131,13 @@ class ServicesController extends AbstractController
         $clientLogo = $clientFile["name"];
         $genCss = new GenCssFile($cityName, $clientParagraphStyle, $clientTextStyle);
 
-        $zip = new ZipFile("Assets/".$cityName.".zip");
-        $zip->add("Assets/".$cityName.".css");
+        $zip = new ZipFile("Assets/" . $cityName . ".zip");
+        $zip->add("Assets/" . $cityName . ".css");
         $zip->add("Assets/" . $clientLogo);
         $zip->export();
 
-        echo ("<br> Zip generated for ".$cityName." <br>");
-
-        // dd($client->getParagraphStyle());
-        // dd($client->getFiles());
-
-
-        // $customerEmail=$customerData['email'];
-
-        // $text = $customerData['cityName'];
-        // $lowerCaseText = $this->formattingText->lowerCase($text);
-        // $formattedText = $this->formattingText->deleteSpace($lowerCaseText);
-
-        // $this->cssManagement->editColor('title', 'black');
-        // $customerData['title']['color'] = 'black';
-
-        // $this->cssManagement->editStyle('paragraph', 'normal');
-        // $customerData['paragraph']['style'] = 'normal';
-
-        // $image = new DummyImaginaryFile();
-        // $imageCustomer = $customerData['files']['logo'];
-        // $image->name($imageCustomer['name']);
-        // $image->setExtension($imageCustomer['extension']);
-        // $image->setWidth($imageCustomer['width']);
-        // $image->setHeight($imageCustomer['height']);
-
-        // $higth = 250;
-        // $width = 250;
-
-        // $newExtension = "jpg";
-
-        // $this-> imaginary->connect();
-
-        // try{
-        //     $this->imaginary->resizeImage($image, $higth, $width);
-        //     // $customerData['files']['logo']['height'] = $higth;
-        //     // $customerData['files']['logo']['width'] = $width;
-
-        //     $this->imaginary->convertFile($image, $newExtension);
-        //     // $customerData['files']['logo']['extension'] = $newExtension;
-        // }
-        // catch(ConnectionImaginaryException $e){
-        //     echo 'Exception reçue : ',  $e->getMessage(), "\n";
-        // }
-
-        // $this->dataBase->persist();
-
-        // $file = new DummyGitFile();
-        // $file->setData($customerData);
-        // $branchName = 'update data client';
-        // $message = 'updated at '.date('h:i:sa');
-
-        // $this->github->connect();
-
-        // try{
-        //     $this->github->add($file, $branchName);
-        //     $this->github->commit($branchName, $message);
-        //     $this->github->push($file, $branchName, $message);
-        // }
-        // catch(Exception $e){
-        //     echo 'Exception reçue : ',  $e->getMessage(), "\n";
-        // }
-
-        // try{
-        //     $this->billing->connect();
-
-        //     $customerName=$customerData['cityName'];
-        //     // $customerEmail=$customerData['email'];
-        //     $customerData = array ();
-
-        //     $customer = new Customer($customerName, $customerEmail, $customerData);
-
-        //     // $this->billing->create($customer);
-        //     // $this->billing->subscribe($customerId);
-
-        //     $this->billing->disconnect();
-        // }
-        // catch(Exception $e){
-        //     echo 'Exception reçue : ',  $e->getMessage(), "\n";
-        // }
-
-        // echo ("billing connection <br>");
-        // $connection = new ApiConnection();
-        // $response = $connection->billing();
-        // dump($response);
-
-        // $httpClient = HttpClient::create();
-        // $response = $httpClient->request('GET', 'http://localhost:8000/billing/1');
-
-        // $statusCode = $response->getStatusCode();
-        // echo $statusCode."</br>";
+        echo ("<br> Zip generated for " . $cityName . " <br>");
 
         return new Response("qizuna", 200);
     }
-
-    // $cssfile = new GenCssFile($testArray);
-
-    // $zip = new GenZipFile("F:\qizuna.zip");
-    // $zip->add("qizunaCity.css");
-    // $zip->add("index.php");
-    // $zip->export();
-
-    //     return new Response("", 200);
-    // }
 }
