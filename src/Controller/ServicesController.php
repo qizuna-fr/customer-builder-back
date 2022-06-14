@@ -113,9 +113,16 @@ class ServicesController extends AbstractController
     }
 
     #[Route('/qizuna/image-edit', name: 'image-edit')]
-    public function imageEdit(): Response
+    public function imageEdit(Request $request): Response
     {
-        return new Response("imaginary service here", 200);
+        $cityName = $request->get("cityName");
+        $client = $this->getClientByCityName($cityName);
+        $image = $client->getFiles()['name'];
+        // return new Response("imaginary service here", 200);
+        // http://localhost:9000/info?file=qizuna.png image properties
+        return $this->render('imaginary/index.html.twig', [
+           'image' => $image
+        ]);
     }
 
     #[Route('/qizuna/css-generate', name: 'css-generate')]

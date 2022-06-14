@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DataBaseController!{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('/Assets/style.css') }}"/>
+{% endblock %}
+
+{% block body %}
+<img src={{ '/Assets/'~image}} id="myImg">
+    <p>
+      <button type="button" onclick="agrandir()">+ Agrandir</button>
+      <button type="button" onclick="diminuer()">- Diminuer</button>
+      <button type="button" onclick="diminuer()">Valider</button>
+    </p>
+{% endblock %}

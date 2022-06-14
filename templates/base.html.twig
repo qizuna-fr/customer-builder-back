@@ -8,6 +8,32 @@
         {% endblock %}
 
     </head>
+
+        {% block javascripts %}
+    <script type="text/javascript">
+        function agrandir() {
+            var myImg = document.getElementById("myImg");
+            var width = myImg.clientWidth;
+            if (width == 600) {
+                alert("Vous avez atteint le niveau de zoom maximal.");
+            } 
+            else {
+                myImg.style.width = (width + 20) + "px";
+            }
+        }
+        function diminuer() {
+            var myImg = document.getElementById("myImg");
+            var width = myImg.clientWidth;
+            if (width == 40) {
+                alert("Vous avez atteint le niveau de zoom minimal.");
+            } 
+            else {
+                myImg.style.width = (width - 20) + "px";
+            }
+        }
+    </script>
+    {% endblock %}
+    
     <body>
     <div class="header">
         <img src={{ '/Assets/header.gif' }} style="width:100%">
