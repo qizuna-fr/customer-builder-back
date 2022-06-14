@@ -6,10 +6,16 @@
 {% endblock %}
 
 {% block body %}
-<img src={{ '/Assets/'~image}} id="myImg">
+<div>
+  <img src={{ image }} id="myImg">
+  <img src={{ '/Assets/'~newImage }} id="myImg">
+</div>
+<div>
     <p>
       <button type="button" onclick="agrandir()">+ Agrandir</button>
       <button type="button" onclick="diminuer()">- Diminuer</button>
+      <button type="button" onclick="rotateImg()">↻ Rotation</button>
       <button type="button" onclick="diminuer()">Valider</button>
     </p>
+</div>
 {% endblock %}

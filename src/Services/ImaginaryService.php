@@ -8,49 +8,42 @@ use Exception;
 
 class ImaginaryService implements ImaginaryServiceInterface {
 
-    public bool $spyPing = false;
-    public bool $spyResize = false;
     public bool $spyConvert = false;
 
     public function ping(){
-        $this->spyPing = true;
     }
 
     public function connect() {
-        $this->ping();
-        if ($this->spyPing) return ('Connected');
-        else throw new ConnectionImaginaryException(); 
     }
 
     public function disconnect() {
-        return('Disconnected');
     }
 
-    public function resizeImage(ImaginaryFileInterface $file, int $height , int $width){
-        
-        if ($this->connect() == 'Connected') {
-            $this->spyResize = true;
+    public function resizeImage(string $url, int $height , int $width){
 
-            //code
-            
-            // implementation ??
-            // $file->setHeight ($height );
-            // $file->setWidth($width);
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'http://localhost:9000/resize?url='.$url.'&width='.$width.'&height='.$height);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+
+
+        $headers = array();
+        $headers[] = 'Content-Type: image/*';
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
         }
-        else throw new Exception('You should connect to Imaginary first !');
+        curl_close($ch);
+        
+        return $result;
         
     }
 
-    public function convertFile(ImaginaryFileInterface $file, $newType){
-        if ($this->connect() == 'Connected') {
-            $this->spyConvert = true;
+    public function convertFile(string $url, $newType){
 
-            //code
-    
-            // implementation ??
-            // $file->setExtension($newType);
-        }
-        else throw new Exception('You should connect to Imaginary first !');
     }
 
 }

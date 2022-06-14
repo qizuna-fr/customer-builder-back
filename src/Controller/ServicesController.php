@@ -57,7 +57,7 @@ class ServicesController extends AbstractController
             if ($dataClient->VariableName == 'PoliceTitre') $titleFont = $dataClient->Choices;
             if ($dataClient->VariableName == 'CouleurParagraphes') $paragraphColor = $dataClient->Choices;
             if ($dataClient->VariableName == 'CouleurTitlre') $titleColor = $dataClient->Choices;
-            if ($dataClient->VariableName == 'LogoCommune') $file = $dataClient->Choices;
+            if ($dataClient->VariableName == 'LogoCommune') $file = $dataClient->uploadFile;
         }
         $dataClientParagraphStyle = [
             'font' => $paragraphFont,
@@ -75,11 +75,19 @@ class ServicesController extends AbstractController
             'font-style' => $titleStyle[2]
         ];
         $dataClientFiles = [
-            'name' => $file
+            'name' => $file[0]->filename,
+            'url' => $file[0]->url,
+            'width'=> $file[0]->width,
+            'height'=> $file[0]->height,
+            'filename'=> $file[0]->filename,
+            'size'=> $file[0]->size,
+            'type'=> $file[0]->type
         ];
+        // dd($dataClientFiles);
         $client->setTitleStyle($dataClientTitleStyle);
         $client->setParagraphStyle($dataClientParagraphStyle);
         $client->setFiles($dataClientFiles);
+        // dd($client);
         return $client;
     }
 
@@ -117,11 +125,22 @@ class ServicesController extends AbstractController
     {
         $cityName = $request->get("cityName");
         $client = $this->getClientByCityName($cityName);
-        $image = $client->getFiles()['name'];
+        $image = $client->getFiles()['url'];
+
+        $fileName = $request->get("fileName");
+        var_dump($fileName);
+        $client = $this->getClientByCityName($cityName);
+        $image = $client->getFiles()['url'];
+
+        $newimage = $this->imaginary->resizeImage($image, 100,100);
+
+        file_put_contents('Assets\\'.$fileName, $newimage);
+
         // return new Response("imaginary service here", 200);
         // http://localhost:9000/info?file=qizuna.png image properties
         return $this->render('imaginary/index.html.twig', [
-           'image' => $image
+           'image' => $image,
+           'newImage' =>$fileName
         ]);
     }
 
