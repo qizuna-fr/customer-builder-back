@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\ZipFile;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ServicesController extends AbstractController
 {
@@ -119,28 +122,56 @@ class ServicesController extends AbstractController
             'clients' => $clients
         ]);
     }
-
+    
     #[Route('/qizuna/image-edit', name: 'image-edit')]
     public function imageEdit(Request $request): Response
     {
         $cityName = $request->get("cityName");
         $client = $this->getClientByCityName($cityName);
         $image = $client->getFiles()['url'];
-
+    
         $fileName = $request->get("fileName");
-        var_dump($fileName);
-        $client = $this->getClientByCityName($cityName);
-        $image = $client->getFiles()['url'];
 
-        $newimage = $this->imaginary->resizeImage($image, 100,100);
+        $data = array(
+            'number' => 10,
+            'number' => 10,
+            'number' => 10,
+            'value' => null,
+            'string' => 'No value',
+        );
+        $form = $this->createFormBuilder($data)
+            ->add('Width', NumberType::class, array('attr' => array('placeholder' => 'new width')))
+            ->add('Height', NumberType::class, array('attr' => array('placeholder' => 'new height')))
+            ->add('Type', NumberType::class, array('attr' => array('placeholder' => 'new type')))
+            ->add('Valider', SubmitType::class)
+            ->getForm();
 
-        file_put_contents('Assets\\'.$fileName, $newimage);
+            if ($request->isMethod('POST')) {
+            $form->submit($request->request->get($form->getName()));
+            dd($form);
+                if ($form->isSubmitted()) {
+                /**@var array $parameterForm */
+                $parameterForm = $request->request->get('form');
+                $connexionFlag = (array_key_exists("Valider", $parameterForm));
+                $width  = $request->request->get('form')['Width'];
+                $height = $request->request->get('form')['Height'];
+                $type = $request->request->get('form')['Type'];
+
+                if ($connexionFlag) {
+
+                    $newimage = $this->imaginary->resizeImage($image, $width,$height);
+            
+                    file_put_contents('Assets\\'.$fileName, $newimage);
+                }
+            }
+        }
 
         // return new Response("imaginary service here", 200);
         // http://localhost:9000/info?file=qizuna.png image properties
         return $this->render('imaginary/index.html.twig', [
-           'image' => $image,
-           'newImage' =>$fileName
+           'imageName' => $image,
+           'imageFile' =>$client->getFiles(),
+           'form' => $form->createView(),
         ]);
     }
 
