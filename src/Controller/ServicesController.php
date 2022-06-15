@@ -146,30 +146,33 @@ class ServicesController extends AbstractController
             ->add('Valider', SubmitType::class)
             ->getForm();
 
-            if ($request->isMethod('POST')) {
-            $form->submit($request->request->get($form->getName()));
-            dd($form);
-                if ($form->isSubmitted()) {
-                /**@var array $parameterForm */
-                $parameterForm = $request->request->get('form');
-                $connexionFlag = (array_key_exists("Valider", $parameterForm));
-                $width  = $request->request->get('form')['Width'];
-                $height = $request->request->get('form')['Height'];
-                $type = $request->request->get('form')['Type'];
+            // if ($request->isMethod('POST')) {
+            // $form->submit($request->request->get($form->getName()));
+            // dd($form);
+            //     if ($form->isSubmitted()) {
+            //     /**@var array $parameterForm */
+            //     $parameterForm = $request->request->get('form');
+            //     $connexionFlag = (array_key_exists("Valider", $parameterForm));
+            //     $width  = $request->request->get('form')['Width'];
+            //     $height = $request->request->get('form')['Height'];
+            //     $type = $request->request->get('form')['Type'];
 
-                if ($connexionFlag) {
+            //     if ($connexionFlag) {
 
-                    $newimage = $this->imaginary->resizeImage($image, $width,$height);
+            //         $newimage = $this->imaginary->resizeImage($image, $width,$height);
             
-                    file_put_contents('Assets\\'.$fileName, $newimage);
-                }
-            }
-        }
+            //         file_put_contents('Assets\\'.$fileName, $newimage);
+            //     }
+            // }
+        // }
+        $newimage = $this->imaginary->resizeImage($image, 100,100);
+            
+        file_put_contents('Assets\\'.$fileName, $newimage);
 
         // return new Response("imaginary service here", 200);
         // http://localhost:9000/info?file=qizuna.png image properties
         return $this->render('imaginary/index.html.twig', [
-           'imageName' => $image,
+           'imageurl' => $image,
            'imageFile' =>$client->getFiles(),
            'form' => $form->createView(),
         ]);
