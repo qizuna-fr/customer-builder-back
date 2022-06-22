@@ -59,23 +59,23 @@ class ServicesController extends AbstractController
             if ($dataClient->VariableName == 'PoliceParagraphe') $paragraphFont = $dataClient->Choices;
             if ($dataClient->VariableName == 'PoliceTitre') $titleFont = $dataClient->Choices;
             if ($dataClient->VariableName == 'CouleurParagraphes') $paragraphColor = $dataClient->Choices;
-            if ($dataClient->VariableName == 'CouleurTitlre') $titleColor = $dataClient->Choices;
+            if ($dataClient->VariableName == 'CouleurTitre') $titleColor = $dataClient->Choices;
             if ($dataClient->VariableName == 'LogoCommune') $file = $dataClient->uploadFile;
         }
         $dataClientParagraphStyle = [
             'font' => $paragraphFont,
             'color' => $paragraphColor,
-            'text-transform' => $paragraphStyle[0],
+            'text-transform' => $paragraphStyle[2],
             'font-weight' => $paragraphStyle[1],
-            'font-style' => $paragraphStyle[2]
+            'font-style' => $paragraphStyle[0]
         ];
         // dd($dataClientParagraphStyle);
         $dataClientTitleStyle = [
             'font' => $titleFont,
             'color' => $titleColor,
-            'text-transform' => $titleStyle[0],
+            'text-transform' => $titleStyle[2],
             'font-weight' => $titleStyle[1],
-            'font-style' => $titleStyle[2]
+            'font-style' => $titleStyle[0]
         ];
         $dataClientFiles = [
             'name' => $file[0]->filename,
@@ -94,16 +94,60 @@ class ServicesController extends AbstractController
         return $client;
     }
 
-
     #[Route('/qizuna/client-information', name: 'client-information')]
     public function clientByCityName(Request $request): Response
     {
         $cityName = $request->get("cityName");
         // $dataBase = new DataBaseManagement();
         $client = $this->getClientByCityName($cityName);
+        $image = $client->getFiles()['url'];
+        $fileName = $client->getFiles()['url'];
+
+        $data = array(
+            'number' => 10,
+            'number' => 10,
+            // 'number' => 10,
+            'string' => 'No value',
+            'string' => 'No value'
+        );
+        $form = $this->createFormBuilder($data)
+            ->add('Width', NumberType::class, array('attr' => array('placeholder' => 'new width')))
+            ->add('Height', NumberType::class, array('attr' => array('placeholder' => 'new height')))
+            // ->add('Type', TextType::class, array('attr' => array('placeholder' => 'new type')))
+            ->add('Valider', SubmitType::class)
+            ->getForm();
+
+            $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            dd($form->getData());
+        } else {
+            //ump($form->getErrors());
+        }
+
+        //     if ($request->isMethod('POST')) {
+        //         // dd($request->request->get('form'));
+        //         $form->submit($request->request->get($form->getName()));
+        //         if ($form->isSubmitted()) {
+        //         /**@var array $parameterForm */
+        //         $parameterForm = $request->request->get('form');
+        //         $connexionFlag = (array_key_exists("Valider", $parameterForm));
+        //         $width  = $request->request->get('form')['Width'];
+        //         $height = $request->request->get('form')['Height'];
+        //         // $type = $request->request->get('form')['Type'];
+
+        //         if ($connexionFlag) {
+
+        //             $newimage = $this->imaginary->resizeImage($image, $width,$height);
+            
+        //             file_put_contents('Assets\\'.$fileName, $newimage);
+        //         }
+        //     }
+        // }
 
         return $this->render('airtable/index.html.twig', [
-            'client' => $client
+            'client' => $client,
+            'form' => $form->createView()
         ]);
     }
 
@@ -135,36 +179,36 @@ class ServicesController extends AbstractController
         $data = array(
             'number' => 10,
             'number' => 10,
-            'number' => 10,
+            // 'number' => 10,
             'value' => null,
             'string' => 'No value',
         );
         $form = $this->createFormBuilder($data)
             ->add('Width', NumberType::class, array('attr' => array('placeholder' => 'new width')))
             ->add('Height', NumberType::class, array('attr' => array('placeholder' => 'new height')))
-            ->add('Type', NumberType::class, array('attr' => array('placeholder' => 'new type')))
+            // ->add('Type', NumberType::class, array('attr' => array('placeholder' => 'new type')))
             ->add('Valider', SubmitType::class)
             ->getForm();
 
-            // if ($request->isMethod('POST')) {
-            // $form->submit($request->request->get($form->getName()));
-            // dd($form);
-            //     if ($form->isSubmitted()) {
-            //     /**@var array $parameterForm */
-            //     $parameterForm = $request->request->get('form');
-            //     $connexionFlag = (array_key_exists("Valider", $parameterForm));
-            //     $width  = $request->request->get('form')['Width'];
-            //     $height = $request->request->get('form')['Height'];
-            //     $type = $request->request->get('form')['Type'];
+            if ($request->isMethod('POST')) {
+                dd($request->request);
+            $form->submit($request->request->get($form->getName()));
+                if ($form->isSubmitted()) {
+                /**@var array $parameterForm */
+                $parameterForm = $request->request->get('form');
+                $connexionFlag = (array_key_exists("Valider", $parameterForm));
+                $width  = $request->request->get('form')['Width'];
+                $height = $request->request->get('form')['Height'];
+                // $type = $request->request->get('form')['Type'];
 
-            //     if ($connexionFlag) {
+                if ($connexionFlag) {
 
-            //         $newimage = $this->imaginary->resizeImage($image, $width,$height);
+                    $newimage = $this->imaginary->resizeImage($image, $width,$height);
             
-            //         file_put_contents('Assets\\'.$fileName, $newimage);
-            //     }
-            // }
-        // }
+                    file_put_contents('Assets\\'.$fileName, $newimage);
+                }
+            }
+        }
         $newimage = $this->imaginary->resizeImage($image, 100,100);
             
         file_put_contents('Assets\\'.$fileName, $newimage);
