@@ -98,12 +98,17 @@ class ServicesController extends AbstractController
     #[Route('/qizuna/client-information', name: 'client-information')]
     public function clientByCityName(Request $request): Response
     {
+
         $cityName = $request->get("cityName");
         $client = $this->getClientByCityName($cityName);
-        $image = $client->getFiles()['url'];
+        $imageUrl = $client->getFiles()['url'];
         $fileName = $client->getFiles()['name'];
-        // dd($fileName);
+        // dd($imageUrl);
         // dd($client);
+        
+        // Function to write image into file
+        file_put_contents('Temp\\'.$fileName, file_get_contents($imageUrl));
+
 
         $defaults = [
             'Width' => $client->getFiles()["width"],
@@ -121,15 +126,16 @@ class ServicesController extends AbstractController
         $submittedToken = $request->request->get('token');
 
         if ($form->isSubmitted() && $this->isCsrfTokenValid('image-resize', $submittedToken)) {
-
+            
+            
             $formParameters = $form->getData();
             $width  = $formParameters['Width'];
             $height  = $formParameters['Height'];
 
-            $newimage = $this->imaginary->resizeImage($image, $width, $height);
+            $newimage = $this->imaginary->resizeImage($imageUrl, $width, $height);
 
-            file_put_contents('Assets\\' . $fileName, $newimage);
-            // $this->redirectToRoute('image-edit');
+            file_put_contents('Temp\\' . $fileName, $newimage);
+            $this->redirectToRoute('image-edit');
         }
         return $this->render('airtable/index.html.twig', [
             'client' => $client,
@@ -160,10 +166,12 @@ class ServicesController extends AbstractController
         $image = $client->getFiles()['url'];
 
         $fileName = $request->get("fileName");
+        
 
+        
         $newimage = $this->imaginary->resizeImage($image, 100, 100);
 
-        file_put_contents('Assets\\' . $fileName, $newimage);
+        file_put_contents('Temp\\' . $fileName, $newimage);
 
         // return new Response("imaginary service here", 200);
         // http://localhost:9000/info?file=qizuna.png image properties
@@ -186,10 +194,12 @@ class ServicesController extends AbstractController
         $clientLogo = $clientFile["name"];
         new GenCssFile($cityName, $clientParagraphStyle, $clientTextStyle);
 
-        $zip = new ZipFile("Assets/" . $cityName . ".zip");
-        $zip->add("Assets/" . $cityName . ".css");
-        // $zip->add("Assets/" . $clientLogo);
+        $zip = new ZipFile("Temp/" . $cityName . ".zip");
+        $zip->add("Temp/" . $cityName . ".css");
+        $zip->add("Temp/" . $clientLogo);
         $zip->export();
+        unlink("Temp/".$clientLogo);
+        unlink("Temp/" . $cityName. ".css");
 
         echo ("<br> Zip generated for " . $cityName . " <br>");
 

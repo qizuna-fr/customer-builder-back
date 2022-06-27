@@ -16,6 +16,7 @@
         <td>
           <span><h3>{{client.getName()}}</h3></span><br>
           <span class="right"> 
+            {# <a href="{{ path('client-information', {'cityName':client.getName()})}}"> #}
             <a href="{{ path('client-information')}}?cityName={{client.getName()}}">
               afficher
             </a>

@@ -18,32 +18,7 @@
     </p>
 </div> #}
 
-<div class="split left">
-  <div class="centered">
-    <img src={{ imageurl }} id="myImg" style="width:100%"></img>
-    <p>
-      <button type="button" onclick="agrandir()">+ Agrandir</button>
-      <button type="button" onclick="diminuer()">- Diminuer</button>
-      {# <button type="button" onclick="rotateImg()">↻ Rotation</button> #}
-    </p>
-  </div>
-  
-</div>
-
-<div class="split right">
-  <div class="centered">
-  <h2> Dimension de l'image </h2>
-    <ul>
-      <li>{{imageFile.width}}</li>
-      <li>{{imageFile.height}}</li>
-      {# <li>{{imageFile.type}}</li> #}
-  </ul>
-  <h2> Saizissez les nouvelles valeurs </h2>
-		<form method="post">
-      {{ form_row(form.Width, {'label':false}) }}
-      {{ form_row(form.Height, {'label':false}) }}
-      {{ form_row(form.Valider) }}
-		</form>
-  </div>
+<div >
+  image resized
 </div>
 {% endblock %}

@@ -12,7 +12,7 @@ class GenCssFile
         self::extractAndGenCss("paragraph", $cssParagraph);
         self::extractAndGenCss("titleStyle", $cssText);
 
-        file_put_contents("Assets/".$cityName.".css", $this->file);
+        file_put_contents("Temp/".$cityName.".css", $this->file);
     }
 
     private function extractAndGenCss($cssClassName, $ArrayData)
