@@ -58,6 +58,7 @@
                 <dt>Height </dt> <dd>{{client.getFiles()['height']}} {{ form_row(form.Height, {'label':false}) }}</dd>
                 <dt>Width </dt> <dd>{{client.getFiles()['width']}} {{ form_row(form.Width, {'label':false}) }}</dd>
                 {# <dt>Type </dt> <dd>{{client.getFiles()['type']}} {{ form_row(form.Type, {'label':false}) }}</dd> #}
+                <input type="hidden" name="token" value="{{ csrf_token('image-resize') }}"/>
             </dl>
             {{ form_row(form.Valider) }}
 		</form>
@@ -80,7 +81,7 @@
                 <dt>font-style </dt> <dd>{{client.getParagraphStyle()['font-style']}}</dd>
             </dl> 
          
-        <span class="right"> <a href="{{ path('css-generate')}}?cityName={{client.getName()}}">Générer css</a> </span>
+        <span class="right"> <a href="{{ path('css-generate')}}?cityName={{client.getName()}}">Générer le fichier du client</a> </span>
         
         </td>
       </tr>

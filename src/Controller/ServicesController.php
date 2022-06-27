@@ -16,9 +16,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\ZipFile;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 
 class ServicesController extends AbstractController
 {
@@ -80,71 +82,61 @@ class ServicesController extends AbstractController
         $dataClientFiles = [
             'name' => $file[0]->filename,
             'url' => $file[0]->url,
-            'width'=> $file[0]->width,
-            'height'=> $file[0]->height,
-            'filename'=> $file[0]->filename,
-            'size'=> $file[0]->size,
-            'type'=> $file[0]->type
+            'width' => $file[0]->width,
+            'height' => $file[0]->height,
+            'filename' => $file[0]->filename,
+            'size' => $file[0]->size,
+            'type' => $file[0]->type
         ];
         // dd($dataClientFiles);
         $client->setTitleStyle($dataClientTitleStyle);
         $client->setParagraphStyle($dataClientParagraphStyle);
         $client->setFiles($dataClientFiles);
-        // dd($client);
         return $client;
     }
 
     #[Route('/qizuna/client-information', name: 'client-information')]
     public function clientByCityName(Request $request): Response
     {
-        $cityName = $request->get("cityName");
-        // $dataBase = new DataBaseManagement();
-        $client = $this->getClientByCityName($cityName);
-        $image = $client->getFiles()['url'];
-        $fileName = $client->getFiles()['url'];
 
-        $data = array(
-            'number' => 10,
-            'number' => 10,
-            // 'number' => 10,
-            'string' => 'No value',
-            'string' => 'No value'
-        );
-        $form = $this->createFormBuilder($data)
-            ->add('Width', NumberType::class, array('attr' => array('placeholder' => 'new width')))
-            ->add('Height', NumberType::class, array('attr' => array('placeholder' => 'new height')))
-            // ->add('Type', TextType::class, array('attr' => array('placeholder' => 'new type')))
+        $cityName = $request->get("cityName");
+        $client = $this->getClientByCityName($cityName);
+        $imageUrl = $client->getFiles()['url'];
+        $fileName = $client->getFiles()['name'];
+        // dd($imageUrl);
+        // dd($client);
+        
+        // Function to write image into file
+        file_put_contents('Temp\\'.$fileName, file_get_contents($imageUrl));
+
+
+        $defaults = [
+            'Width' => $client->getFiles()["width"],
+            'Height' => $client->getFiles()["height"],
+        ];
+
+        $form = $this->createFormBuilder($defaults)
+            ->add('Width', NumberType::class)
+            ->add('Height', NumberType::class)
             ->add('Valider', SubmitType::class)
             ->getForm();
 
-            $form->handleRequest($request);
+        $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            dd($form->getData());
-        } else {
-            //ump($form->getErrors());
-        }
+        $submittedToken = $request->request->get('token');
 
-        //     if ($request->isMethod('POST')) {
-        //         // dd($request->request->get('form'));
-        //         $form->submit($request->request->get($form->getName()));
-        //         if ($form->isSubmitted()) {
-        //         /**@var array $parameterForm */
-        //         $parameterForm = $request->request->get('form');
-        //         $connexionFlag = (array_key_exists("Valider", $parameterForm));
-        //         $width  = $request->request->get('form')['Width'];
-        //         $height = $request->request->get('form')['Height'];
-        //         // $type = $request->request->get('form')['Type'];
-
-        //         if ($connexionFlag) {
-
-        //             $newimage = $this->imaginary->resizeImage($image, $width,$height);
+        if ($form->isSubmitted() && $this->isCsrfTokenValid('image-resize', $submittedToken)) {
             
-        //             file_put_contents('Assets\\'.$fileName, $newimage);
-        //         }
-        //     }
-        // }
+            
+            $formParameters = $form->getData();
+            $width  = $formParameters['Width'];
+            $height  = $formParameters['Height'];
 
+            $newimage = $this->imaginary->resizeImage($imageUrl, $width, $height);
+
+            file_put_contents('Temp\\' . $fileName, $newimage);
+            $this->redirectToRoute('image-edit');
+        }
         return $this->render('airtable/index.html.twig', [
             'client' => $client,
             'form' => $form->createView()
@@ -166,59 +158,27 @@ class ServicesController extends AbstractController
             'clients' => $clients
         ]);
     }
-    
+
     #[Route('/qizuna/image-edit', name: 'image-edit')]
     public function imageEdit(Request $request): Response
     {
         $cityName = $request->get("cityName");
         $client = $this->getClientByCityName($cityName);
         $image = $client->getFiles()['url'];
-    
+
         $fileName = $request->get("fileName");
+        
 
-        $data = array(
-            'number' => 10,
-            'number' => 10,
-            // 'number' => 10,
-            'value' => null,
-            'string' => 'No value',
-        );
-        $form = $this->createFormBuilder($data)
-            ->add('Width', NumberType::class, array('attr' => array('placeholder' => 'new width')))
-            ->add('Height', NumberType::class, array('attr' => array('placeholder' => 'new height')))
-            // ->add('Type', NumberType::class, array('attr' => array('placeholder' => 'new type')))
-            ->add('Valider', SubmitType::class)
-            ->getForm();
+        
+        $newimage = $this->imaginary->resizeImage($image, 100, 100);
 
-            if ($request->isMethod('POST')) {
-                dd($request->request);
-            $form->submit($request->request->get($form->getName()));
-                if ($form->isSubmitted()) {
-                /**@var array $parameterForm */
-                $parameterForm = $request->request->get('form');
-                $connexionFlag = (array_key_exists("Valider", $parameterForm));
-                $width  = $request->request->get('form')['Width'];
-                $height = $request->request->get('form')['Height'];
-                // $type = $request->request->get('form')['Type'];
-
-                if ($connexionFlag) {
-
-                    $newimage = $this->imaginary->resizeImage($image, $width,$height);
-            
-                    file_put_contents('Assets\\'.$fileName, $newimage);
-                }
-            }
-        }
-        $newimage = $this->imaginary->resizeImage($image, 100,100);
-            
-        file_put_contents('Assets\\'.$fileName, $newimage);
+        file_put_contents('Temp\\' . $fileName, $newimage);
 
         // return new Response("imaginary service here", 200);
         // http://localhost:9000/info?file=qizuna.png image properties
         return $this->render('imaginary/index.html.twig', [
-           'imageurl' => $image,
-           'imageFile' =>$client->getFiles(),
-           'form' => $form->createView(),
+            'imageurl' => $image,
+            'imageFile' => $client->getFiles()
         ]);
     }
 
@@ -233,12 +193,14 @@ class ServicesController extends AbstractController
 
         $clientFile = $client->getFiles();
         $clientLogo = $clientFile["name"];
-        $genCss = new GenCssFile($cityName, $clientParagraphStyle, $clientTextStyle);
+        new GenCssFile($cityName, $clientParagraphStyle, $clientTextStyle);
 
-        $zip = new ZipFile("Assets/" . $cityName . ".zip");
-        $zip->add("Assets/" . $cityName . ".css");
-        $zip->add("Assets/" . $clientLogo);
+        $zip = new ZipFile("Temp/" . $cityName . ".zip");
+        $zip->add("Temp/" . $cityName . ".css");
+        $zip->add("Temp/" . $clientLogo);
         $zip->export();
+        unlink("Temp/".$clientLogo);
+        unlink("Temp/" . $cityName. ".css");
 
         echo ("<br> Zip generated for " . $cityName . " <br>");
 
