@@ -16,10 +16,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\ZipFile;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 
 class ServicesController extends AbstractController
@@ -44,7 +42,6 @@ class ServicesController extends AbstractController
             $data = $this->dataBase->getClientData($id);
             array_push($clientDatas, $data);
         }
-        // dd($dataClientRecords);
         $dataClientParagraphStyle = [];
         $dataClientTitleStyle = [];
         $dataClientFiles = [];
@@ -54,7 +51,6 @@ class ServicesController extends AbstractController
         $titleFont = "";
         $paragraphColor = "";
         $titleColor = "";
-        // dd($clientDatas);
         foreach ($clientDatas as $dataClient) {
             if ($dataClient->VariableName == 'StyleEcritureParagraphes') $paragraphStyle = explode(" ", $dataClient->Choices);
             if ($dataClient->VariableName == 'StyleEcritureTitre') $titleStyle = explode(" ", $dataClient->Choices);
@@ -71,7 +67,6 @@ class ServicesController extends AbstractController
             'font-weight' => $paragraphStyle[1],
             'font-style' => $paragraphStyle[0]
         ];
-        // dd($dataClientParagraphStyle);
         $dataClientTitleStyle = [
             'font' => $titleFont,
             'color' => $titleColor,
@@ -88,7 +83,6 @@ class ServicesController extends AbstractController
             'size' => $file[0]->size,
             'type' => $file[0]->type
         ];
-        // dd($dataClientFiles);
         $client->setTitleStyle($dataClientTitleStyle);
         $client->setParagraphStyle($dataClientParagraphStyle);
         $client->setFiles($dataClientFiles);
@@ -98,42 +92,27 @@ class ServicesController extends AbstractController
     #[Route('/qizuna/client-information', name: 'client-information')]
     public function clientByCityName(Request $request): Response
     {
-
         $cityName = $request->get("cityName");
         $client = $this->getClientByCityName($cityName);
         $imageUrl = $client->getFiles()['url'];
         $fileName = $client->getFiles()['name'];
-        // dd($imageUrl);
-        // dd($client);
-        
-        // Function to write image into file
         file_put_contents('Temp\\'.$fileName, file_get_contents($imageUrl));
-
-
         $defaults = [
             'Width' => $client->getFiles()["width"],
             'Height' => $client->getFiles()["height"],
         ];
-
         $form = $this->createFormBuilder($defaults)
             ->add('Width', NumberType::class)
             ->add('Height', NumberType::class)
             ->add('Valider', SubmitType::class)
             ->getForm();
-
         $form->handleRequest($request);
-
         $submittedToken = $request->request->get('token');
-
         if ($form->isSubmitted() && $this->isCsrfTokenValid('image-resize', $submittedToken)) {
-            
-            
             $formParameters = $form->getData();
             $width  = $formParameters['Width'];
             $height  = $formParameters['Height'];
-
             $newimage = $this->imaginary->resizeImage($imageUrl, $width, $height);
-
             file_put_contents('Temp\\' . $fileName, $newimage);
             $this->redirectToRoute('image-edit');
         }
@@ -153,7 +132,6 @@ class ServicesController extends AbstractController
             $airtableClient = new Customer($dataClient->Id, $dataClient->CityName, $dataClient->Email, $dataClient->Data);
             array_push($clients, $airtableClient);
         }
-        // dd($clients);
         return $this->render('airtable/clientList.html.twig', [
             'clients' => $clients
         ]);
@@ -165,17 +143,9 @@ class ServicesController extends AbstractController
         $cityName = $request->get("cityName");
         $client = $this->getClientByCityName($cityName);
         $image = $client->getFiles()['url'];
-
         $fileName = $request->get("fileName");
-        
-
-        
         $newimage = $this->imaginary->resizeImage($image, 100, 100);
-
         file_put_contents('Temp\\' . $fileName, $newimage);
-
-        // return new Response("imaginary service here", 200);
-        // http://localhost:9000/info?file=qizuna.png image properties
         return $this->render('imaginary/index.html.twig', [
             'imageurl' => $image,
             'imageFile' => $client->getFiles()
@@ -185,25 +155,20 @@ class ServicesController extends AbstractController
     #[Route('/qizuna/css-generate', name: 'css-generate')]
     public function cssGenerate(Request $request): Response
     {
-
         $cityName = $request->get("cityName");
         $client = $this->getClientByCityName($cityName);
         $clientParagraphStyle = $client->getParagraphStyle();
         $clientTextStyle = $client->getTitleStyle();
-
         $clientFile = $client->getFiles();
         $clientLogo = $clientFile["name"];
         new GenCssFile($cityName, $clientParagraphStyle, $clientTextStyle);
-
         $zip = new ZipFile("Temp/" . $cityName . ".zip");
         $zip->add("Temp/" . $cityName . ".css");
         $zip->add("Temp/" . $clientLogo);
         $zip->export();
         unlink("Temp/".$clientLogo);
         unlink("Temp/" . $cityName. ".css");
-
         echo ("<br> Zip generated for " . $cityName . " <br>");
-
         return new Response("qizuna", 200);
     }
 }
