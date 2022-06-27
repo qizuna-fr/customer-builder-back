@@ -1,89 +1,119 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DataBaseController!{% endblock %}
+{% block title %}Hello DataBaseController!
+{% endblock %}
 {% block stylesheets %}
-<link rel="stylesheet" href="{{ asset('/Assets/style.css') }}"/>
+	<link rel="stylesheet" href="{{ asset('/Assets/style.css') }}"/>
 {% endblock %}
 {% block body %}
-<div >
+	<div>
 
-    <table id="customers">
-        <tr>
-            <th colspan="2">{{client.getName()}}</th> 
-        </tr>
-        {# <tr>
-            <td>
-                <p class="b">Préview</p>
-                <span class="right"> <a href="{{ path('image-edit')}}?cityName={{client.getName()}}&fileName={{client.getFiles['name']}}">Redimensionner l'image</a> </span>
-            </td> 
-            <td>
-                <p class="b">CSS</p>
-                <span class="right"> <a href="{{ path('css-generate')}}?cityName={{client.getName()}}">Générer css file</a> </span>
-            </td> 
-        </tr> #}
-      <tr>
-        <td>
-            <a style= "
-                color : {{client.getTitleStyle()['color']}};
-                font-family : {{client.getTitleStyle()['font']}}; 
-                text-transform : {{client.getTitleStyle()['text-transform']}}; 
-                font-weight : {{client.getTitleStyle()['font-weight']}};
-                font-style : {{client.getTitleStyle()['font-style']}} 
-                "
-            > Titre </a>
-            <br></br>
-            <a 
-            style= "
-                color : {{client.getParagraphStyle()['color']}}; 
-                font-family : {{client.getParagraphStyle()['font']}}; 
-                text-transform : {{client.getParagraphStyle()['text-transform']}}; 
-                font-weight : {{client.getParagraphStyle()['font-weight']}}; 
-                font-style : {{client.getParagraphStyle()['font-style']}} 
-                "
-            > 
-            Paragraphes ....
-            <br></br>
-           
-            <img src={{ client.getFiles()['url'] }} id="myImg" style="width:50%">
-    <p>
-      {# <button type="button" onclick="agrandir()">+ Agrandir</button>
-      <button type="button" onclick="diminuer()">- Diminuer</button> #}
-    </p>
-    <span class="right"> <a href="{{ path('image-edit')}}?cityName={{client.getName()}}&fileName={{client.getFiles['name']}}">Redimensionner l'image</a> </span>
-        <form method="post">
-             
-            
-            
-            <dl>
-                <dt>Height </dt> <dd>{{client.getFiles()['height']}} {{ form_row(form.Height, {'label':false}) }}</dd>
-                <dt>Width </dt> <dd>{{client.getFiles()['width']}} {{ form_row(form.Width, {'label':false}) }}</dd>
-                {# <dt>Type </dt> <dd>{{client.getFiles()['type']}} {{ form_row(form.Type, {'label':false}) }}</dd> #}
-            </dl>
-            {{ form_row(form.Valider) }}
+		<table id="customers">
+			<tr>
+				<th colspan="2">{{client.getName()}}</th>
+			</tr>
+			{# <tr>
+			            <td>
+			                <p class="b">Préview</p>
+			                <span class="right"> <a href="{{ path('image-edit')}}?cityName={{client.getName()}}&fileName={{client.getFiles['name']}}">Redimensionner l'image</a> </span>
+			            </td> 
+			            <td>
+			                <p class="b">CSS</p>
+			                <span class="right"> <a href="{{ path('css-generate')}}?cityName={{client.getName()}}">Générer css file</a> </span>
+			            </td> 
+			        </tr> #}
+			<tr>
+				<td>
+					<a style="
+							                color : {{client.getTitleStyle()['color']}};
+							                font-family : {{client.getTitleStyle()['font']}};
+							                text-transform : {{client.getTitleStyle()['text-transform']}};
+							                font-weight : {{client.getTitleStyle()['font-weight']}};
+							                font-style : {{client.getTitleStyle()['font-style']}}
+							                ">
+						Titre
+					</a>
+					<br></td>
+			</tr>
+		</br>
+		<a style="
+				                color : {{client.getParagraphStyle()['color']}};
+				                font-family : {{client.getParagraphStyle()['font']}};
+				                text-transform : {{client.getParagraphStyle()['text-transform']}};
+				                font-weight : {{client.getParagraphStyle()['font-weight']}};
+				                font-style : {{client.getParagraphStyle()['font-style']}}
+				                ">
+			Paragraphes ....
+			<br></br>
+
+		<img src={{ client.getFiles()['url'] }} id="myImg" style="width:50%">
+		<p>
+			{# <button type="button" onclick="agrandir()">+ Agrandir</button>
+			      <button type="button" onclick="diminuer()">- Diminuer</button> #}
+		</p>
+		<span class="right">
+			<a href="{{ path('image-edit')}}?cityName={{client.getName()}}&fileName={{client.getFiles['name']}}">Redimensionner l'image</a>
+		</span>
+		<form method="post">
+
+
+			<dl>
+				<dt>Height
+				</dt>
+				<dd>{{client.getFiles()['height']}}
+					{{ form_row(form.Height, {'label':false}) }}</dd>
+				<dt>Width
+				</dt>
+				<dd>{{client.getFiles()['width']}}
+					{{ form_row(form.Width, {'label':false}) }}</dd>
+				{# <dt>Type </dt> <dd>{{client.getFiles()['type']}} {{ form_row(form.Type, {'label':false}) }}</dd> #}
+				<input type="hidden" name="token" value="{{ csrf_token('image-resize') }}"/>
+
+			</dl>
+			{{ form_row(form.Valider) }}
 		</form>
-        </td>
-        <td>
-        <p>Style des titres</p>
-            <dl>
-                <dt>Police </dt> <dd>{{client.getTitleStyle()['font']}}</dd>
-                <dt>Couleur </dt> <dd>{{client.getTitleStyle()['color']}}</dd>
-                <dt>text-transform </dt> <dd>{{client.getTitleStyle()['text-transform']}}</dd>
-                <dt>font-weight </dt> <dd>{{client.getTitleStyle()['font-weight']}}</dd>
-                <dt>font-style </dt> <dd>{{client.getTitleStyle()['font-style']}}</dd>
-            </dl>
-        <p>Style des paragraphes</p>
-            <dl>
-                <dt>Police </dt> <dd>{{client.getParagraphStyle()['font']}}</dd>
-                <dt>Couleur </dt> <dd>{{client.getParagraphStyle()['color']}}</dd>
-                <dt>text-transform </dt> <dd>{{client.getParagraphStyle()['text-transform']}}</dd>
-                <dt>font-weight </dt> <dd>{{client.getParagraphStyle()['font-weight']}}</dd>
-                <dt>font-style </dt> <dd>{{client.getParagraphStyle()['font-style']}}</dd>
-            </dl> 
-         
-        <span class="right"> <a href="{{ path('css-generate')}}?cityName={{client.getName()}}">Générer Assets file</a> </span>
-        
-        </td>
-      </tr>
-    </table>
-</div>
-{% endblock %}
+	</td>
+	<td>
+		<p>Style des titres</p>
+		<dl>
+			<dt>Police
+			</dt>
+			<dd>{{client.getTitleStyle()['font']}}</dd>
+			<dt>Couleur
+			</dt>
+			<dd>{{client.getTitleStyle()['color']}}</dd>
+			<dt>text-transform
+			</dt>
+			<dd>{{client.getTitleStyle()['text-transform']}}</dd>
+			<dt>font-weight
+			</dt>
+			<dd>{{client.getTitleStyle()['font-weight']}}</dd>
+			<dt>font-style
+			</dt>
+			<dd>{{client.getTitleStyle()['font-style']}}</dd>
+		</dl>
+		<p>Style des paragraphes</p>
+		<dl>
+			<dt>Police
+			</dt>
+			<dd>{{client.getParagraphStyle()['font']}}</dd>
+			<dt>Couleur
+			</dt>
+			<dd>{{client.getParagraphStyle()['color']}}</dd>
+			<dt>text-transform
+			</dt>
+			<dd>{{client.getParagraphStyle()['text-transform']}}</dd>
+			<dt>font-weight
+			</dt>
+			<dd>{{client.getParagraphStyle()['font-weight']}}</dd>
+			<dt>font-style
+			</dt>
+			<dd>{{client.getParagraphStyle()['font-style']}}</dd>
+		</dl>
+
+		<span class="right">
+			<a href="{{ path('css-generate')}}?cityName={{client.getName()}}">Générer Assets file</a>
+		</span>
+
+	</td>
+</tr></table></div>{% endblock %}
