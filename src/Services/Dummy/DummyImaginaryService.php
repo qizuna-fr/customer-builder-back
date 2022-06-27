@@ -1,5 +1,5 @@
 <?php
-namespace App\Services;
+namespace App\Services\Dummy;
 
 use App\Exceptions\ConnectionImaginaryException;
 use App\Interfaces\ImaginaryFileInterface;

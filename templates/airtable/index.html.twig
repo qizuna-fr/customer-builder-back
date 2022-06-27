@@ -61,16 +61,6 @@
         <tr>
             <th colspan="2">{{client.getName()}}</th> 
         </tr>
-        {# <tr>
-            <td>
-                <p class="b">Préview</p>
-                <span class="right"> <a href="{{ path('image-edit')}}?cityName={{client.getName()}}&fileName={{client.getFiles['name']}}">Redimensionner l'image</a> </span>
-            </td> 
-            <td>
-                <p class="b">CSS</p>
-                <span class="right"> <a href="{{ path('css-generate')}}?cityName={{client.getName()}}">Générer css file</a> </span>
-            </td> 
-        </tr> #}
       <tr>
         <td>
             <a style= "
@@ -96,14 +86,9 @@
            
             <img src={{ client.getFiles()['url'] }} id="myImg" style="width:50%">
     <p>
-      {# <button type="button" onclick="agrandir()">+ Agrandir</button>
-      <button type="button" onclick="diminuer()">- Diminuer</button> #}
     </p>
     <span class="right"> <a href="{{ path('image-edit')}}?cityName={{client.getName()}}&fileName={{client.getFiles['name']}}">Redimensionner l'image</a> </span>
         <form method="post">
-             
-            
-            
             <dl>
                 <dt>Height </dt> <dd>{{client.getFiles()['height']}} {{ form_row(form.Height, {'label':false}) }}</dd>
                 <dt>Width </dt> <dd>{{client.getFiles()['width']}} {{ form_row(form.Width, {'label':false}) }}</dd>
@@ -130,9 +115,7 @@
                 <dt>font-weight </dt> <dd>{{client.getParagraphStyle()['font-weight']}}</dd>
                 <dt>font-style </dt> <dd>{{client.getParagraphStyle()['font-style']}}</dd>
             </dl> 
-         
         <span class="right"> <a href="{{ path('css-generate')}}?cityName={{client.getName()}}">Générer le fichier du client</a> </span>
-        
         </td>
       </tr>
     </table>
